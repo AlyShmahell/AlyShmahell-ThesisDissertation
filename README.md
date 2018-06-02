@@ -9,5 +9,5 @@
 | <ul><li>- [ ] </li></ul>  | Design        | 16-06-2018 |
 | <ul><li>- [ ] </li></ul>  | Implementation| 23-06-2018 |
 | <ul><li>- [ ] </li></ul>  | Conclusion    | 30-06-2018 |
-| <ul><li>- [ ] </li></ul>  | Appendix      | 07-06-2018 |
+| <ul><li>- [ ] </li></ul>  | Appendix & Abstract | 07-06-2018 |
 
