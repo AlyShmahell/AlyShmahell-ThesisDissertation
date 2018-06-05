@@ -55,8 +55,8 @@ Abstract
 \newpage
 \section{\textbf{Introduction}}\label{sec:introduction}
 \subsection{\textbf{Xavier Initialization} \cite{DBLP:journals/jmlr/GlorotB10}}
-\textbf{What's Important about Initialization?}\\\\
 When we talk about initialization, we mean the initial value which should be given to a certain neuron, this initial value is important for the neuron and for the network in general.\\
+\begin{lemma}\label{lemma1}
 Suppose our net uses the hyperbolic tangent activation function for its neurons:\\
 \begin{center}
 	\includegraphics[width=0.6\textwidth]{tanh}\\[1cm]
@@ -65,11 +65,12 @@ Suppose our net uses the hyperbolic tangent activation function for its neurons:
 	\item If the weights start too small, then the signal shrinks as it passes through each layer until it vanishes, then as it passes deeper in the network with its small values, the layers it enter will become linear, because the output of the hyperbolic tangent is linear with small input value, this means the deeper layers of the net will loose non-linearity.
 	\item If the weights start too large, then the signal grows as it passes through each layer until it becomes too large, then as it passes deeper in the network with its large values, the layers it enter will become saturated, as the output of the hyperbolic tangent is flat with large input values, and this flatness will cause the gradient to become zero, and we will get the vanishing gradient problem.
 \end{itemize}
-\begin{lemma}\label{lemma1}
-Having a pre-defined net graph: for each neuron we know the number of inputs and the number of outputs, therefor we can calculate a reasonable weight for the neuron in question based on a normal distribution of a zero mean and a 1/n variance.
 \end{lemma}
 \begin{lemma}\label{lemma2}
-To achieve initialization while avoiding the two before-mentioned obstacles, we want the variance to remain the same with each passing layer.	
+Having a pre-defined net graph: for each neuron we know the number of inputs and the number of outputs, therefor we can calculate a reasonable weight for the neuron in question based on a normal distribution of a zero mean and a 1/n variance.
+\end{lemma}
+\begin{lemma}\label{lemma3}
+To achieve initialization while avoiding the two obstacles in \cref{lemma1}, we want the variance to remain the same with each passing layer.	
 \end{lemma}
 \newpage
 Suppose we have an input X from a previous layer with n components and a linear neuron with random weights W in the current layer that spits out the same output Y to some neurons in the next layer.
@@ -88,20 +89,20 @@ To calculate the variance of each component:
 		Var(W_iX_i) = E[X_i]^2 Var(W_i) + E[W_i]^2 Var(X_i) + Var(W_i)Var(X_i) \label{eq:2}
 	\end{equation}
 \end{center}
-Since our inputs and weights come from a normal distribution of zero mean:
+Since our inputs and weights come from a normal distribution of zero mean (from \cref{lemma2}):
 \begin{center}
 	\begin{equation}
 		E[X_i]^2 Var(W_i) + E[W_i]^2 Var(X_i) = 0 \implies
 		Var(W_iX_i) = Var(W_i)Var(X_i) \label{eq:3}
 	\end{equation}
 \end{center}
-Since the neurons in the same previous layer are all independent, we assume that $ X_i $ and $ W_i $  are also independent and identically distributed:
+Since the neurons in the same previous layer are all independent, we assume that both $ X_i $ and $ W_i $  are independent and also identically distributed:
 \begin{center}
 	\begin{equation}
 	 Var(Y) = Var(W_1X_1 + W_2X_2 + ... + W_n X_n) = nVar(W_i)Var(X_i) \label{eq:4}
 	\end{equation}
 \end{center}
-In the last equation, we have the variance of the inputs, the variance of the output and the variance of the weights, now we can calculate the variance of the weights from ~\cref{lemma2}:
+In the last equation, we have the variance of the inputs, the variance of the output and the variance of the weights, now we can calculate the variance of the weights from ~\cref{lemma3}:
 \begin{center}
 	\begin{equation}
 	 Var(Y) = Var(X_i) \implies Var(W_i) = \frac{1}{n_{in}} \implies Var(W_i) * n_{in} = 1  \label{eq:5}
