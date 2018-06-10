@@ -1,0 +1,20 @@
+\documentclass{standalone}
+
+%% for compilation with htlatex (to produce svg image),
+%% uncomment the line below:
+% \def\pgfsysdriver{pgfsys-tex4ht.def}
+
+\usepackage{tikz}
+
+\tikzstyle{tensor}=[rectangle,draw=blue!50,fill=blue!20,thick]
+
+\begin{document}
+
+\begin{tikzpicture}[inner sep=1mm]
+    \foreach \i in {1,...,5} {
+        \node[tensor] (\i) at (\i, 0) {$A_\i$};
+    };
+    
+\end{tikzpicture}
+
+\end{document}

@@ -15,6 +15,8 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \crefname{lemma}{Lemma}{Lemmas}
+\usepackage{ccicons}
+\usepackage{caption}
 
 \iclrfinalcopy
 
@@ -24,7 +26,7 @@
 	\begin{center}
 		\includegraphics[width=0.6\textwidth]{UnivAQ-logo}\\[1cm]
 		{\large University of L'Aquila}\\[0.5cm]
-		{\large Department of Information Engineering, Computer Science and Mathematicst}\\[0.5cm]
+		{\large Department of Information Engineering, Computer Science and Mathematics}\\[0.5cm]
 		\rule{\linewidth}{0.5mm} \\[0.4cm]
 		{\huge \bfseries Hyper Heursitic Cryptography\\
 			with\\
@@ -49,6 +51,18 @@
 		\today
 	\end{center}
 \end{titlepage}
+\begin{titlepage}
+		\begin{center}
+			\includegraphics[angle=-90]{by-nc-sa}
+		\end{center}
+			\begin{center}
+				This work is licensed under a
+			\end{center}
+			\begin{center}
+				 \href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.}
+			\end{center}
+		
+\end{titlepage}
 \begin{abstract}
 Abstract
 \end{abstract}
@@ -62,7 +76,7 @@ Suppose our net uses the hyperbolic tangent activation function for its neurons:
 	\includegraphics[width=0.6\textwidth]{tanh}\\[1cm]
 \end{center}
 \begin{itemize}
-	\item If the weights start too small, then the signal shrinks as it passes through each layer until it vanishes, then as it passes deeper in the network with its small values, the layers it enter will become linear, because the output of the hyperbolic tangent is linear with small input value, this means the deeper layers of the net will loose non-linearity.
+	\item If the weights start too small, then the signal shrinks as it passes through each layer until it vanishes, then as it passes deeper in the network with its small values, the layers it enter will become linear, because the output of the hyperbolic tangent is linear with small input values, this means the deeper layers of the net will loose non-linearity.
 	\item If the weights start too large, then the signal grows as it passes through each layer until it becomes too large, then as it passes deeper in the network with its large values, the layers it enter will become saturated, as the output of the hyperbolic tangent is flat with large input values, and this flatness will cause the gradient to become zero, and we will get the vanishing gradient problem.
 \end{itemize}
 \end{lemma}
@@ -122,7 +136,84 @@ To keep the variance of the input gradient \& the output gradient the same, we c
 	\end{equation}
 \end{center}
 \newpage
+\subsection{\textbf{1D Convolution on Batch 1D Data with multi-D Filters}}
+	\begin{figure}[!htbp]
+		\begin{center}
+			\includegraphics[width=0.1\textwidth]{input1}
+			\caption{First Input String}
+		\end{center}
+	\end{figure}	
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=0.1\textwidth]{input2}
+	\caption{Second Input String}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=0.1\textwidth]{input3}
+	\caption{Third Input String}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=0.1\textwidth]{input_final}
+	\caption{Input Batch}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=0.1\textwidth]{input_reshaped}
+	\caption{Reshaped Input Batch}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=0.1\textwidth]{filter1}
+	\caption{First Filter}
+\end{center}
+\end{figure}
+\newpage
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=\textwidth]{firstConvSample_step1}
+	\caption{Applying the filter to the first sample in the input batch - }
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=\textwidth]{firstConvSample_step2}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=\textwidth]{firstConvSample_step3}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=\textwidth]{firstConvSample_final}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\newpage
+\begin{center}
+	\includegraphics[width=\textwidth]{secondConvSample_step1}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=\textwidth]{secondConvSample_step2}
+\end{center}
+\end{figure}
+\begin{figure}[!htbp]
+\begin{center}
+	\includegraphics[width=\textwidth]{secondConvSample_final}
+\end{center}
+\end{figure}
+\newpage
 \section{\textbf{Design}}\label{sec:design}
+	
 \newpage
 \section{\textbf{Implementation}}\label{sec:implementation}
 \newpage
