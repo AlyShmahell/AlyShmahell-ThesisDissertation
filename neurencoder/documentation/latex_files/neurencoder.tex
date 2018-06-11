@@ -12,11 +12,15 @@
 \usepackage{graphicx}
 \graphicspath{{images/}}
 \usepackage{cleveref}
+\usepackage{ccicons}
+\usepackage{caption}
+
+
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \crefname{lemma}{Lemma}{Lemmas}
-\usepackage{ccicons}
-\usepackage{caption}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
 
 \iclrfinalcopy
 
@@ -68,6 +72,52 @@ Abstract
 \end{abstract}
 \newpage
 \section{\textbf{Introduction}}\label{sec:introduction}
+Neural cryptography is an interdisciplinary field in Computer Science, combining both Artificial Intelligence and Cryptography, towards the development of stochastic methods, based on artificial neural networks, for use in encryption and cryptanalysis.
+\subsection{\textbf{Paper Objective}}
+The objective of this paper is to explore the use of new developments in the field of Neural Networks, mainly Adversarial Neural Networks and Convolutional Neural Networks, as a generative model, to produce a new breed of Crypto-Systems.\\\\
+The work being done here is based on a new paper released in 2016 from Google's DeepMind, which promises to bridge the gap between research and application in this area.\\\\
+The goal of my research is to provide the following:
+\begin{itemize}
+	\item an addition to the variety of methods provided in the original paper.
+	\item an improvement in performance of the models being built.
+	\item an in-depth analysis of how the components work, and the inner details of their mechanics.
+	\item a software documentation that provides a blueprint for a more software-engineering oriented neural-cryptosystem prototype.
+\end{itemize}
+With the research paper specter in this area being dominated by authors coming from a mathematical-background angle, my paper aims to provide:
+\begin{itemize}
+	\item a Computer Science oriented approach to solving cryptography with neural networks and stochastic methods.
+\end{itemize}
+This paper finally adds the following:
+\begin{itemize}
+	\item the introduction of hybrid neural crypto-systems.
+	\item an exploration into adding hyper heuristics to the field.
+\end{itemize}
+\newpage
+\subsection{\textbf{Paper Motivation}}
+The question of motivation can be empirically divided into:
+\begin{itemize}
+	\item Why is the idea of importance?
+	\item Why does the author think it would work?
+\end{itemize}
+\textbf{Why is Neural Cryptography of importance?}\\
+The age of intelligent machines is comprised of multiple intricate components, but individually they function narrowly even for the simplest of tasks, but the surge of incorporation of these multiple components into the backbone of neural-nets has put artificial intelligence on a fast track towards competence in multiple complex areas of problem solving, surpassing human intelligence by multitudes on many occasions.\\\\
+It makes sense from an academic perspective that we want neural nets to incorporate an understanding of cryptography.\\
+It also makes sense from an economic and existential point that we want these backbones of machine intelligence to parallel their success in surpassing human intelligence on cryptography, in order to open the door for new opportunities in that area.\\\\
+\textbf{Why would Neural Cryptography work?}\\
+This boils down to multiple general factors:
+\begin{itemize}
+	\item The incorporation of multiple heuristic methodologies into one unified backbone, which made it tackle a rapidly growing heap of complex tasks, cryptography is just another human invention to be caught up with.
+	\item The increasing successful research into using these heuristics not just to compute a complex task, but to do it quickly without loss in accuracy.
+	\item The introduction of tools, frameworks and libraries of industrial level to the public which propelled the field of neural networks and made it ever so easy to replicate experiments and improve upon them.
+\end{itemize}
+Which lead to those paper-related factors:
+\begin{itemize}
+	\item The introduction of Convolutional networks provides a well tested and understood methodology in reducing problems where local spatial relations in the data matter, which is the case for cryptography and cryptanalysis.
+	\item Having a Mixed Convolutional Net with a fully connected layer will teach the network to account for global spatial relations as well.
+	\item A result of using Convolutions is that the small-sized pattern-finding filter has shared weights (and biases) for all spatial locations which the convolution processes, which reduces the compute-power required for the whole process compared to other network models.
+	\item Adversarial computation has been proven to be effective for years in the form of Genetic Algorithms, and adding adversary as a non-supervised generative model provides a better and easier experiment on how to synthesize a new form of cryptography.
+\end{itemize}
+\newpage
 \subsection{\textbf{Xavier Initialization} \cite{DBLP:journals/jmlr/GlorotB10}}
 When we talk about initialization, we mean the initial value which should be given to a certain neuron, this initial value is important for the neuron and for the network in general.\\
 \begin{lemma}\label{lemma1}
@@ -136,13 +186,32 @@ To keep the variance of the input gradient \& the output gradient the same, we c
 	\end{equation}
 \end{center}
 \newpage
-\subsection{\textbf{1D Convolution on Batch 1D Data with multi-D Filters}}
-	\begin{figure}[!htbp]
+\subsection{\textbf{1D Convolution on Batch 1D Data with (1,2)-D Filters}}
+1D Convolution works by sliding along 1 axis, then performing matrix multiplication, therefor in order to perform 1D convolution with a 2D filter, we need to add another axis to our data.\\\\
+However, if our data is a batch of samples, then each sample has 1D convolution performed on it separately, that calls for adding another axis to both our data and our filter, in order to re-do the convolution on each data sample separately.\\\\
+Therefor we end up with a 3D tensor for the batch data, and another 3D tensor for the filter.\\\\
+To illustrate how this works, I've chosen a flat representation of the 3D tensors (representing 3D with 2D), mainly because this is how it's done with Numpy, and this is more practical for practitioners.\\\\
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{numpy-3Dtensor-axis}
+		\caption{Flat Axis Representation of 3D Tensors - Numpy Style}
+	\end{center}
+\end{figure}\\
+1D Convolution slides over the x-axis for one convolution on a 1D sample, everything on the same index on the x-axis belongs to that one sample, and the multiplication is performed for that sample independent of the others.\\\\
+On the other hand, 1D convolution considers the filter as a whole, and slides over the y-axis of the filter when convolving on one data sample.\\\\
+The multiplication is done by multiplying the z-axis from the data sample by the x-axis from the filter, along the y-axis of the filter.\\\\
+Then sliding is performed, and the multiplication is applied again.\\\\
+when the filter cannot multiply anymore (out of reach), then convolution over this sample is over.\\\\
+Once that happens, the filter is slided to its default position, then we slide over the y-axis to perform 1D convolution again on another data sample from the batch.
+\newpage
+The following is an example of 1D convolution over a batch of 1D data with a 2D filter:\\\\
+\tab The example starts off by generating 1D input strings.\\
+\begin{figure}[!htbp]
 		\begin{center}
 			\includegraphics[width=0.1\textwidth]{input1}
 			\caption{First Input String}
 		\end{center}
-	\end{figure}	
+\end{figure}	
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=0.1\textwidth]{input2}
@@ -154,19 +223,23 @@ To keep the variance of the input gradient \& the output gradient the same, we c
 	\includegraphics[width=0.1\textwidth]{input3}
 	\caption{Third Input String}
 \end{center}
-\end{figure}
+\end{figure}\\
+\tab Input strings are then stacked up along the y-axis to form a 2D batch.
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=0.1\textwidth]{input_final}
 	\caption{Input Batch}
 \end{center}
-\end{figure}
+\end{figure}\\
+\tab Then the batch gets expanded from 2D to 3D along the x-axis (injecting z-axis into x-axis).\\
+\tab The final batch shape becomes  (3, 2, 1).
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=0.1\textwidth]{input_reshaped}
 	\caption{Reshaped Input Batch}
 \end{center}
-\end{figure}
+\end{figure}\\
+\tab Then finally, a filter of shape (2, 1, 2) is provided for the convolution.
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=0.1\textwidth]{filter1}
@@ -177,43 +250,103 @@ To keep the variance of the input gradient \& the output gradient the same, we c
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=\textwidth]{firstConvSample_step1}
-	\caption{Applying the filter to the first sample in the input batch - }
+	\begin{center}
+		\caption{ Applying the filter to the first sample in the input batch - generating the first value for the first  in the first feature map.}
+	\end{center}
 \end{center}
 \end{figure}
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=\textwidth]{firstConvSample_step2}
+	\begin{center}
+		\caption{ Applying the filter to the first sample in the input batch - generating the second value in the first feature map.}
+	\end{center}
 \end{center}
 \end{figure}
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=\textwidth]{firstConvSample_step3}
+	\begin{center}
+		\caption{ Applying the filter to the first sample in the input batch - generating the second feature map.}
+	\end{center}
 \end{center}
 \end{figure}
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=\textwidth]{firstConvSample_final}
+	\begin{center}
+		\caption{ The entire convolution performed on the batch data.}
+	\end{center}
 \end{center}
 \end{figure}
-\begin{figure}[!htbp]
+\tab The resulting 3D tensor is of shape (3, 2, 2), and evident by its y-axis, it contains 2 feature \tab maps.
 \newpage
+To continue with the example, the resulting tensor from the previous convolution can be run through another convolution, for this purpose we need a new filter that conforms to the rules of matrix multiplication (taking into account the sliding rule), that is its x-axis has the same length as the z-axis from the tensor we're convolving on.\\\\
+Also, the y-axis of the filter should be larger or equal to the x-axis of the tensor being convolved on.\\\\
+And for the sake of making the example closer to real-life usage, we will make the resulting tensor from this new convolution have the same shape as the original input tensor by making the z-axis of the new filter of length 1, which will reduce the number of feature maps from 2 to 1, then by performing dimensionality reduction (squeezing of the z-axis onto the x-axis).\\\\
+The shape of the newly constructed filter would be: (var, 2, 1), where $ var \>= 2 $, in our example var = 3.\\\\\\
+\begin{minipage}{\textwidth}
 \begin{center}
 	\includegraphics[width=\textwidth]{secondConvSample_step1}
+	\begin{center}
+		\captionof{figure}{ Extracting the first value from the first sample in the data tensor to the feature map.}
+	\end{center}
 \end{center}
-\end{figure}
-\begin{figure}[!htbp]
+\end{minipage}\\\\\\
+\begin{minipage}{\textwidth}
 \begin{center}
 	\includegraphics[width=\textwidth]{secondConvSample_step2}
+	\begin{center}
+		\captionof{figure}{ Extracting the second value from the first sample in the data tensor to the feature map.}
+	\end{center}
 \end{center}
-\end{figure}
+\end{minipage}
+\newpage
 \begin{figure}[!htbp]
 \begin{center}
 	\includegraphics[width=\textwidth]{secondConvSample_final}
+	\begin{center}
+		\caption{ The entire convolution performed on the batch data.}
+	\end{center}
 \end{center}
 \end{figure}
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=\textwidth]{squeeze}
+		\begin{center}
+			\caption{ squeezing of the z-axis onto the x-axis.}
+		\end{center}
+	\end{center}
+\end{figure}
 \newpage
+	\begin{figure}[!htbp]
+		\begin{center}
+			\includegraphics[height=0.93\textheight]{Alice-Diagram}
+			\begin{center}
+				\caption{ Net Graph Diagram - Alice}
+			\end{center}
+		\end{center}
+	\end{figure}
+\newpage
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[height=0.93\textheight]{Bob-Diagram}
+		\begin{center}
+			\caption{ Net Graph Diagram - Bob}
+		\end{center}
+	\end{center}
+\end{figure}
+\newpage
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[height=0.93\textheight]{Eve-Diagram}
+		\begin{center}
+			\caption{ Net Graph Diagram - Eve/Alan}
+		\end{center}
+	\end{center}
+\end{figure}
 \section{\textbf{Design}}\label{sec:design}
-	
+
 \newpage
 \section{\textbf{Implementation}}\label{sec:implementation}
 \newpage
