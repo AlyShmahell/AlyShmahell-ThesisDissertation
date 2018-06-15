@@ -1,50 +1,93 @@
 \documentclass[12pt]{article}
+
+%% Geometry Packages & Commands %%
 \usepackage[a4paper]{geometry}
 \pdfoutput=1
-% \usepackage{preiclr,times}
+%%%%
+
+%% ICLR Conference Packages & Commands %%
+%% \usepackage{preiclr,times}
 \usepackage{iclr2017_conference,times}
+\iclrfinalcopy
+%%%%
+
+%% Bibliography Package %%
 \usepackage[english]{babel}
-\usepackage{hyperref}
-\usepackage{url}
+%%%%
+
+%% Packages from the American Mathematical Society %%
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+%%%%
+
+%% Graphics Packages & Commands %%
 \usepackage{graphicx}
 \graphicspath{{images/}}
-\usepackage{cleveref}
-\usepackage{ccicons}
-\usepackage{xcolor}
-\definecolor{red-secondary-dark}{RGB}{205,32,38}
-\usepackage{caption}
-\usepackage[font={color=red-secondary-dark,small},figurename=Fig.,labelfont={it}]{caption}
-\captionsetup[figure]{skip=0pt}
-\usepackage[rightcaption]{sidecap}
-\usepackage{floatrow}
-\usepackage{framed}
-\usepackage{mdframed}
-\usepackage{lmodern}
-\usepackage[most]{tcolorbox}
-\newtcolorbox[blend into=figures]{blockfigure}[2][]{colback=white,
-	float=!htbp,
-	boxsep=0.5pt,left=2pt,right=2pt,top=0.5pt,bottom=0.5pt,
-	center title,
-	title={#2}, every float=\centering, #1}
-\newtcolorbox[blend into=figures]{inlinefigure}[2][]{colback=white,
-	boxsep=0.5pt,left=2pt,right=2pt,top=0.5pt,bottom=0.5pt,
-	center title,
-	title={#2}, every float=\centering, #1}
+%%%%
+
+%% Font Packages %%
 \usepackage[default]{sourcesanspro}
 \usepackage[T1]{fontenc}
-\usepackage{setspace}
+%%%%
 
+%% Color Package & Command %%
+\usepackage{xcolor}
+\definecolor{red-secondary-dark}{RGB}{205,32,38}
+%%%%
+
+%% Reference Packages & Commands %%
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{cleveref}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \crefname{lemma}{Lemma}{Lemmas}
+%%%%
+
+%% Space Packages & Commands %%
+\usepackage{setspace}
 \newcommand\tab[1][1cm]{\hspace*{#1}}
+%%%%
 
+%% Caption Packages & Commands %%
+\usepackage{caption}
+\usepackage[rightcaption]{sidecap}
+\usepackage[font={color=red-secondary-dark,small},figurename=Fig.,labelfont={it}]{caption}
+%%%%
 
-\iclrfinalcopy
-
+%% Box Packages & Commands %%
+\usepackage{lmodern}
+\usepackage[most]{tcolorbox}
+\newtcolorbox[blend into=figures]{blockfigure}[2][]
+	{
+		colback=white,
+		float=!htbp,
+		boxsep=1pt,
+		left=1pt,
+		right=1pt,
+		top=1pt,
+		bottom=1pt,
+		center title,
+		%%lifted shadow={1mm}{-2mm}{3mm}{0.1mm}{black!50!white},
+		title={#2},
+		every float=\centering,
+		#1
+	}
+\newtcolorbox[blend into=figures]{inlinefigure}[2][]
+	{
+		colback=white,
+		boxsep=0.5pt,
+		left=1pt,right=1pt,
+		top=1pt,
+		bottom=1pt,
+		center title,
+		%%lifted shadow={1mm}{-2mm}{3mm}{0.1mm}{black!50!white},
+		title={#2},
+		every float=\centering,
+		#1
+	}
+%%%%
 
 \begin{document}
 \begin{titlepage}
@@ -214,7 +257,7 @@ Therefor we end up with a 3D tensor for the batch data, and another 3D tensor fo
 To illustrate how this works, I've chosen a flat representation of the 3D tensors (representing 3D with 2D), mainly because this is how it's done with Numpy, and this is more practical for practitioners.\\\\
 \begin{blockfigure}{Flat Axis Representation of 3D Tensors - Numpy Style}
 		\[	\includegraphics[height=0.3\textheight]{numpy-3Dtensor-axis} \]
-\end{blockfigure}
+\end{blockfigure}\\
 1D Convolution slides over the y-axis for one convolution on a 1D sample, everything on the same index on the y-axis belongs to that one sample, and the multiplication is performed for that sample independent of the others.\\\\
 On the other hand, 1D convolution considers the filter as a whole, and slides over the x-axis of the filter when convolving on one data sample.\\\\
 The multiplication is done by multiplying the z-axis from the data sample by the y-axis from the filter, along the x-axis of the filter.\\\\
@@ -224,7 +267,7 @@ Once that happens, the filter is slided to its default position, then we slide o
 \newpage
 The following is an example of 1D convolution over a batch of 1D data with a 2D filter:\\\\
 \tab The example starts off by generating 1D input strings.\\
-\begin{tcbraster}[raster columns=3,raster rows=3,
+\begin{tcbraster}[raster columns=3,raster rows=1,
 	enhanced,size=small,fit algorithm=hybrid* ]
 	\begin{inlinefigure}{First Input String}
 		\begin{center}
@@ -242,24 +285,42 @@ The following is an example of 1D convolution over a batch of 1D data with a 2D 
 		\end{center}
 	\end{inlinefigure}
 \end{tcbraster}
-\tab Input strings are then stacked up along the x-axis to form a 2D batch.
-\begin{blockfigure}{Input Batch}
-	\begin{center}
-		\includegraphics[width=0.4\textwidth]{input_final}
-	\end{center}
-\end{blockfigure}\\
-\tab Then the batch gets expanded from 2D to 3D along the y-axis (injecting z-axis into y-axis), \tab which means the final batch shape becomes (3, 2, 1).
-\begin{blockfigure}{Reshaped Input Batch}
-	\begin{center}
-		\includegraphics[width=0.4\textwidth]{input_reshaped}
-	\end{center}
-\end{blockfigure}\\
-\tab Then finally, a filter of shape (2, 1, 2) is provided for the convolution.
-\begin{blockfigure}{Filter \#1 with arbitrary weights}
-	\begin{center}
-		\includegraphics[width=0.17\textwidth]{filter1}
-	\end{center}
-\end{blockfigure}
+\vspace{10pt}
+
+\begin{tcbraster}[raster columns=2,raster rows=1,
+	enhanced,size=small,fit algorithm=hybrid* ]
+	\begin{tcolorbox}[frame hidden,colback=white]
+		\tab Input strings are then stacked up \tab along the x-axis to form a 2D batch.
+	\end{tcolorbox}
+	\begin{inlinefigure}{Input Batch}
+		\begin{center}
+			\includegraphics[width=\textwidth]{input_final}
+		\end{center}
+	\end{inlinefigure}
+\end{tcbraster}
+
+\begin{tcbraster}[raster columns=2,raster rows=1,
+	enhanced,size=small,fit algorithm=hybrid* ]
+	\begin{tcolorbox}[frame hidden,colback=white]
+		\tab Then the batch gets expanded from \tab 2D to 3D along the y-axis (injecting z-\tab axis into y-axis), which means the\\\tab final batch shape becomes (3, 2, 1).
+	\end{tcolorbox}
+	\begin{inlinefigure}{Reshaped Input Batch}
+		\begin{center}
+			\includegraphics[width=\textwidth]{input_reshaped}
+		\end{center}
+	\end{inlinefigure}
+\end{tcbraster}
+\begin{tcbraster}[raster columns=2,raster rows=1,
+	enhanced,size=small,fit algorithm=hybrid* ]
+	\begin{tcolorbox}[frame hidden,colback=white]
+		\tab Then finally, a filter of shape (2, 1, 2) is \tab provided for the convolution.
+	\end{tcolorbox}
+	\begin{inlinefigure}{Filter \#1 with arbitrary weights}
+		\begin{center}
+			\includegraphics[width=0.34\textwidth]{filter1}
+		\end{center}
+	\end{inlinefigure}
+\end{tcbraster}
 \newpage
 \begin{blockfigure}{ Applying the filter to the first sample in the input batch - generating the first value for the first  in the first feature map.}
 	\begin{center}
@@ -301,12 +362,12 @@ The shape of the newly constructed filter would be: (var, 2, 1), where $ var \>=
 \newpage
 \begin{blockfigure}{ Extracting the first value from the first sample in the data tensor to the feature map.}
 	\begin{center}
-		\includegraphics[width=\textwidth]{secondConvSample_step1}
+		\includegraphics[width=0.95\textwidth]{secondConvSample_step1}
 	\end{center}
 \end{blockfigure}
 \begin{blockfigure}{Extracting the second value from the first sample in the data tensor to the feature map.}
 	\begin{center}
-		\includegraphics[width=\textwidth]{secondConvSample_step2}
+		\includegraphics[width=0.95\textwidth]{secondConvSample_step2}
 	\end{center}
 \end{blockfigure}
 \newpage
