@@ -412,7 +412,7 @@ To keep the variance of the input gradient \& the output gradient the same, we c
 	\end{equation}
 \end{center}
 \newpage
-\section{\textbf{1D Convolution}}
+\section{\textbf{1D Convolution}}\label{Conv1D}
 When looking for examples and literature on Convolution, the vast majority of what is available is on 2D Convolution, and what might be found on 1D convolution is usually done on 1D data with 1D filter~\citep{math-behind-1d-convolution-with-advanced-examples-in-tf}.\\
 Therefor, for the purposes of this study, a more complex example will be presented.
 \section{\textbf{1D Convolution on Batch 1D Data with (1,2)-D Filters}}
@@ -638,6 +638,38 @@ After the input batch tensor has been provided the filter tensor has been genera
 \tab The output 3D tensor is of shape (3, 1, 1), and it contains 1 feature maps.\\
 \tab The output tensor is similar in shape to the input tensor, as inferred in the example.
 \newpage
+\section{\textbf{Batches}}
+As seen from \cref{Conv1D}, when performing convolutions: we perform each convolution on each data sample separately.\\
+Then the question arises: Why is a batch of samples is needed?
+The short answer is simply because a batch allows for a good experiment to take place from a statistical point of view.\\\\
+When calculating the training error, each net performs mean reduction on each sample error, and a large sample is required for mean reduction, because the standard error of the mean ($ SEM $) can be expressed as:\\
+\begin{center}
+	\begin{minipage}{0.5\textwidth}
+	$ SEM = \dfrac{\sigma}{\sqrt{n}} $\\
+	Where:\\
+	\tab \space \space $ \sigma: $ the standard deviation of the batch \\
+	\tab \space \space $ n: $ the size of the batch 
+\end{minipage}
+\end{center}
+The less the $ SEM $ value is, the more confidence is placed in the accuracy of the mean reduction of training errors.
+\section{\textbf{Activation Functions}}
+\begin{blockfigure}{ Net Graph Diagram - Alice}
+	\begin{center}
+		\includegraphics[width = 0.7\textwidth]{tanh_leakyRelu_tanh}
+	\end{center}
+\end{blockfigure}
+\newpage
+\begin{blockfigure}{ Net Graph Diagram - Alice}
+	\begin{center}
+		\includegraphics[width = 0.7\textwidth]{sigmoid_leakyRelu_sigmoid}
+	\end{center}
+\end{blockfigure}
+\begin{blockfigure}{ Net Graph Diagram - Alice}
+	\begin{center}
+		\includegraphics[width = 0.7\textwidth]{sigmoid_leakyRelu_tanh}
+	\end{center}
+\end{blockfigure}
+\newpage
 \chapter{Implementation}\label{sec:implementation}
 \newpage
 \begin{blockfigure}{ Net Graph Diagram - Alice}
@@ -656,6 +688,24 @@ After the input batch tensor has been provided the filter tensor has been genera
 		\begin{center}
 			\includegraphics[height=0.93\textheight]{Eve-Diagram}
 		\end{center}
+\end{blockfigure}
+\newpage
+\begin{blockfigure}{ Symmetric Scheme}
+	\begin{center}
+		\includegraphics[width = \textwidth]{symmetricScheme}
+	\end{center}
+\end{blockfigure}
+\newpage
+\begin{blockfigure}{ Asymmetric Scheme}
+	\begin{center}
+		\includegraphics[width = \textwidth, height = 0.98\textheight]{asymmetricScheme}
+	\end{center}
+\end{blockfigure}
+\newpage
+\begin{blockfigure}{ Hybrid Scheme}
+	\begin{center}
+		\includegraphics[width = \textwidth]{hybridScheme}
+	\end{center}
 \end{blockfigure}
 \newpage
 \chapter{Conclusion}\label{sec:conclusion}
