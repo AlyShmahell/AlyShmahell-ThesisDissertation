@@ -127,7 +127,6 @@
 \newcounter{examplecounter}
 \newcommand{\example}[1]{\protect\stepcounter{examplecounter}\textbf{Example~\theexamplecounter:}~#1}
 
-
 \begin{document}
 \begin{titlepage}
 	\begin{center}
@@ -254,8 +253,8 @@
 \begin{definition}
 	Neural cryptography is an interdisciplinary field in Computer Science, combining both Artificial Intelligence and Cryptography, towards the development of stochastic methods, based on artificial neural networks, for use in encryption and cryptanalysis.
 \end{definition}
-\section{\textbf{Paper Objectives}}
-The objective of this paper is to explore the use of new developments in the field of Neural Networks, mainly Adversarial Neural Networks and Convolutional Neural Networks, as a generative model, to produce a new breed of Crypto-Systems.\\\\
+\section{\textbf{Thesis Objectives}}
+The objective of this thesis is to explore the use of new developments in the field of Neural Networks, mainly Adversarial Neural Networks and Convolutional Neural Networks, as a generative model, to produce a new breed of Crypto-Systems.\\\\
 The work being done here is based on a new paper released in 2016 from Google Brain ~\citep{DBLP:journals/corr/AbadiA16}, which promises to bridge the gap between research and application in the area of Neural Cryptography.\\\\
 The goal of my research is to provide the following:
 \begin{itemize}
@@ -264,17 +263,17 @@ The goal of my research is to provide the following:
 	\item An in-depth analysis of how the components work, and the inner details of their mechanics.
 	\item A software documentation that provides a blueprint for a more software-engineering oriented neural cryptosystem prototype.
 \end{itemize}
-With the research paper specter in this area being dominated by authors coming from a mathematical-background angle, my paper aims to provide:
+With the research specter in this area being dominated by authors coming from a mathematical-background angle, my thesis aims to provide:
 \begin{itemize}
 	\item A Computer Science oriented approach to solving cryptography with neural networks and stochastic methods.
 \end{itemize}
-This paper finally adds the following:
+This thesis finally adds the following:
 \begin{itemize}
 	\item The introduction of a hybrid neural crypto-system.
 	\item An exploration into adding hyper heuristics to the field.
 \end{itemize}
 \newpage
-\section{\textbf{Paper Motivation}}
+\section{\textbf{Thesis Motivation}}
 The question of motivation behind an idea can be empirically divided into:
 \begin{itemize}[nosep]
 	\item How would the author justify the importance of the idea?
@@ -292,7 +291,7 @@ This boils down to multiple general factors:
 	\item \textbf{Neural Nets are becoming faster:} The increasing successful research into using these heuristics not just to compute a complex task, but to do it quickly without loss in accuracy.
 	\item \textbf{Neural Nets are becoming available:} The introduction of tools, frameworks and libraries of industrial level to the public which propelled the field of neural networks and made it ever so easy to replicate experiments and improve upon them.
 \end{itemize}
-Which lead to those paper-related factors:
+Which lead to those thesis-related factors:
 \begin{itemize}[nosep]
 	\item \textbf{Neural Cryptography is viable:} The introduction of Convolutional networks provides a well tested and understood methodology in reducing problems where local spatial relations in the data matter, which is the case for cryptography.
 	\item \textbf{Neural Cryptanalysis is viable:} Having a Mixed Convolutional Net with fully connected layers will teach the network to account for global spatial relations as well, which teaches the net to learn and counter cryptanalysis.
@@ -301,7 +300,7 @@ Which lead to those paper-related factors:
 \end{itemize}
 \newpage
 \section{\textbf{Previous Work}}
-The work being done so far in Neural Cryptography can be divided to old (pre 2016), and new (post 2016). For the old section, this paper will only list the works and attributions without delving into the details.
+The work being done so far in Neural Cryptography can be divided to old (pre 2016), and new (post 2016). For the old section, this thesis will only list the works and attributions without delving into the details.
 \subsection{\textbf{Previous Work - Pre 2016 Era}}
 Up until 2010, Neural Nets were a dark alley in the citadel of Artificial Intelligence, mainly due to lack in advancement in back-propagation optimization which made training deep neural nets hard, and the fact that not many people saw the importance of incorporating other areas of Artificial Intelligence into neural nets.\\ From 2010 until 2016, things started changing for the better, but it was 6 years until the developments allowed for new viable research in Neural Cryptography.\\
 Therefor the works in the Pre 2016 Era were merely academic curiosities which did not aim to make it into industry, but they provided a key stepping stone for those of us who came into the field at this better-equipped stage.\\\\
@@ -326,9 +325,10 @@ In the period 2010 - 2016, a surge of new ideas came into play in the field of n
 \chapter{Design}\label{sec:design}
 This chapter deals with the inner-mechanics of how convolutional neural nets work, which are the building blocks for the adversarial crypto-system presented.\\\\
 As a way to illustrate how a ConvNet should be constructed for our purposes, a simplified dummy example is presented and dissected to explain how its components work.\\
-\begin{blockfigure}{Xavier Initialization on neuron "n"}
+\begin{blockfigure}{Sample Dummy Net Graph Diagram}
 	\begin{center}
 		\includegraphics[height = 0.45\textheight]{SimpleNetDiagram}
+		\label{fig:SimpleNetDiagram}
 	\end{center}
 \end{blockfigure}\\
 This ConvNet has 6 key components which we will go over as the following:
@@ -606,7 +606,7 @@ The shape of the newly constructed filter would be: (var, 2, 1), where $ var >= 
 	\end{tcolorbox}
 	\begin{inlinefigure}{Filter \#2 with arbitrary weights}
 		\begin{center}
-			\includegraphics[height=0.3\textheight]{filter2}
+			\includegraphics[height=0.25\textheight]{filter2}
 		\end{center}
 	\end{inlinefigure}
 \end{tcbraster}
@@ -642,7 +642,7 @@ After the input batch tensor has been provided the filter tensor has been genera
 As seen from \cref{Conv1D}, when performing convolutions: we perform each convolution on each data sample separately.\\
 Then the question arises: Why is a batch of samples is needed?
 The short answer is simply because a batch allows for a good experiment to take place from a statistical point of view.\\\\
-When calculating the training error, each net performs mean reduction on each sample error, and a large sample is required for mean reduction, because the standard error of the mean ($ SEM $) can be expressed as:\\
+When calculating the training error, each net performs mean reduction on each sample error, and a large sample is required for mean reduction (estimation), because the standard error of the mean ($ SEM $) can be expressed as:\\
 \begin{center}
 	\begin{minipage}{0.5\textwidth}
 	$ SEM = \dfrac{\sigma}{\sqrt{n}} $\\
@@ -651,45 +651,98 @@ When calculating the training error, each net performs mean reduction on each sa
 	\tab \space \space $ n: $ the size of the batch 
 \end{minipage}
 \end{center}
-The less the $ SEM $ value is, the more confidence is placed in the accuracy of the mean reduction of training errors.
+The larger the batch size is, the less the $ SEM $ value is, the more confidence is placed in the accuracy of the mean reduction (estimation) of training errors.
 \section{\textbf{Activation Functions}}
-\begin{blockfigure}{ Net Graph Diagram - Alice}
+To understand which combination of activation functions to choose, a basic understanding of the information being processed and fed to each activation function is needed.\\
+If we take a look at Fig.~\ref{fig:SimpleNetDiagram}, we deduce the following:
+\begin{itemize}[nosep]
+	\item The combination of activation functions chosen is: $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $.
+	\item Each function is fed the result of matrix multiplication operations (involving float weight values), therefor each function receives float values as input.
+	\item Sigmoid and LeakyRelu results are then fed to next layers, therefor their results are multiplied by a distribution of float values.
+	\item Tanh processes the results of the output layer, therefor its output remains unchanged.
+\end{itemize}
+There are two other alternatives to the choice of function combination which will be examined:
+\begin{itemize}[nosep]
+	\item $ Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid $.
+	\item $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $.
+\end{itemize}
+To test the efficacy of these combinations we will perform the following numerical analyses, considering a float distribution over an input x-axis, the distribution of possible result values over the y-axis can be described as the following:
+\begin{itemize}[nosep]
+	\item For $ Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid $:\\\tab $ \forall x \in X, X = [-1, +1]: Y = sigmoid(leakyRelu(sigmoid(X)*x)*x) $
+	\item For $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $:\\\tab $ \forall x \in X, X = [-1, +1]: Y = tanh(leakyRelu(tanh(X)*x)*x) $
+	\item For $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $:\\\tab $ \forall x \in X, X = [-1, +1]: Y = tanh(leakyRelu(sigmoid(X)*x)*x) $
+\end{itemize}
+\tab \tab  Where X is a line-space over the x-axis and Y is a line-space over the y-axis.
+\begin{blockfigure} {$ \forall x \in X, X = [-1, +1] : Y = tanh(leakyRelu(tanh(X) * x) * x ) $}
 	\begin{center}
 		\includegraphics[width = 0.7\textwidth]{tanh_leakyRelu_tanh}
 	\end{center}
 \end{blockfigure}
-\newpage
-\begin{blockfigure}{ Net Graph Diagram - Alice}
+\begin{blockfigure}{$ \forall x \in X, X = [-1, +1] : Y = sigmoid(leakyRelu(sigmoid(X) * x) * x) $}
 	\begin{center}
 		\includegraphics[width = 0.7\textwidth]{sigmoid_leakyRelu_sigmoid}
 	\end{center}
 \end{blockfigure}
-\begin{blockfigure}{ Net Graph Diagram - Alice}
+\newpage
+\begin{blockfigure}{$ \forall x \in X, X = [-1, +1] : Y = tanh(leakyRelu(sigmoid(X) * x) * x) $}
 	\begin{center}
 		\includegraphics[width = 0.7\textwidth]{sigmoid_leakyRelu_tanh}
 	\end{center}
 \end{blockfigure}
+To illustrate how $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ makes a better option than the presented alternatives, the net can be considered as an information channel, and Shannon's theory \citep{Shannon:2001:MTC:584091.584093} applies to it, specially his entropy (on discrete values):
+\begin{center}
+	$ H(V) = - \Sigma \space P(v_{i})*log_{b}(P(v_{i})) $
+\end{center}
+Since linespaces can be converted to discrete values, If applied to the linespaces above, we get:\\
+\begin{center}
+	$ \forall x \in X, X = [-1, +1]: H(Y) = - \Sigma \space P(y_{i})*log_{b}(P(y_{i})) $
+\end{center}
+When comparing $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ to $ Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid $, $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ is a winner, because both are equiprobable as we move along the x-axis, but $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ has more information capacity and therefor has a larger  $ H(Y) $.\\
+When comparing $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ to $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $, $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $ begins to become non-linearly inequiprobable as we move towards 0 along the x-axis, this not only results in less information capacity and a lower $ H(Y) $, but because each neuron in a layer is independent of the other, therefor each value probability along the x-axis is independent of the other, and the net could be training on a mix of values randomly chosen along the x-axis, this will lead to non-uniformality of information capacity and entropy across the trainable process (e.g. Conv1D), which will lead to inconsistent results for that process, and the conversion will jump up and down, and probably not get fully achieved. Therefor: $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ is the winner combination.
+\newpage
+
+\section{\textbf{Loss Functions}}
+\begin{definition}
+	Loss functions are functions that map out the error of the network results compared to the desired output.
+\end{definition}
+The desired output for our nets are the following:
+\begin{itemize}[nosep]
+	\item For an Encryptor-Decryptor combination, loss has positive correlation with its own loss, and negative correlation with the Eavesdropper loss:\\
+	\tab $ Loss_{positive} = mean(Decryptor_{output} - Encryptor_{input}) $\\
+	\tab $ Loss_{negative} = (1 - mean(Eavesdropper_{output} - Encryptor_{input}))^{2} $\\
+	\tab $ Loss = Loss_{positive} + Loss_{negative} $
+	\end{*align}
+	\item For an Encryptor-Eavesdropper combination, loss has positive correlation with its own loss, but is intended not to be aware of the loss of the Decryptor:\\
+	\tab $ Loss = mean(Eavesdropper_{output} - Encryptor_{input}) $
+\end{itemize}
+\section{\textbf{Optimizers}}
+\begin{definition}
+	An Optimizer is an algorithm or a methodology used to optimize the weights of the network using backpropagation, more often by utilizing stochastic techniques, to reduce the error produced by the loss function(s).
+\end{definition}
+The state of the art at this moment is the \textbf{Adam Optimizer} ~\citep{DBLP:journals/corr/KingmaB14}, which is out of the scope of this dissertation, mainly because it is a full topic in its own right, and it is well documented elsewhere, especially where it was proposed in its original paper.
 \newpage
 \chapter{Implementation}\label{sec:implementation}
+\section{\textbf{Net Structures}}
 \newpage
 \begin{blockfigure}{ Net Graph Diagram - Alice}
 	\begin{center}
-		\includegraphics[height=0.93\textheight]{Alice-Diagram}
+		\includegraphics[width = \textwidth]{Alice-Diagram}
 	\end{center}
 \end{blockfigure}
 \newpage
 \begin{blockfigure}{ Net Graph Diagram - Bob}
 	\begin{center}
-		\includegraphics[height=0.93\textheight]{Bob-Diagram}
+		\includegraphics[width = \textwidth]{Bob-Diagram}
 	\end{center}
 \end{blockfigure}
 \newpage
 \begin{blockfigure}{ Net Graph Diagram - Eve/Alan}
 		\begin{center}
-			\includegraphics[height=0.93\textheight]{Eve-Diagram}
+			\includegraphics[width = \textwidth]{Eavesdropper-Diagram}
 		\end{center}
 \end{blockfigure}
 \newpage
+\section{\textbf{Scheme Structures}}
 \begin{blockfigure}{ Symmetric Scheme}
 	\begin{center}
 		\includegraphics[width = \textwidth]{symmetricScheme}
@@ -708,11 +761,18 @@ The less the $ SEM $ value is, the more confidence is placed in the accuracy of 
 	\end{center}
 \end{blockfigure}
 \newpage
+\begin{blockfigure}{Class Diagram}
+	\begin{center}
+		\includegraphics[width = \textwidth]{classDiagram}
+	\end{center}
+\end{blockfigure}
+\newpage
+\chapter{Results}\label{sec:results}
+\newpage
 \chapter{Conclusion}\label{sec:conclusion}
 \newpage
 \appendix
 \chapter*{Appendix}
-
 \newpage
 \medskip
 \bibliographystyle{unsrt}
