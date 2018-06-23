@@ -46,7 +46,7 @@
 
 %% Graphics Packages & Commands %%
 \usepackage{graphicx}
-\graphicspath{{images/}}
+\graphicspath{{../images/}}
 %%%%
 
 %% Font Packages %%
@@ -711,7 +711,6 @@ The desired output for our nets are the following:
 	\tab $ Loss_{positive} = mean(Decryptor_{output} - Encryptor_{input}) $\\
 	\tab $ Loss_{negative} = (1 - mean(Eavesdropper_{output} - Encryptor_{input}))^{2} $\\
 	\tab $ Loss = Loss_{positive} + Loss_{negative} $
-	\end{*align}
 	\item For an Encryptor-Eavesdropper combination, loss has positive correlation with its own loss, but is intended not to be aware of the loss of the Decryptor:\\
 	\tab $ Loss = mean(Eavesdropper_{output} - Encryptor_{input}) $
 \end{itemize}

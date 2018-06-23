@@ -1,4 +1,9 @@
 # Hyper Heuristic Cryptography with Mixed Adversarial Nets
+## Bachelor Thesis 
+### Thesis title: Hyper Heuristic Cryptography with Mixed Adversarial Nets
+### Thesis project codename: neurencoder
+#### Authored by: Aly Shmahell
+#### Supervised by: Prof. Giovanni De Gasperis
 
 ### Roadmap
 
