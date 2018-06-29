@@ -16,6 +16,8 @@
 		\rule{\textwidth}{0.3pt}
 	]
 \titlespacing{\chapter}{0pt}{10pt}{10pt}
+
+\renewcommand{\paragraph}[1]{\paragraph{#1}\mbox{}\\}
 %%%%
 
 \usepackage{enumitem}
@@ -65,6 +67,8 @@
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage{cleveref}
+\usepackage{amsthm}
+\newtheorem{conjecture}{Conjecture}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \crefname{lemma}{Lemma}{Lemmas}
@@ -84,6 +88,13 @@
 %% Box Packages & Commands %%
 \usepackage{lmodern}
 \usepackage[most]{tcolorbox}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newtcolorbox[blend into=tables]{colortable}[2][]{
+	colback=white,
+	tabularx*={\renewcommand{\arraystretch}{1.0}}{Y|Y|Y|Y|Y|Y},title={#2},boxrule=0.8pt, center title
+	}
 \newtcolorbox[blend into=figures]{blockfigure}[2][]
 	{
 		colback=white,
@@ -123,6 +134,9 @@
 \usepackage{textcomp}
 		
 \newtheorem{definition}{Definition}
+\newtheorem{hypothesis}{Hypothesis}
+\newtheorem{suggestedproof}{Suggested Proof}
+\newtheorem{numericalanalysis}{Numerical Analysis}
 
 \newcounter{examplecounter}
 \newcommand{\example}[1]{\protect\stepcounter{examplecounter}\textbf{Example~\theexamplecounter:}~#1}
@@ -200,7 +214,7 @@
 	\rule{\linewidth}{0.5mm} \\[0.1cm]
 	\noindent
 	\begin{center}
-		The code for this dissertation (in both source and compiled forms) is copyrighted under the following terms:
+		The project presented in this dissertation, as well as its code (in both source and compiled forms) is copyrighted under the following terms:
 	\end{center}
 	\begin{tcbraster}[raster columns=2,raster rows=1,
 		enhanced,size=small,fit algorithm=hybrid* ]
@@ -246,8 +260,11 @@
 	\noindent
 \end{titlepage}
 \newpage
-\begin{abstract}
-\end{abstract}
+\chapter*{Abstract}
+\newpage
+\begin{spacing}{0.05}
+\tableofcontents
+\end{spacing}
 \newpage
 \chapter{Introduction}\label{sec:introduction}
 \begin{definition}
@@ -422,6 +439,7 @@ In order for the convolution to do these multiplications, it \textbf{slides} ove
 In order to perform 1D convolution with a 2D filter (having an x-axis and a y-axis), we need to add another axis to both the data and the filter; done by injecting a z-axis into the y-axis, effectively expanding the y-axis over the z-axis. In this case, when the filter \textit{slides} itself, it \textit{slides} over its x-axis.\\
 In this format, the window processing is done by multiplying the z-axis of the sample by the y-axis of the filter, over the x-axis of the filter.\\
 Every \textit{slide} is done over a fixed length called a stride, and every \textit{slide} represents moving the filter window over to a new spatial location in the sample.\\
+It is also important to note that since the stride determines how many steps to slide upon each time, it is synonymous to dividing the length of the z-axis of the final input over the stride length.\\
 If instead of 1 data sample, we have a batch of data samples, we perform convolution on the samples independently. This means the data batch has an extra axis, an x-axis.\\
 This way, each time a convolution over a sample is done, the filter resets its \textbf{slided} position to its default, and the convolution \textbf{steps} onto the next sample over the x-axis in the batch.\\
 Finally, we end up with a 3D tensor for the batch data, and another 3D tensor for the filter.\\
@@ -491,11 +509,11 @@ For the sake of simplicity:
 \begin{itemize}
 	\item We will forsake the use of activation functions between layers.
 	\item We will also use weights initialized by hand, chosen arbitrarily.
+	\item We will use a stride length of 1.
 \end{itemize}
-\vspace{0.25\textheight}
 \begin{blockfigure}{Simple ConvNet with 2 Conv Layers}
 	\begin{center}
-		\includegraphics[width=\textwidth]{convLayerExample}
+		\includegraphics[width=0.9\textwidth]{convLayerExample}
 	\end{center}
 \end{blockfigure}
 \newpage
@@ -629,14 +647,13 @@ After the input batch tensor has been provided the filter tensor has been genera
 	\end{center}
 \end{blockfigure}
 \vspace{40pt}
+From the final output we can conclude that the output 3D tensor is of shape (3, 1, 1), and it contains 1 feature maps, there for it is similar in shape to the input tensor, as inferred in the example.
+\vspace{40pt}
 \begin{blockfigure}{squeezing of the z-axis onto the y-axis.}
 	\begin{center}
 		\includegraphics[width = \textwidth]{squeeze}
 	\end{center}
 \end{blockfigure}
-\vspace{40pt}
-\tab The output 3D tensor is of shape (3, 1, 1), and it contains 1 feature maps.\\
-\tab The output tensor is similar in shape to the input tensor, as inferred in the example.
 \newpage
 \section{\textbf{Batches}}
 As seen from \cref{Conv1D}, when performing convolutions: we perform each convolution on each data sample separately.\\
@@ -653,20 +670,26 @@ When calculating the training error, each net performs mean reduction on each sa
 \end{center}
 The larger the batch size is, the less the $ SEM $ value is, the more confidence is placed in the accuracy of the mean reduction (estimation) of training errors.
 \section{\textbf{Activation Functions}}
-To understand which combination of activation functions to choose, a basic understanding of the information being processed and fed to each activation function is needed.\\
+While doing the experiments with the project code, three combinations of activation functions were contemplated, but only one produced good results empirically upon conducting the tests. These three choices were:
+\begin{itemize}[nosep]
+	\item $" Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid "$.
+	\item $" Tanh \rightarrow LeakyRealu \rightarrow Tanh "$.
+	\item $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$.
+\end{itemize}
 If we take a look at Fig.~\ref{fig:SimpleNetDiagram}, we deduce the following:
 \begin{itemize}[nosep]
-	\item The combination of activation functions chosen is: $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $.
+	\item The combination of activation functions chosen is: $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$.
 	\item Each function is fed the result of matrix multiplication operations (involving float weight values), therefor each function receives float values as input.
 	\item Sigmoid and LeakyRelu results are then fed to next layers, therefor their results are multiplied by a distribution of float values.
 	\item Tanh processes the results of the output layer, therefor its output remains unchanged.
 \end{itemize}
-There are two other alternatives to the choice of function combination which will be examined:
-\begin{itemize}[nosep]
-	\item $ Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid $.
-	\item $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $.
-\end{itemize}
-To test the efficacy of these combinations we will perform the following numerical analyses, considering a float distribution over an input x-axis, the distribution of possible result values over the y-axis can be described as the following:
+As for why $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$ produced the desired results, a hypothesis is constructed then tested with both numerical analysis and a suggested theoretical proof.
+\begin{hypothesis}\label{hypothesis:1}
+	the net can be considered as an information channel, and Shannon's theory \citep{Shannon:2001:MTC:584091.584093} applies to it, specially his entropy (on discrete values).
+\end{hypothesis}
+\begin{numericalanalysis}\label{analysis:1}
+	considering a float distribution over an input x-axis, the distribution of possible result values over the y-axis can be described as the following:
+\end{numericalanalysis}
 \begin{itemize}[nosep]
 	\item For $ Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid $:\\\tab $ \forall x \in X, X = [-1, +1]: Y = sigmoid(leakyRelu(sigmoid(X)*x)*x) $
 	\item For $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $:\\\tab $ \forall x \in X, X = [-1, +1]: Y = tanh(leakyRelu(tanh(X)*x)*x) $
@@ -689,18 +712,22 @@ To test the efficacy of these combinations we will perform the following numeric
 		\includegraphics[width = 0.7\textwidth]{sigmoid_leakyRelu_tanh}
 	\end{center}
 \end{blockfigure}
-To illustrate how $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ makes a better option than the presented alternatives, the net can be considered as an information channel, and Shannon's theory \citep{Shannon:2001:MTC:584091.584093} applies to it, specially his entropy (on discrete values):
-\begin{center}
-	$ H(V) = - \Sigma \space P(v_{i})*log_{b}(P(v_{i})) $
-\end{center}
-Since linespaces can be converted to discrete values, If applied to the linespaces above, we get:\\
-\begin{center}
-	$ \forall x \in X, X = [-1, +1]: H(Y) = - \Sigma \space P(y_{i})*log_{b}(P(y_{i})) $
-\end{center}
-When comparing $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ to $ Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid $, $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ is a winner, because both are equiprobable as we move along the x-axis, but $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ has more information capacity and therefor has a larger  $ H(Y) $.\\
-When comparing $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ to $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $, $ Tanh \rightarrow LeakyRealu \rightarrow Tanh $ begins to become non-linearly inequiprobable as we move towards 0 along the x-axis, this not only results in less information capacity and a lower $ H(Y) $, but because each neuron in a layer is independent of the other, therefor each value probability along the x-axis is independent of the other, and the net could be training on a mix of values randomly chosen along the x-axis, this will lead to non-uniformality of information capacity and entropy across the trainable process (e.g. Conv1D), which will lead to inconsistent results for that process, and the conversion will jump up and down, and probably not get fully achieved. Therefor: $ Sigmoid \rightarrow LeakyRealu \rightarrow Tanh $ is the winner combination.
+\begin{suggestedproof}
+	Shannon's entropy equation:
+	\begin{center}
+		$ H(V) = - \Sigma \space P(v_{i})*log_{b}(P(v_{i})) $
+	\end{center}
+	Since linespaces can be converted to discrete values, Shannon's entropy equation can be applied to the linespaces in Numerical-Analysis~\ref{analysis:1}, as the following:\\
+	\begin{center}
+		$ \forall x \in X, X = [-1, +1]: H(Y) = - \Sigma \space P(y_{i})*log_{b}(P(y_{i})) $
+	\end{center}
+	\begin{itemize}
+		\item $" Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid "$ is equiprobable as we move along the x-axis, but it has less information capacity and therefor has a smaller $ H(Y) $ value.
+		\item $" Tanh \rightarrow LeakyRealu \rightarrow Tanh "$ begins to become non-linearly inequiprobable as we move towards 0 along the x-axis, this not only results in less information capacity and a lower $ H(Y) $, but because each neuron in a layer is independent of the other, therefor each value probability along the x-axis is independent of the other, and the net could be training on a mix of values randomly chosen along the x-axis, this will lead to non-uniformality of information capacity and entropy across the trainable process (e.g. Conv1D), which will lead to inconsistent results for that process, and the convergence will jump up and down, and probably not get fully achieved.
+		\item $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$ is equiprobable as we move along the x-axis, and it has more information capacity and therefor has a larger $ H(Y) $ value. 
+	\end{itemize}
+\end{suggestedproof}
 \newpage
-
 \section{\textbf{Loss Functions}}
 \begin{definition}
 	Loss functions are functions that map out the error of the network results compared to the desired output.
@@ -711,17 +738,40 @@ The desired output for our nets are the following:
 	\tab $ Loss_{positive} = mean(Decryptor_{output} - Encryptor_{input}) $\\
 	\tab $ Loss_{negative} = (1 - mean(Eavesdropper_{output} - Encryptor_{input}))^{2} $\\
 	\tab $ Loss = Loss_{positive} + Loss_{negative} $
-	\item For an Encryptor-Eavesdropper combination, loss has positive correlation with its own loss, but is intended not to be aware of the loss of the Decryptor:\\
+	\item For an Eavesdropper, loss has positive correlation with its own loss, but is intended not to be aware of the loss of the Decryptor:\\
 	\tab $ Loss = mean(Eavesdropper_{output} - Encryptor_{input}) $
 \end{itemize}
 \section{\textbf{Optimizers}}
 \begin{definition}
-	An Optimizer is an algorithm or a methodology used to optimize the weights of the network using backpropagation, more often by utilizing stochastic techniques, to reduce the error produced by the loss function(s).
+	An Optimizer from an ANN perspective is an algorithm or a methodology used to optimize the weights of the net, in order for the net to converge on its local/global optima and effectively learn its designated task, the optimizer achieves this by reducing the error produced by the loss function(s).\\
+	The optimizers employed in deep learning are generally stochastic, and they rely on back-propagation to deliver the calculated optimizations. 
 \end{definition}
-The state of the art at this moment is the \textbf{Adam Optimizer} ~\citep{DBLP:journals/corr/KingmaB14}, which is out of the scope of this dissertation, mainly because it is a full topic in its own right, and it is well documented elsewhere, especially where it was proposed in its original paper.
+The state of the art in stochastic optimization that relies on back-propagation at this moment is the \textbf{Adam Optimizer} ~\citep{DBLP:journals/corr/KingmaB14}, which is out of the scope of this dissertation, mainly because it is a full topic in its own right, and it is well documented elsewhere, especially where it was proposed in its original paper.
 \newpage
 \chapter{Implementation}\label{sec:implementation}
 \section{\textbf{Net Structures}}
+The nets designed in this thesis are divided as the following:
+\begin{itemize}
+	\item Key Generators (in case of asymmetric schemes).
+	\item Encryptors: Alice.
+	\item Decryptors: Bob.
+	\item Eavesdroppers: Alice (known adversary), Alan (unknown adversary).
+\end{itemize}
+Each of these nets share the following general sequential structure:
+\begin{itemize}
+	\item Input Preprocessing: either a concatenation of two related batches (key batch + message batch, key batch + cipher batch) on top of each other to produce an input batch, or just a pass through of an input batch (cipher batch passed through to eve and alan in case of symmetric cryptography, key batch passed through to the Key Generators in case of asymmetric cryptography).\\
+	in case of concatenation the final input shape becomes $ (512, 32) $, and in case of pass-through the final input shape becomes $ (512, 16) $
+	\item Input Layer: a series of sequential fully connected layers to teach the net about cryptanalysis, which is 1 layer in case of of: Alice, Bob, Key Generators, but for Eve and Alan it is: 
+	\begin{center}
+		$ \sum_{i = 0}^{i=n} No._{fcl}[i] $ ~ Where ~
+		$ n \in [Alice, Bob, Key ~ Generators] $
+	\end{center}
+	That is to give both eavesdroppers an edge in cryptanalysis.\\
+	The input layer(s) has a weight shape of $ (16 or 32, 32) $, which makes it normalize the shape of the data passed to the convolutional layer to become $ (512, 32) $.
+	\item Dimensionality Expansion:  the shape of the data passed to the convolutional layer to become $ (512, 32, 1 $).
+	\item Convolutional Layers: 4 layers, the first 3 has exactly one with stride 2 to reduce the shape of the data to $ (512, 16, 1) $ and they have leakyRelu as activation functions, the final layer has tanh as an activation function.
+	\item Output Layer: reduces the dimensionality of the data to $ (512, 16) $ and gives it as an output batch. 
+\end{itemize}
 \newpage
 \begin{blockfigure}{ Net Graph Diagram - Alice}
 	\begin{center}
@@ -741,18 +791,93 @@ The state of the art at this moment is the \textbf{Adam Optimizer} ~\citep{DBLP:
 		\end{center}
 \end{blockfigure}
 \newpage
+\begin{blockfigure}{ Net Graph Diagram - Key Generator}
+	\begin{center}
+		\includegraphics[width = \textwidth]{Generator-Diagram}
+	\end{center}
+\end{blockfigure}
+\newpage
 \section{\textbf{Scheme Structures}}
+\subsection{\textbf{Symmetric Scheme}}
+\paragraph{\textbf{Training}}\mbox{}\\
+In the training setting, both Alice and Bob are fed the same key, Alice is fed the message (Plain) to be encrypted, then Alice sends the Cipher to Bob to decrypt it.
+Both Eve and Alan intercept the Cipher from Alice and try to decrypt it without a key.
+Every training iteration can be divided to three stages:
+\begin{itemize}
+	\item Encryptor-Decryptor Stage: Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice and Bob.
+	\item Encryptor-Eavesdropper(Eve) Stage: Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
+	\item Encryptor-Eavesdropper(Alan) Stage: Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
+\end{itemize}
+In the training setting, the Cipher is passed directly from the Encryptor to Bob, Eve and Alan, without being stored in between, because back-propagation does not work past static blocks of data (which is the case for stored Ciphers at the moment of back-propagation).\\
+\paragraph{\textbf{Testing}}\mbox{}\\
+In the testing setting, all neural nets are reconstructed with the same structures and with the same scheme in mind, the only difference is the lack of back-propagation in testing, and the need for a stored Cipher for a more production oriented system, which means the Cipher gets passed through an intermediate Matrix instead of directly, from Alice to Bob, Eve and Alan.
+\newpage
 \begin{blockfigure}{ Symmetric Scheme}
 	\begin{center}
 		\includegraphics[width = \textwidth]{symmetricScheme}
 	\end{center}
 \end{blockfigure}
 \newpage
-\begin{blockfigure}{ Asymmetric Scheme}
+\subsection{\textbf{Asymmetric Scheme}}
+\paragraph{\textbf{Training}}\mbox{}\\
+In the training setting:
+\begin{itemize}
+	\item The pubKey Generator is fed a key seed and produces a public key (pubKey).
+	\item The privKey Generator is fed the pubKey and produces a private key (privKey) and produces a private key.
+	\item Alice is fed the pubKey and the message (Plain) and produces a Cipher.
+	\item Bob is fed the privKey and the Cipher and tries to decrypt it.
+	\item Both Eve and Alan intercept the Cipher from Alice and try to decrypt it with the pubKey.
+\end{itemize}
+Every training iteration can be divided to three stages:
+\begin{itemize}
+	\item Encryptor-Decryptor Stage: the pubKey Generator, the privKey Generator, Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only the pubKey Generator, the privKey Generator, Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice and Bob.
+	\item Encryptor-Eavesdropper(Eve) Stage: the pubKey Generator, the privKey Generator, Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
+	\item Encryptor-Eavesdropper(Alan) Stage: the pubKey Generator, the privKey Generator, Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
+\end{itemize}
+In the training setting, the Cipher is passed directly from the Encryptor to Bob, Eve and Alan, without being stored in between, because back-propagation does not work past static blocks of data (which is the case for stored Ciphers at the moment of back-propagation).
+The same goes for the privKey-pubKey pair: 
+\begin{itemize}
+	\item The pubKey is passed directly to the privKey Generator, Alice, Eve and Alan without being stored.
+	\item The privKey is passed directly from the privKey Generator to Bob without being stored.
+\end{itemize}
+Because we need the back-propagation to reach the pubKey Generator and the privKey generator while training.
+\paragraph{\textbf{Testing}}\mbox{}\\
+In the testing setting, all neural nets are reconstructed with the same structures and with the same scheme in mind, the only difference is the lack of back-propagation in testing, and the need for a stored Cipher and a stored pubKey-privKey pair, for a more production oriented system. Which means: 
+\begin{itemize}
+	\item The Cipher gets passed through an intermediate Matrix instead of directly, from Alice to Bob, Eve and Alan.
+	\item The pubKey gets passed through an intermediate Matrix instead of directly, to the privKey Generator, Alice, Eve and Alan.
+	\item The privKey gets passed through an intermediate Matrix instead of directly, from the privKey Generator to Bob.
+\end{itemize}
+\newpage
+\begin{inlinefigure}{ Asymmetric Scheme}
 	\begin{center}
 		\includegraphics[width = \textwidth, height = 0.98\textheight]{asymmetricScheme}
 	\end{center}
-\end{blockfigure}
+\end{inlinefigure}
+\newpage
+\subsection{\textbf{Hybrid Scheme}}
+The idea behind this scheme is to use one scheme (asymmetric) in training, and another scheme (symmetric) in testing, and the aim is to bring the performance of the symmetric scheme to closely match that of the asymmetric scheme, the method behind such reconstruction from a symmetric-trained graph to an asymmetric-trained graph is called transfer learning.
+\begin{definition}\label{definition:\thedefinition}
+	(Transfer Learning): Given a source domain $ D_{S} $
+	and learning task $ T_{S} $ , a target domain $ D_{T} $ and learning task
+	$ T_{T} $ , transfer learning aims to help improve the learning of the
+	target predictive function $ f_{T}(·) $ in $ D_{T} $ using the knowledge in
+	$ D_{S} $ and $ T_{S} $ , where $ D_{S} \neq D_{T} $ , or $ T_{S} \neq T_{T} $.~\citep{5288526}
+\end{definition}
+\paragraph{\textbf{Training}}\mbox{}\\
+In the training setting, the graph follows the training setting of the asymmetric scheme.
+\paragraph{\textbf{Transfer Learning}}\mbox{}\\
+From definition \ref{definition:\thedefinition}, we consider ~$ D = \{X , P (X)\} $, the data sets (that is $ X $) (key batch, message (plain) batch) and (key-seed batch, message (plain) batch) are same, in the sense that they have the same sizes and they are both randomly generated, they also both follow the same normalized binary format (-1, 1).\\
+$ P (X) $ is also the same from an intuitive standpoint, since both symmetric and asymmetric schemes produce predictions of the plain message that are of the same batch size, and are floating point values distributed between -1 and 1, which is a point that needs to be further studied.\\
+Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P (Y |X)\} $ the label spaces $ Y_{S} = Y_{T} $ since the source label space (asymmetric) is the same as the target label space (symmetric), in the sense that they both deal with (plain, key) labels as input and (predicted plain) labels as output.\\
+But $ P (Y |X) $ differs between the two schemes from an intuitive standpoint, that is the conditional probability distributions between the schemes are
+different, which is a point that also needs to be further studied.\\
+\begin{conjecture}
+	beside the reason why transfer learning applies to the hybrid system, a reason to why it works well may lie in the asymmetric-training stage's ability to provide trained weights that are derived from training on generated keys that are a floating point distribution, as opposed to training on keys that are of normalized binary form in the classical symmetric scheme training stage.
+\end{conjecture}
+\paragraph{\textbf{Testing}}\mbox{}\\
+In the testing setting, all neural nets are reconstructed with the same internal structure, but they differ of how they handle input and output, to be geared towards symmetric cryptography.\\
+There is also the need for a stored Cipher for a more production oriented system, which means the Cipher gets passed through an intermediate Matrix instead of directly, from Alice to Bob, Eve and Alan.
 \newpage
 \begin{blockfigure}{ Hybrid Scheme}
 	\begin{center}
@@ -760,18 +885,170 @@ The state of the art at this moment is the \textbf{Adam Optimizer} ~\citep{DBLP:
 	\end{center}
 \end{blockfigure}
 \newpage
-\begin{blockfigure}{Class Diagram}
+\section{\textbf{Project Structure}}
+The schemes and the experiments they represent, presented in this thesis, were implemented with an object oriented design, methods that perform the exact same thing for all schemes were packed into one base class, the parameter loading was handled with one class, and the rest was implemented with different classes.\\
+The following is a description of the common classes:\\
+\begin{itemize}
+	\item \textbf{general\_hyper\_parameters:} loads the hyper parameters stored in a json file, and performs checks on data that has to follow a certain format (e.g. filter shapes).
+	\item \textbf{neurencoder\_base:} performs singular net building (not an entire scheme graph), training and result processing (e.g. display of errors accross iterations).
+\end{itemize}
+All schemes have the following common classes with the same overloaded/overriden methods:
+\begin{itemize}
+	\item \textbf{\%scheme\%\_hyper\_parameters:} adjusts the hyper parameters to be useful for the scheme (e.g. the number of FCL for eavesdroppers).
+	\item \textbf{\%scheme\%\_training\_model:} builds an entire trainable graph for the scheme.
+	\item \textbf{\%scheme\%\_testing\_model:} builds an entire testable graph for the scheme.
+	\item \textbf{\%scheme\%\_model\_tester:} performs testing iterations on the scheme's testing model.
+\end{itemize}
+At the epicenter of all these classes, is the main class \textbf{\textit{neurencoder}}, which performs inheritance of the required classes for the scheme chosen by the user, then composes that scheme internally.\\
+An exception to the common classes between schemes is the lack of a hybrid\_hyper\_parameters and a hybrid\_model\_tester, that is because the hybrid model is constructed as the following:
+\begin{itemize}
+	\item The hybrid scheme inherits from asymmetric\_hyper\_parameters, because it needs to train on asymmetric cryptography.
+	\item The hybrid scheme inherits from symmetric\_model\_tester, because its testing model is re-built with symmetric cryptography in mind.
+\end{itemize}
+It is also expected after further development that the hybrid scheme will lose its hybrid\_training\_model and inherit the asymmetric\_training\_model instead.
+\subsection{\textbf{Project Infrastructure}}
+\begin{colortable}{Libraries Used in Core Functionality Development}
+	\textbf{Name} & \textbf{Version} \\\hline
+	sys & 3.5 \\\hline
+	os & 3.5 \\\hline
+	json & 3.5 \\\hline
+	tensorflow & 1.8 \\\hline
+	numpy & 1.14.2 \\\hline
+	progressbar2 & 3.37.1 \\\hline
+	matplotlib & 2.2.2 \\\hline
+	seaborn & 0.8.1 \\\hline
+	pyqtgraph & 0.10.0 \\\hline
+	datetime & 4.2 \\\hline
+\end{colortable}
+\begin{colortable}{Libraries Used in Random Number Generation From Audio Sampling}
+	\textbf{Name} & \textbf{Version} \\\hline
+	sounddevice & 0.3.11 \\\hline
+	hashlib & 3.5 \\\hline
+\end{colortable}
+\newpage
+\begin{blockfigure}{Project Class Diagram}
 	\begin{center}
 		\includegraphics[width = \textwidth]{classDiagram}
 	\end{center}
 \end{blockfigure}
 \newpage
 \chapter{Results}\label{sec:results}
+\section{\textbf{Thesis Results}}
+The results from the various experiments conducted once daily over the course of 3-4 months can be described as the following:
+\begin{itemize}
+	\item \textbf{Symmetric Scheme:} experiments conducted were fluctuant in results at some points in time, but can be considered consistent over the entire period, this form of neural cryptography was not the most stable or promising throughout the experiments, but its results are already on par with results from previous works.
+	\item \textbf{Asymmetric Scheme:} experiments conducted were very consistent, and produced very promising results.
+	\item \textbf{Hybrid Scheme:} experiments conducted were very consistent, and produced very promising results, in fact the results were consistent with those from the Asymmetric scheme, therefor they need to be studied further to determine why.
+\end{itemize}
+To ensure the soundness of the experiments, class initiation calls were logged, as well as the method resolution order upon scheme composition.
+\subsection{\textbf{Physical Infrastructure \& Consumption}}
+\begin{colortable}{Underlying Hardware Infrastructure}
+	\textbf{Type} & Graphics Card \\\hline
+	\textbf{Manufacturer} & Nvidia \\\hline
+	\textbf{Number} & GeForce 920M \\\hline
+	\textbf{Compute Power} & 3.5 \\\hline
+	\textbf{Clock Rate} & 954 Mhz \\\hline
+	\textbf{Cores} & 384 \\\hline
+	\textbf{Memory} & 2048 MB
+\end{colortable}
+\begin{colortable}{Underlying Software Infrastructure}
+	\textbf{Type} & \textbf{Name} & \textbf{Version} \\\hline
+	OS & Ubuntu & 16.04 \\\hline
+	Programming Language   & Python & 3.5 \\\hline
+	Parallel Computing Platform & CUDA & 9.0 \\\hline
+	Deep Neural Network library & cuDNN & 7.0.5 \\\hline
+	ML Framework & Tensorflow GPU & 1.8 \\\hline
+	Drivers & Nvidia & 390.30
+\end{colortable}
+\begin{colortable}{Physical Consumption of Thesis Experiments}
+	\textbf{Scheme} & \textbf{Training Steps} & \textbf{Time Consumption} & \textbf{Computational Consumption} & \textbf{Memory Consumption} \\\hline
+	Symmetric  & 20,000 & 9-11 Minutes & 80\% & 80\% \\\hline
+	Asymmetric  & 20,000 & 11-16 Minutes & 80\% & 80\% \\\hline
+	Hybrid  & 20,000 & 11-16 Minutes & 80\% & 80\% \\\hline
+\end{colortable}
+\newpage
+\begin{blockfigure}{Thesis - Symmetric Training}
+	\begin{center}
+		\includegraphics[width = 0.95\textwidth]{neurencoder-symmetric-training}
+	\end{center}
+\end{blockfigure}
+\begin{blockfigure}{Thesis - Symmetric Tesing}
+	\begin{center}
+		\includegraphics[width = 0.95\textwidth]{neurencoder-symmetric-testing}
+	\end{center}
+\end{blockfigure}
+\newpage
+\begin{blockfigure}{Thesis - Asymmetric Training}
+	\begin{center}
+		\includegraphics[width = 0.95\textwidth]{neurencoder-asymmetric-training}
+	\end{center}
+\end{blockfigure}
+\begin{blockfigure}{Thesis - Asymmetric Tesing}
+	\begin{center}
+		\includegraphics[width = 0.95\textwidth]{neurencoder-asymmetric-testing}
+	\end{center}
+\end{blockfigure}
+\newpage
+\begin{blockfigure}{Thesis - Hybrid Training}
+	\begin{center}
+		\includegraphics[width = 0.95\textwidth]{neurencoder-hybrid-training}
+	\end{center}
+\end{blockfigure}
+\begin{blockfigure}{Thesis - Hybrid Tesing}
+	\begin{center}
+		\includegraphics[width = 0.95\textwidth]{neurencoder-hybrid-testing}
+	\end{center}
+\end{blockfigure}
+\newpage
+\section{\textbf{Results from Previous Works}}
+\subsection{\textbf{Results from Liam Schoneveld}~\citep{nlml/adversarial-neural-cryptography}}
+Liam did his experiment on symmetric neural cryptography, with his own Theano implementation of \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, his nets trained for 60 epochs, 2000 iterations each.\\
+But for the sake of comparison, I cloned his code and ran it for 10 epochs (2000 iterations each) on my device, and it produced the following result.
+\begin{blockfigure}{Liam Schonevel - Symmetric Training}
+	\begin{center}
+		\includegraphics[width = 0.63\textwidth]{nlml_results_conv}
+	\end{center}
+\end{blockfigure}
+\subsection{\textbf{Results from Ankesh Anand}~\citep{ankeshanand/neural-cryptography-tensorflow}}
+Ankesh designed his experiment for symmetric neural cryptography, with his own Tensorflow implementation of \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, his system was designed to run for 60 epochs, 2000 iterations each.
+But since he does not have result figures readily available, and for the sake of comparison, I cloned his code and ran it for 10 epochs (2000 iterations each) on my device, and it produced the following result.
+\begin{blockfigure}{Ankesh Anand - Symmetric Training}
+	\begin{center}
+		\includegraphics[width = 0.63\textwidth]{ankesh_results_conv}
+	\end{center}
+\end{blockfigure}
+\newpage
+\subsection{\textbf{Results from Google Brain} ~\citep{DBLP:journals/corr/AbadiA16}}
+The experiments conducted by the authors of the paper \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, were done on both symmetric and asymmetric neural cryptography, they used a larger batch size of 4096, and ran their experiments for longer steps.\\
+For symmetric neural cryptography, they used the same scheme presented in this thesis.
+\begin{blockfigure}{Google Brain - Symmetric Training}
+	\begin{center}
+		\includegraphics[width = 0.65\textwidth]{cryptolearn_batch_tighter}
+	\end{center}
+\end{blockfigure}\\
+As for asymmetric neural cryptography, they used a slightly different scheme, mainly omitting the private key generator.
+\begin{blockfigure}{Google Brain - Asymmetric Scheme}
+	\begin{center}
+		\includegraphics[width = 0.65\textwidth]{asymm}
+	\end{center}
+\end{blockfigure}
+\begin{blockfigure}{Google Brain - Asymmetric Training}
+	\begin{center}
+		\includegraphics[width = 0.65\textwidth]{pubkey_bob_v_eve}
+	\end{center}
+\end{blockfigure}
 \newpage
 \chapter{Conclusion}\label{sec:conclusion}
+During the past 4 months
 \newpage
-\appendix
-\chapter*{Appendix}
+\chapter*{Acknowledgments}
+I would like to thank the following entities for their help and support:
+\begin{itemize}
+	\item \textbf{Prof. Giovanni De Gasperis}, Associate Professor at UnivAQ: for his guidance, patience and supervision of this thesis.
+	\item \textbf{The International Office at UnivAQ}: for their financial support which made completing this thesis possible.
+	\item \textbf{Ankesh Anand}, PhD student in the machine learning laboratory at the University of Montreal: for his correspondence to my emails regarding questions about his previous work in this area\citep{ankeshanand/neural-cryptography-tensorflow}.
+	\item \textbf{Justin Johnson}, PhD student in the Stanford Vision Lab: for his correspondence to my emails regarding his work on the lecture notes of the course titled \textit{"CS231n Convolutional Neural Networks for Visual Recognition"}\citep{cs231n}.
+\end{itemize}
 \newpage
 \medskip
 \bibliographystyle{unsrt}
