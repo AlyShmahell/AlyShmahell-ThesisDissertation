@@ -1,5 +1,7 @@
 \documentclass[a4paper, 12pt]{report}
 
+
+
 %% Title Definition Packages & Commands %%
 \usepackage{titlesec}
 \titleformat
@@ -37,6 +39,7 @@
 
 %% Bibliography Package %%
 \usepackage[english]{babel}
+\addto{\captionsenglish}{\renewcommand{\abstractname}{Executive Summary}}
 %%%%
 
 %% Packages from the American Mathematical Society %%
@@ -261,6 +264,15 @@
 \end{titlepage}
 \newpage
 \chapter*{Abstract}
+\begin{center}
+	\begin{minipage}{0.8\textwidth}
+			\justify
+			The question whether neural networks can learn to use secret keys to protect information from other neural networks has been asked, and the answer is yes, to a degree. 
+			The next question is, whether they can do it to a degree that guarantees integrity of information beside confidentiality.
+			In this thesis, the goal is to enhance the method employed in a neural net based multiagent system to maximize confidentiality, while keeping loss of information integrity to a minimum. We ask whether such a system (consisting of neural networks named Alice and Bob) can hold against an unknown malicious adversary (a neural network named Alan) while having been training against a known helpful adversary (a neural network named Eve), both adversaries having access to the information channel between Alice and Bob, and thus acting as eavesdroppers.
+			This thesis finally tries to put what the system learned in one setting (asymmetric cryptography) to use in another (symmetric cryptography).
+	\end{minipage}
+\end{center}
 \newpage
 \begin{spacing}{0.05}
 \tableofcontents
@@ -767,7 +779,7 @@ Each of these nets share the following general sequential structure:
 		$ n \in [Alice, Bob, Key ~ Generators] $
 	\end{center}
 	That is to give both eavesdroppers an edge in cryptanalysis.\\
-	The input layer(s) has a weight shape of $ (16 or 32, 32) $, which makes it normalize the shape of the data passed to the convolutional layer to become $ (512, 32) $.
+	The input layer(s) has a weight shape of $ (16 ~ or ~ 32, 32) $, which makes it normalize the shape of the data passed to the convolutional layer to become $ (512, 32) $.
 	\item Dimensionality Expansion:  the shape of the data passed to the convolutional layer to become $ (512, 32, 1 $).
 	\item Convolutional Layers: 4 layers, the first 3 has exactly one with stride 2 to reduce the shape of the data to $ (512, 16, 1) $ and they have leakyRelu as activation functions, the final layer has tanh as an activation function.
 	\item Output Layer: reduces the dimensionality of the data to $ (512, 16) $ and gives it as an output batch. 
@@ -861,7 +873,7 @@ The idea behind this scheme is to use one scheme (asymmetric) in training, and a
 	(Transfer Learning): Given a source domain $ D_{S} $
 	and learning task $ T_{S} $ , a target domain $ D_{T} $ and learning task
 	$ T_{T} $ , transfer learning aims to help improve the learning of the
-	target predictive function $ f_{T}(·) $ in $ D_{T} $ using the knowledge in
+	target predictive function $ f_{T}(\cdot) $ in $ D_{T} $ using the knowledge in
 	$ D_{S} $ and $ T_{S} $ , where $ D_{S} \neq D_{T} $ , or $ T_{S} \neq T_{T} $.~\citep{5288526}
 \end{definition}
 \paragraph{\textbf{Training}}\mbox{}\\
@@ -869,7 +881,7 @@ In the training setting, the graph follows the training setting of the asymmetri
 \paragraph{\textbf{Transfer Learning}}\mbox{}\\
 From definition \ref{definition:\thedefinition}, we consider ~$ D = \{X , P (X)\} $, the data sets (that is $ X $) (key batch, message (plain) batch) and (key-seed batch, message (plain) batch) are same, in the sense that they have the same sizes and they are both randomly generated, they also both follow the same normalized binary format (-1, 1).\\
 $ P (X) $ is also the same from an intuitive standpoint, since both symmetric and asymmetric schemes produce predictions of the plain message that are of the same batch size, and are floating point values distributed between -1 and 1, which is a point that needs to be further studied.\\
-Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P (Y |X)\} $ the label spaces $ Y_{S} = Y_{T} $ since the source label space (asymmetric) is the same as the target label space (symmetric), in the sense that they both deal with (plain, key) labels as input and (predicted plain) labels as output.\\
+Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P (Y |X)\} $, the label spaces $ Y_{S} = Y_{T} $ since the source label space (asymmetric) is the same as the target label space (symmetric), in the sense that they both deal with (plain, key) labels as input and (predicted plain) labels as output.\\
 But $ P (Y |X) $ differs between the two schemes from an intuitive standpoint, that is the conditional probability distributions between the schemes are
 different, which is a point that also needs to be further studied.\\
 \begin{conjecture}
@@ -907,7 +919,7 @@ An exception to the common classes between schemes is the lack of a hybrid\_hype
 \end{itemize}
 It is also expected after further development that the hybrid scheme will lose its hybrid\_training\_model and inherit the asymmetric\_training\_model instead.
 \subsection{\textbf{Project Infrastructure}}
-\begin{colortable}{Libraries Used in Core Functionality Development}
+\begin{colortable}{Python Libraries Used in Core Functionality Development}
 	\textbf{Name} & \textbf{Version} \\\hline
 	sys & 3.5 \\\hline
 	os & 3.5 \\\hline
@@ -920,7 +932,7 @@ It is also expected after further development that the hybrid scheme will lose i
 	pyqtgraph & 0.10.0 \\\hline
 	datetime & 4.2 \\\hline
 \end{colortable}
-\begin{colortable}{Libraries Used in Random Number Generation From Audio Sampling}
+\begin{colortable}{Python Libraries Used in Random Number Generation From Audio Sampling}
 	\textbf{Name} & \textbf{Version} \\\hline
 	sounddevice & 0.3.11 \\\hline
 	hashlib & 3.5 \\\hline
@@ -1039,7 +1051,38 @@ As for asymmetric neural cryptography, they used a slightly different scheme, ma
 \end{blockfigure}
 \newpage
 \chapter{Conclusion}\label{sec:conclusion}
-During the past 4 months
+\begin{center}
+	\begin{minipage}{0.8\textwidth}
+		\justify
+		This dissertation provided an example showcasing that neural nets can learn to minimize loss in integrity of information while maximizing confidentiality. It has also provided an example of how to transfer what they have learned to be applied in different cryptographic settings.\\
+		However, what the experiments didn't consider is the contrast between how neural nets rely on floating point distributions opposite to the randomized binary of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor giving a false positive), or the opposite.\\
+		It also did not consider any statistical properties of the bottlenecks between the different nets beyond the least squared means, and more study into these statistical properties is needed (e.g. KL-Divergence).\\
+		Finally, while the study was done according to software engineering standards, it is still beyond a production ready solution to cryptography, and more real-world designs need to be implemented for these systems to be tested on real life data.\\
+		For this reason it is my hope that in the future I continue pondering such questions and continue designing experiments to provide answers to them.\\
+	\end{minipage}
+\end{center}
+Some of my postulates which I hope to explore are:
+\begin{itemize}
+	\item Reducing each plain message sample size to one character in order to make the system more production ready, while keeping the key sample size size large to preserve confidentiality and maintain convolution ability.
+	\item Adding a Bernouli Distribution at the end of the decoder's output layer to force the decoder to optimize for binary output. This will force the encoder in turn to provide better floating point distributed ciphers to account for the limited binary range of the decoder's output.
+	\item Considering the entire batch as a block, and infusing each plain message batch with a key batch containing the same key in each sample, to make the system more secure against frequency analysis, and to preserve relation locality in data.
+\end{itemize}
+Some of the methods that might achieve the desired results might be:
+\begin{itemize}
+	\item An RNN Infused 1D Convolution.\footnote{RNN: recurrent neural network}
+	\item A VAE Infused Encoder-Decoder based scheme.\footnote{VAE: variational auto encoder}
+\end{itemize}
+\newpage
+\begin{blockfigure}{RNN Infused 1D Convolution}
+	\begin{center}
+		\includegraphics[width = \textwidth]{suggestion_rnn_conv1d}
+	\end{center}
+\end{blockfigure}
+\begin{blockfigure}{VAE Infused Scheme}
+	\begin{center}
+		\includegraphics[width = \textwidth]{suggestion_vae}
+	\end{center}
+\end{blockfigure}
 \newpage
 \chapter*{Acknowledgments}
 I would like to thank the following entities for their help and support:
