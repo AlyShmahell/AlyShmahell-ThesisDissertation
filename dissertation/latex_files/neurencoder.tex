@@ -1,5 +1,5 @@
 \documentclass[a4paper, 12pt]{report}
-
+\usepackage[bottom,flushmargin,hang,multiple]{footmisc}
 \listfiles
 
 %% Title Definition Packages & Commands %%
@@ -145,8 +145,8 @@
 \newcommand{\example}[1]{\protect\stepcounter{examplecounter}\textbf{Example~\theexamplecounter:}~#1}
 
 \newenvironment{nscenter}
-{\parskip=0.2cm\par\unskip\centering}
-{\parskip=0pt\par\unskip\noindent}
+{\parskip=0.2cm\par\nopagebreak\raggedright}
+{\parskip=0pt\par\noindent\ignorespacesafterend}
 
 \newenvironment{nsleft}
 {\parskip=0pt\par\nopagebreak\raggedright}
@@ -166,7 +166,7 @@
 			Mixed Adversarial Nets \\[0.4cm] }
 		\rule{\linewidth}{0.5mm} \\[0.1cm]
 		\noindent
-		{\large  A Thesis Conducted to Acquire a Bachelor Degree In Computer Science 
+		{\large  \textsc{A Thesis conducted to acquire a Bachelor Degree In Computer Science}
 			\vspace{-0.04cm} \\[0.01cm] }
 		\rule{\linewidth}{0.5mm} \\[0.1cm]
 		\noindent
@@ -344,7 +344,7 @@ The question of motivation behind an idea can be empirically divided into:
 	\item How would the author justify the viability of the idea?
 \end{itemize}
 \subsection{\textbf{Justification for the importance of Neural Cryptography}}
-The age of intelligent machines is comprised of multiple intricate components, but individually they function narrowly even for the simplest of tasks. However, the surge of incorporation of these multiple components into one backbone that is neural-nets, has put artificial intelligence on a fast track towards competence in multiple complex areas of problem solving, surpassing traditional methods by multitudes on many occasions.\\\\
+The age of intelligent machines is comprised of multiple intricate components, but individually they function narrowly even for the simplest of tasks. However, the surge of incorporation of these multiple components into one backbone that is neural-nets, has put artificial intelligence on a fast track towards competence in multiple complex areas of problem solving, surpassing traditional methods by multitudes on many occasions.\\
 It makes sense from an academic perspective that we want neural nets to incorporate an understanding of cryptography, this would propel them closer to achieving general intelligence status, which is a major drive behind research in the field.\\
 It also makes sense from an economic and existential point that we want neural nets to parallel their success in surpassing traditional methods when it comes to cryptography, because cryptography from a traditional sense is static, it always requires mathematicians and computer scientists to come together to patch it and upgrade it, and it is also always under attack, its mathematical models are always being broken and bent with the advancement in computer-power and the incorporation of new mathematical models into software that can break it.
 Having neural nets as a dynamic generative model is an opportunity to gain an upper hand on bad actors and put cryptography in a more reactive state to protect our sensitive infrastructure, it would still require research and development, but it would put the neural net on the front line by dynamically devising new ways to mitigate risk and reformulate a cryptographic solution on the fly.
@@ -357,11 +357,12 @@ This boils down to multiple general factors:
 \end{itemize}
 Which lead to these thesis-related factors:
 \begin{itemize}[nosep]
-	\item \textbf{Neural Cryptography is viable:} The introduction of convolutional networks provides a well tested and understood methodology in reducing problems where local spatial relations in the data matter, which is the case for cryptography.
-	\item \textbf{Neural Cryptanalysis is viable:} Having a mixed convolutional net with fully connected layers will teach the network to account for global spatial relations as well, which teaches the net to learn and counter cryptanalysis.
+	\item \textbf{Neural Cryptography is viable:} The introduction of convolutional networks provides a well tested and understood methodology in reducing problems where local spatial relations in the data matter, which is the case for cryptography.\textsuperscript{\ref{footnote:1}}
+	\item \textbf{Neural Cryptanalysis is viable:} Having a mixed convolutional net with fully connected layers will teach the network to account for global spatial relations as well, which teaches the net to learn and counter cryptanalysis.\textsuperscript{\ref{footnote:1}}
 	\item \textbf{Neural Cryptography can be fast:} A result of using convolutions is that the small-sized pattern-finding filter has shared weights (and biases) for all spatial locations which the convolution processes, and this reduces the compute-power required for the whole process compared to other network models.
 	\item \textbf{Neural Cryptography is evolved opposite to being patched:} Adversarial computation has been proven to be effective for years in the form of Genetic Algorithms, and adding adversary as a non-supervised generative model provides a better and easier experiment on how to synthesize a new form of cryptography.
 \end{itemize}
+\footnotetext[1]{Spatial Relations in Cryptography and Cryptanalysis can be found in the Appendix~\cref{appendix:1}.\label{footnote:1}}
 \newpage
 \section{\textbf{Previous Work}}
 The work being done so far in neural cryptography can be divided to old (pre 2016), and new (post 2016). For the old section, this thesis will only list the works and attributions without delving into the details.
@@ -391,10 +392,9 @@ In the period 2010 - 2016, a surge of new ideas came into play in the field of n
 This chapter deals with the inner-mechanics of how convolutional neural nets work, which are the building blocks for the adversarial crypto-system built for this thesis.\\
 This chapter serves to provide a theoretical basis for much of the basics and the enhancements researched for the thesis.\\
 As a way to illustrate how a convolutional neural network (ConvNet) should be constructed for the purposes of this thesis, a simplified dummy example is presented and dissected to explain how its components work.\\
-\begin{blockfigure}{Graph Diagram for an Example Dummy ConvNet}
+\begin{blockfigure}{Graph Diagram for an Example Dummy ConvNet}\label{fig:SimpleNetDiagram}
 	\begin{center}
 		\includegraphics[height = 0.45\textheight]{SimpleNetDiagram}
-		\label{fig:SimpleNetDiagram}
 	\end{center}
 \end{blockfigure}\\
 This ConvNet has 6 key components which we will go over as the following:
@@ -414,7 +414,7 @@ This ConvNet has 6 key components which we will go over as the following:
 \subsection{\textbf{Xavier Initialization} ~\citep{DBLP:journals/jmlr/GlorotB10}  }
 \begin{lemma}\label{lemma1}
 Suppose our net uses the hyperbolic tangent activation function for its neurons:\\
-\begin{blockfigure}{example plot of the hyperbolic tangent}
+\begin{blockfigure}{Example Plot of the Hyperbolic Tangent}
 	\[ \includegraphics[width=0.6\textwidth]{tanh} \]
 \end{blockfigure}
 \begin{itemize}
@@ -494,7 +494,7 @@ Every \textit{slide} is done over a fixed length called a stride, and every \tex
 It is also important to note that since the stride determines how many steps to slide upon each time, it is synonymous to dividing the length of the z-axis of the final input over the stride length.\\
 If instead of having one data sample, we have a batch of data samples, we perform convolution on the samples independently. This means the data batch has an extra axis, an x-axis.\\
 This way, each time a convolution over a sample is done, the filter resets its \textbf{slided} position to its default, and the convolution \textbf{steps} onto the next sample over the x-axis of the batch.\\
-Finally, we end up with a 3D tensor for the batch data, and another 3D tensor for the filter.\\
+Finally, we end up with a 3D tensor for the data batch, and another 3D tensor for the filter.\\
 After the filter is done processing all the samples in the batch, the result tensor will be a 3D tensor with the following dimension lengths:
 \begin{itemize}[nosep]
 	\item $ result.xAxis.length = batch.xAxis.length $
@@ -624,7 +624,7 @@ For the sake of simplicity, in this example:
 	\begin{tcolorbox}[frame hidden,colback=white]
 		\tab Then finally, a filter of shape (2, 1, 2) is \tab provided for the convolution.
 	\end{tcolorbox}
-	\begin{inlinefigure}{Filter \#1 with arbitrary weights}
+	\begin{inlinefigure}{Filter \#1 with Arbitrary Weights}
 		\begin{center}
 			\includegraphics[width=0.34\textwidth]{filter1}
 		\end{center}
@@ -632,7 +632,7 @@ For the sake of simplicity, in this example:
 \end{tcbraster}
 \newpage
 After the input batch tensor and the filter tensor have been generated, the convolution process can begin.\\
-\begin{blockfigure}{ Applying the filter to the first sample in the input batch - generating the first value for the first  in the first feature map.}
+\begin{blockfigure}{ Applying the filter to the first sample in the input batch - generating the first value in the first feature map.}
 	\begin{center}
 		\includegraphics[width=\textwidth]{firstConvSample_step1}
 	\end{center}
@@ -648,7 +648,7 @@ After the input batch tensor and the filter tensor have been generated, the conv
 		\includegraphics[width=\textwidth]{firstConvSample_step3}
 	\end{center}
 \end{blockfigure}
-\begin{blockfigure}{ The entire convolution performed on the batch data.}
+\begin{blockfigure}{ The entire convolution performed on the data batch.}
 		\begin{center}
 			\includegraphics[width=\textwidth]{firstConvSample_final}
 		\end{center}
@@ -665,7 +665,7 @@ After the input batch tensor and the filter tensor have been generated, the conv
 To continue with the example, the resulting tensor from \textbf{Conv Layer \#1} will be fed as input to \textbf{Conv Layer \#2}, for this purpose we need a new filter that conforms to the rules of matrix multiplication (taking into account the sliding rule), that is its y-axis has the same length as the z-axis from the tensor we're convolving on.\\\\
 And for the sake of making the example closer to real-life usage, we will make the resulting tensor from \textit{Conv Layer \#2} have the same shape as the original input tensor by making the z-axis of the new filter of length 1, which will reduce the number of feature maps from 2 to 1, then by performing dimensionality reduction (squeezing of the z-axis onto the y-axis).\\\\
 The shape of the newly constructed filter would be: (var, 2, 1), where $ var >= 1 $, in our example var = 3.
-\begin{blockfigure}{The output from the first conv layer becomes input to the second conv layer}
+\begin{blockfigure}{The output from the first Conv Layer becomes input to the second Conv Layer}
 	\begin{center}
 		\includegraphics[width=\textwidth]{secondinput_final}
 	\end{center}
@@ -675,7 +675,7 @@ The shape of the newly constructed filter would be: (var, 2, 1), where $ var >= 
 	\begin{tcolorbox}[frame hidden,colback=white]
 		\tab A filter of shape (3, 2, 1) is provided \tab for the convolution.
 	\end{tcolorbox}
-	\begin{inlinefigure}{Filter \#2 with arbitrary weights}
+	\begin{inlinefigure}{Filter \#2 with Arbitrary Weights}
 		\begin{center}
 			\includegraphics[height=0.25\textheight]{filter2}
 		\end{center}
@@ -694,7 +694,7 @@ After the input batch tensor has been provided the filter tensor has been genera
 	\end{center}
 \end{blockfigure}
 \newpage
-\begin{blockfigure}{The entire convolution performed on the batch data.}
+\begin{blockfigure}{The entire convolution performed on the data batch.}
 	\begin{center}
 		\includegraphics[width = \textwidth]{secondConvSample_final}
 	\end{center}
@@ -729,7 +729,7 @@ While doing the experiments with the project code, three combinations of activat
 	\item $" Tanh \rightarrow LeakyRealu \rightarrow Tanh "$.
 	\item $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$.
 \end{itemize}
-If we take a look at Fig.~\ref{fig:SimpleNetDiagram}, we deduce the following:
+If we take a look at the "Graph Diagram for an Example Dummy ConvNet" in page.~\pageref{fig:SimpleNetDiagram}, we deduce the following:
 \begin{itemize}[nosep]
 	\item The combination of activation functions chosen is: $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$.
 	\item Each function is fed the result of matrix multiplication operations (involving float weight values), therefor each function receives float values as input.
@@ -1095,11 +1095,13 @@ As for asymmetric neural cryptography, they used a slightly different scheme, ma
 \begin{center}
 	\begin{minipage}{0.8\textwidth}
 		\justify
-		This dissertation provided an example showcasing that neural nets can learn to minimize loss in integrity of information while maximizing confidentiality. It has also provided an example of how to transfer what they have learned to be applied in different cryptographic settings.\\
-		However, what the experiments didn't consider is the contrast between how neural nets rely on floating point distributions opposite to the randomized binary of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor giving a false positive), or the opposite.\\
-		It also did not consider any statistical properties of the bottlenecks between the different nets beyond the least squared means, and more study into these statistical properties is needed (e.g. KL-Divergence).\\
+		This dissertation provided an example showcasing that neural nets can learn to minimize loss in integrity of information while maximizing confidentiality. It has also provided an example of how to transfer what they have learned to be applied in different cryptographic settings.
+		However, what the experiments didn't consider is the contrast between how neural nets rely on floating point distributions opposite to the randomized binary of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor giving a false positive), or the opposite.
+		It also did not consider any statistical properties of the bottlenecks between the different nets beyond the least squared means, and more study into these statistical properties is needed (e.g. KL-Divergence), similar to the research seen in the paper "Context-Aware Generative Adversarial Privacy
+		"~\citep{e19120656}.
+		It did not consider modern modes of cryptographic operations as well, which is considered an important corner stone in modern cryptography, further research into teaching neural nets how to synthesize rigorous modes of operation need to be done, as a starting point, we can consider the CTR Mode of block-ciphers.~\citep{BlockCipherModes}
 		Finally, while the study was done according to software engineering standards, it is still beyond a production ready solution to neural cryptography, and more real-world designs need to be implemented for these systems to be tested on real life data.\\
-		For this reason it is my hope that in the future I continue pondering such questions and continue designing experiments to provide answers to them.\\
+		For these reasons, it is my hope that in the future I continue pondering such questions and continue designing experiments to provide answers to them.
 	\end{minipage}
 \end{center}
 Some of my postulates which I hope to explore are:
@@ -1110,20 +1112,38 @@ Some of my postulates which I hope to explore are:
 \end{itemize}
 Some of the methods that might achieve the desired results might be:
 \begin{itemize}
-	\item An RNN Infused 1D Convolution.\footnote{RNN: recurrent neural network}
-	\item A VAE Infused Encoder-Decoder based scheme.\footnote{VAE: variational auto encoder}
+	\item An RNN infused 1D Convolution.\footnote{RNN: recurrent neural network}
+	\item A VAE infused scheme.\footnote{VAE: variational auto encoder}
+	\item A scheme with neuroevolution as its optimization process.\footnote{Neuroevolution is the process of using a genetic algorithm to evolve (optimize) a neural network.~\citep{Floreano2008}~\citep{DBLP:journals/corr/abs-1803-00657}}
 \end{itemize}
 \newpage
 \begin{blockfigure}{RNN Infused 1D Convolution}
 	\begin{center}
-		\includegraphics[width = \textwidth]{suggestion_rnn_conv1d}
+		\includegraphics[width = 0.9\textwidth]{suggestion_rnn_conv1d}
 	\end{center}
 \end{blockfigure}
 \begin{blockfigure}{VAE Infused Scheme}
 	\begin{center}
-		\includegraphics[width = \textwidth]{suggestion_vae}
+		\includegraphics[width = 0.9\textwidth]{suggestion_vae}
 	\end{center}
 \end{blockfigure}
+\begin{blockfigure}{Neuroevolution of Neural Cryptography}
+	\begin{center}
+		\includegraphics[width = 0.8\textwidth]{GAC}
+	\end{center}
+\end{blockfigure}
+\newpage
+\chapter*{Appendix}
+\section*{\textbf{Spatial Relations in Cryptography and Cryptanalysis}}\label{appendix:1}
+\begin{conjecture}
+	 cryptographic patterns are local spatial relations in plaintext, and cryptanalysis finds patterns by analyzing global spatial locations in ciphertext
+\end{conjecture}
+As we are trying to make neural nets learn cryptography that can parallel modern cryptographic algorithms, we need to teach neural nets to understand patterns in data which resemble patterns found in cryptography and cryptanalysis.\\
+These patterns, as I see them, can be described like the following:
+\begin{itemize}
+	\item As for cryptography, if we take block ciphers as an example, they encrypt a group of plaintext symbols as one block, and they repeat this process for each block until the whole plaintext is encrypted, each block resembles a local spatial location and therefor has local spatial relations between its symbols, this means cryptography works on local spatial relations in plaintext.
+	\item As for cryptanalysis, if we take frequency analysis as an example, the frequency of symbols is analysed throughout the entire ciphertext, the entirety of the ciphertext resembles one global spatial location and therefor shares global spatial relations between its symbols, this means cryptanalysis works on global spatial relations in ciphertext.
+\end{itemize}
 \newpage
 \chapter*{Acknowledgments}
 I would like to thank the following entities for their help and support:
@@ -1132,6 +1152,7 @@ I would like to thank the following entities for their help and support:
 	\item \textbf{The International Office at UnivAQ}: for their financial support which made completing this thesis possible.
 	\item \textbf{Ankesh Anand}, PhD student in the machine learning laboratory at the University of Montreal: for his correspondence to my emails regarding questions about his previous work in this area\citep{ankeshanand/neural-cryptography-tensorflow}.
 	\item \textbf{Justin Johnson}, PhD student in the Stanford Vision Lab: for his correspondence to my emails regarding his work on the lecture notes of the course titled \textit{"CS231n Convolutional Neural Networks for Visual Recognition"}\citep{cs231n}.
+	\item \textbf{PROF. DR.-ING. Christof Paar}, Chair for Embedded Security at Ruhr Universitat Bochum: for his correspondence to my emails regarding my inquiries about abstract differences between cryptography and cryptanalysis, and his insight about the importance of cryptographic modes of operation.
 \end{itemize}
 \newpage
 \medskip
