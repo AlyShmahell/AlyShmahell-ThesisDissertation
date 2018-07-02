@@ -1,6 +1,6 @@
 \documentclass[a4paper, 12pt]{report}
 
-
+\listfiles
 
 %% Title Definition Packages & Commands %%
 \usepackage{titlesec}
@@ -92,7 +92,7 @@
 \usepackage{lmodern}
 \usepackage[most]{tcolorbox}
 \usepackage{tabularx}
-\usepackage{colortbl}
+\usepackage{colortbl} 
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 \newtcolorbox[blend into=tables]{colortable}[2][]{
 	colback=white,
@@ -144,6 +144,16 @@
 \newcounter{examplecounter}
 \newcommand{\example}[1]{\protect\stepcounter{examplecounter}\textbf{Example~\theexamplecounter:}~#1}
 
+\newenvironment{nscenter}
+{\parskip=0.2cm\par\unskip\centering}
+{\parskip=0pt\par\unskip\noindent}
+
+\newenvironment{nsleft}
+{\parskip=0pt\par\nopagebreak\raggedright}
+{\parskip=0pt\par\noindent\ignorespacesafterend}
+
+
+
 \begin{document}
 \begin{titlepage}
 	\begin{center}
@@ -151,10 +161,14 @@
 		{\LARGE University of L'Aquila}\\[0.5cm]
 		{\large Department of Information Engineering, Computer Science and Mathematics}\\[0.5cm]
 		\rule{\linewidth}{0.5mm} \\[0.4cm]
-		{\huge \bfseries Hyper Heursitic Cryptography\\
+		{\huge \bfseries Hyper Heuristic Cryptography\\
 			with\\
 			Mixed Adversarial Nets \\[0.4cm] }
-		\rule{\linewidth}{0.5mm} \\[0.5cm]
+		\rule{\linewidth}{0.5mm} \\[0.1cm]
+		\noindent
+		{\large  A Thesis Conducted to Acquire a Bachelor Degree In Computer Science 
+			\vspace{-0.04cm} \\[0.01cm] }
+		\rule{\linewidth}{0.5mm} \\[0.1cm]
 		\noindent
 			\begin{tcbraster}[raster columns=2,raster rows=1,
 				enhanced,size=small,fit algorithm=hybrid* ]
@@ -165,8 +179,8 @@
 						]
 							\large
 							\emph{Name :} \\[0.2cm]
-							\tab Aly \textsc{Shmahell}\\[1cm]
-							\emph{Signature :}\\[0.8cm]
+							\tab Aly \textsc{Shmahell}\\[0.6cm]
+							\emph{Signature :}\\[0.6cm]
 							\rule{\linewidth}{0.5mm}
 					\end{tcolorbox}
 					\begin{tcolorbox}[
@@ -176,16 +190,31 @@
 						]
 							\large
 							\emph{Name :} \\[0.2cm]
-							\tab Prof.~Giovanni \textsc{De Gasperis}\\[1cm]
-							\emph{Signature :}\\[0.8cm]
+							\tab Prof.~Giovanni \textsc{De Gasperis}\\[0.6cm]
+							\emph{Signature :}\\[0.6cm]
 							\rule{\linewidth}{0.5mm}
 					\end{tcolorbox}
 			\end{tcbraster}
-			\vfill
+			\vspace{0.1cm}
 		\today
 	\end{center}
 \end{titlepage}
 \begin{titlepage}	
+	\rule{\linewidth}{0.5mm} \\[0.1cm]
+	\vspace{-0.1cm}
+	\begin{minipage}{\textwidth}
+		\Large{\textbf{Thesis Components}}
+	\end{minipage}
+	\rule{\linewidth}{0.2mm} \\[0.1cm]
+	\noindent
+		This thesis is comprised of the following parts:
+		\begin{itemize}[nosep]
+			\item A software project (codenamed "neurencoder") engineered to test the models presented herein.
+			\item This dissertation which serves as a documentation for the project, a presentation of its results, and a platform to explain the theories behind it.
+		\end{itemize}	
+		\vspace{-0.3cm}
+	\rule{\linewidth}{0.2mm} \\[0.5cm]
+	\noindent
 	\rule{\linewidth}{0.5mm} \\[0.1cm]
 	\begin{minipage}{0.5\textwidth}
 		\Large{\textbf{Dissertation License}}
@@ -196,15 +225,15 @@
 		\end{flushright}
 	\end{minipage}
 	\\[0.1cm]
-	\rule{\linewidth}{0.5mm} \\[0.1cm]
-	\noindent
-	\begin{center}
+	\rule{\linewidth}{0.2mm}
+	\vspace{-0.45cm}
+	\begin{nscenter}
 		This dissertation (in both source and compiled forms) is licensed under a\\
 		\href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.}
-	\end{center}	
-	\rule{\linewidth}{0.5mm} \\[1.5cm]
+	\end{nscenter}	
+	\rule{\linewidth}{0.2mm} \\[0.5cm]
 	\noindent
-	\rule{\linewidth}{0.5mm} \\[0.4cm]
+	\rule{\linewidth}{0.5mm} \\[0.2cm]
 	\begin{minipage}{0.5\textwidth}
 		\Large{\textbf{Project License}}
 	\end{minipage}
@@ -213,54 +242,60 @@
 			\Huge{\textcopyright}
 		\end{flushright}
 	\end{minipage}
-	\\[0.1cm]
-	\rule{\linewidth}{0.5mm} \\[0.1cm]
+	\rule{\linewidth}{0.2mm}
 	\noindent
-	\begin{center}
+	\vspace{-0.45cm}
+	\begin{nscenter}
 		The project presented in this dissertation, as well as its code (in both source and compiled forms) is copyrighted under the following terms:
-	\end{center}
+	\end{nscenter}
+	\vspace{-0.5cm}
 	\begin{tcbraster}[raster columns=2,raster rows=1,
 		enhanced,size=small,fit algorithm=hybrid* ]
-		\begin{center}
+		\begin{nscenter}
 			\begin{tcolorbox}[colback=white]
 				\begin{center}
 					Copyright \textcopyright \space 2018, Aly Shmahell.\\
 					All rights reserved.
 				\end{center}
-		\end{tcolorbox}
-		\end{center}
+			\end{tcolorbox}
+		\end{nscenter}
 	\end{tcbraster}
-	\rule{\linewidth}{0.5mm} \\[1.5cm]
-	\noindent
-	\rule{\linewidth}{0.5mm} \\[0.4cm]
-	\begin{minipage}{0.5\textwidth}
-		\Large{\textbf{Author's Contact Information}}
-	\end{minipage}
-	\\[0.1cm]
-	\rule{\linewidth}{0.5mm} \\[0.1cm]
-	\noindent
-	\begin{center}
-		\begin{minipage}{0.5\textwidth}
-			\faGithub \space:~@AlyShmahell \\
-			\faTwitter \space:~ @AlyShmahell \\
-			\faLinkedinSquare \space:~ alyshmahell \\
-			\faEnvelope \space:~ aly.shmahell@gmail.com
-		\end{minipage}
-	\end{center}
-	\rule{\linewidth}{0.5mm} \\[1.5cm]
+	\rule{\linewidth}{0.2mm} \\[0.5cm]
 	\noindent
 	\rule{\linewidth}{0.5mm} \\[0.2cm]
 	\begin{minipage}{\textwidth}
-		\Large{\textbf{Code Repository \& Dissertation Publication}}
+		\Large{\textbf{Project Repository \& Dissertation Publication}}
 	\end{minipage}
-	\rule{\linewidth}{0.5mm} \\[0.1cm]
+	\rule{\linewidth}{0.2mm} \\[0.1cm]
 	\noindent
-		\begin{flushleft}
-		A Copy of this dissertation can be found on the author's Github account.\\
-		A Copy of the code is available for review by academic researchers and industry professionals upon request.
-		\end{flushleft}	
-	\rule{\linewidth}{0.5mm}
+	\vspace{-0.6cm}
+		\begin{itemize}[nosep]
+		\item A copy of this dissertation will be published on the author's Github account, on the day of discussion: 21-07-2018.
+		\item The project's code resides on a private repository on the author's Gitlab account, to be available for review by academic researchers and industry professionals upon request.
+		\end{itemize}	
+		\vspace{-0.3cm}
+	\rule{\linewidth}{0.5mm}\\[0.5cm]
 	\noindent
+		\rule{\linewidth}{0.5mm} \\[0.1cm]
+		\begin{minipage}{0.5\textwidth}
+			\Large{\textbf{Author's Contact Information}}
+		\end{minipage}
+		\vspace{-0.1cm}
+		\\[0.1cm]
+		\rule{\linewidth}{0.2mm} 
+		\noindent
+		\begin{nscenter}
+			\begin{colortable}{}\faGithub & @AlyShmahell \\\hline
+				\faGitlab & @AlyShmahell \\\hline
+				\faTwitter & @AlyShmahell \\\hline
+				\faLinkedinSquare &  alyshmahell \\\hline
+				\faEnvelope &  aly.shmahell@gmail.com \\\hline
+			\end{colortable}
+		\end{nscenter}
+		\vspace{-0.5cm}
+		\\[0.05cm]
+		\rule{\linewidth}{0.2mm}
+		\noindent
 \end{titlepage}
 \newpage
 \chapter*{Abstract}
@@ -269,8 +304,8 @@
 			\justify
 			The question whether neural networks can learn to use secret keys to protect information from other neural networks has been asked, and the answer is yes, to a degree. 
 			The next question is, whether they can do it to a degree that guarantees integrity of information beside confidentiality.
-			In this thesis, the goal is to enhance the method employed in a neural net based multiagent system to maximize confidentiality, while keeping loss of information integrity to a minimum. We ask whether such a system (consisting of neural networks named Alice and Bob) can hold against an unknown malicious adversary (a neural network named Alan) while having been training against a known helpful adversary (a neural network named Eve), both adversaries having access to the information channel between Alice and Bob, and thus acting as eavesdroppers.
-			This thesis finally tries to put what the system learned in one setting (asymmetric cryptography) to use in another (symmetric cryptography).
+			In this thesis, the goal is to enhance the methods employed in a neural net based multi-agent system to maximize confidentiality, while keeping loss of information integrity to a minimum. We ask whether such a system (consisting of neural networks named Alice and Bob) can hold against an unknown malicious adversary (a neural network named Alan) while having been training against a known helpful adversary (a neural network named Eve), both adversaries having access to the information channel between Alice and Bob, and thus acting as eavesdroppers.
+			This thesis finally tries to put what the system learned in one setting (asymmetric cryptography) to use in another (symmetric cryptography). This thesis explores the theories behind neural cryptography, and provides research-based empirical evidence for its results.
 	\end{minipage}
 \end{center}
 \newpage
@@ -280,26 +315,26 @@
 \newpage
 \chapter{Introduction}\label{sec:introduction}
 \begin{definition}
-	Neural cryptography is an interdisciplinary field in Computer Science, combining both Artificial Intelligence and Cryptography, towards the development of stochastic methods, based on artificial neural networks, for use in encryption and cryptanalysis.
+	(Neural Cryptography): is an interdisciplinary field in Computer Science, combining both artificial intelligence and cryptography, towards the development of stochastic methods, based on artificial neural networks, for use in encryption and cryptanalysis.
 \end{definition}
 \section{\textbf{Thesis Objectives}}
-The objective of this thesis is to explore the use of new developments in the field of Neural Networks, mainly Adversarial Neural Networks and Convolutional Neural Networks, as a generative model, to produce a new breed of Crypto-Systems.\\\\
-The work being done here is based on a new paper released in 2016 from Google Brain ~\citep{DBLP:journals/corr/AbadiA16}, which promises to bridge the gap between research and application in the area of Neural Cryptography.\\\\
+The objective of this thesis is to explore the use of new developments in the field of neural networks, mainly adversarial neural networks and convolutional neural networks, as a generative model, to produce a new breed of crypto-systems.\\\\
+The work being done here is based on a new paper released in 2016 from Google Brain ~\citep{DBLP:journals/corr/AbadiA16}, which promises to bridge the gap between research and application in the area of neural cryptography.\\\\
 The goal of my research is to provide the following:
 \begin{itemize}
-	\item An addition to the variety of the underlying mechanics provided in the original paper.
+	\item An addition to the variety of the underlying neural-building methods provided in the original paper.
 	\item An improvement in performance of the models being built.
 	\item An in-depth analysis of how the components work, and the inner details of their mechanics.
-	\item A software documentation that provides a blueprint for a more software-engineering oriented neural cryptosystem prototype.
+	\item A software documentation that provides a blueprint for a more software-engineering oriented neural crypto-system prototype.
 \end{itemize}
-With the research specter in this area being dominated by authors coming from a mathematical-background angle, my thesis aims to provide:
+With the research specter in this area being dominated by authors coming from a mathematical-background, my thesis aims to provide:
 \begin{itemize}
-	\item A Computer Science oriented approach to solving cryptography with neural networks and stochastic methods.
+	\item A Computer Science oriented approach to solving cryptography with neural networks and stochastic methods, explained using vocabulary and notions geared towards Computer Scientists.
 \end{itemize}
 This thesis finally adds the following:
 \begin{itemize}
-	\item The introduction of a hybrid neural crypto-system.
-	\item An exploration into adding hyper heuristics to the field.
+	\item The introduction of a hybrid neural crypto-system that utilizes transfer-learning.\citep{5288526}
+	\item An exploration into adding hyper heuristics to neural cryptography.
 \end{itemize}
 \newpage
 \section{\textbf{Thesis Motivation}}
@@ -310,9 +345,9 @@ The question of motivation behind an idea can be empirically divided into:
 \end{itemize}
 \subsection{\textbf{Justification for the importance of Neural Cryptography}}
 The age of intelligent machines is comprised of multiple intricate components, but individually they function narrowly even for the simplest of tasks. However, the surge of incorporation of these multiple components into one backbone that is neural-nets, has put artificial intelligence on a fast track towards competence in multiple complex areas of problem solving, surpassing traditional methods by multitudes on many occasions.\\\\
-It makes sense from an academic perspective that we want neural nets to incorporate an understanding of cryptography, this would propel them closer to achieving general intelligence status, which is a major drive behind research in the field.\\\\
-It also makes sense from an economic and existential point that we want neural nets to parallel their success in surpassing traditional methods when it comes to cryptography, because cryptography from a traditional sense is static, it always requires mathematicians and computer scientists to come together to patch it and upgrade it, and it is also always under attack, its mathematical models are always being broken and bent with the advancement in computer-power and the incorporation of new mathematical models into software that can break it.\\
-Having neural nets as a dynamic generative model is an opportunity to gain an upper hand on bad actors and put cryptography in a more reactive state to protect our sensitive infrastructure, it would still require research and development, but it would put the neural net as a front line of always devising new ways to mitigate risk and reformulate a cryptographic solution on the fly.
+It makes sense from an academic perspective that we want neural nets to incorporate an understanding of cryptography, this would propel them closer to achieving general intelligence status, which is a major drive behind research in the field.\\
+It also makes sense from an economic and existential point that we want neural nets to parallel their success in surpassing traditional methods when it comes to cryptography, because cryptography from a traditional sense is static, it always requires mathematicians and computer scientists to come together to patch it and upgrade it, and it is also always under attack, its mathematical models are always being broken and bent with the advancement in computer-power and the incorporation of new mathematical models into software that can break it.
+Having neural nets as a dynamic generative model is an opportunity to gain an upper hand on bad actors and put cryptography in a more reactive state to protect our sensitive infrastructure, it would still require research and development, but it would put the neural net on the front line by dynamically devising new ways to mitigate risk and reformulate a cryptographic solution on the fly.
 \subsection{\textbf{Justification for the viability of Neural Cryptography}}
 This boils down to multiple general factors:
 \begin{itemize}[nosep]
@@ -320,18 +355,19 @@ This boils down to multiple general factors:
 	\item \textbf{Neural Nets are becoming faster:} The increasing successful research into using these heuristics not just to compute a complex task, but to do it quickly without loss in accuracy.
 	\item \textbf{Neural Nets are becoming available:} The introduction of tools, frameworks and libraries of industrial level to the public which propelled the field of neural networks and made it ever so easy to replicate experiments and improve upon them.
 \end{itemize}
-Which lead to those thesis-related factors:
+Which lead to these thesis-related factors:
 \begin{itemize}[nosep]
-	\item \textbf{Neural Cryptography is viable:} The introduction of Convolutional networks provides a well tested and understood methodology in reducing problems where local spatial relations in the data matter, which is the case for cryptography.
-	\item \textbf{Neural Cryptanalysis is viable:} Having a Mixed Convolutional Net with fully connected layers will teach the network to account for global spatial relations as well, which teaches the net to learn and counter cryptanalysis.
-	\item \textbf{Neural Cryptography can be fast:} A result of using Convolutions is that the small-sized pattern-finding filter has shared weights (and biases) for all spatial locations which the convolution processes, and this reduces the compute-power required for the whole process compared to other network models.
+	\item \textbf{Neural Cryptography is viable:} The introduction of convolutional networks provides a well tested and understood methodology in reducing problems where local spatial relations in the data matter, which is the case for cryptography.
+	\item \textbf{Neural Cryptanalysis is viable:} Having a mixed convolutional net with fully connected layers will teach the network to account for global spatial relations as well, which teaches the net to learn and counter cryptanalysis.
+	\item \textbf{Neural Cryptography can be fast:} A result of using convolutions is that the small-sized pattern-finding filter has shared weights (and biases) for all spatial locations which the convolution processes, and this reduces the compute-power required for the whole process compared to other network models.
 	\item \textbf{Neural Cryptography is evolved opposite to being patched:} Adversarial computation has been proven to be effective for years in the form of Genetic Algorithms, and adding adversary as a non-supervised generative model provides a better and easier experiment on how to synthesize a new form of cryptography.
 \end{itemize}
 \newpage
 \section{\textbf{Previous Work}}
-The work being done so far in Neural Cryptography can be divided to old (pre 2016), and new (post 2016). For the old section, this thesis will only list the works and attributions without delving into the details.
+The work being done so far in neural cryptography can be divided to old (pre 2016), and new (post 2016). For the old section, this thesis will only list the works and attributions without delving into the details.
 \subsection{\textbf{Previous Work - Pre 2016 Era}}
-Up until 2010, Neural Nets were a dark alley in the citadel of Artificial Intelligence, mainly due to lack in advancement in back-propagation optimization which made training deep neural nets hard, and the fact that not many people saw the importance of incorporating other areas of Artificial Intelligence into neural nets.\\ From 2010 until 2016, things started changing for the better, but it was 6 years until the developments allowed for new viable research in Neural Cryptography.\\
+Up until 2010, Neural Nets were a dark alley in the citadel of artificial intelligence, mainly due to lack in advancement in back-propagation optimization which made training deep neural nets hard, and the fact that not many people saw the importance of incorporating other areas of artificial intelligence into neural nets.\\
+From 2010 until 2016, things started changing for the better, but it was 6 years until the developments allowed for new viable research in neural cryptography.\\
 Therefor the works in the Pre 2016 Era were merely academic curiosities which did not aim to make it into industry, but they provided a key stepping stone for those of us who came into the field at this better-equipped stage.\\\\
 The most notable of these works are:
 \begin{itemize}[nosep]
@@ -341,20 +377,21 @@ The most notable of these works are:
 	\item Successful attack on permutation-parity-machine-based neural cryptography ~\citep{PhysRevE.85.025101}
 \end{itemize}
 \subsection{\textbf{Previous Work - Post 2016 Era}}
-In the period 2010 - 2016, a surge of new ideas came into play in the field of neural nets, new methods of back-propagation optimization proved to be successful for deep-learning, advancement in initialization and activation solved multitudes of problems like the vanishing gradient (or at least mitigated its effect), ...etc, so it was only natural someone would attempt to take another look at Neural Cryptography, and the most notable works are:
+In the period 2010 - 2016, a surge of new ideas came into play in the field of neural nets, new methods of back-propagation optimization proved to be successful for deep-learning, advancement in initialization and activation solved multitudes of problems like the vanishing gradient (or at least mitigated its effect), ...etc, so it was only natural someone would attempt to take another look at neural cryptography, and the most notable works so far are:
 \begin{itemize}[nosep]
 	\item \textbf{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}:\\
-	This paper was the corner stone for my work, it was the first to realize the importance of applying Generative Adversarial Nets and succeed in its efforts to build a viable crypto-system.
+	This paper was the corner stone for my work, it was the first to realize the importance of using generative adversarial nets in cryptography and succeed in its efforts to build a viable neural crypto-system.
 	\item \textbf{Tensorflow implementation of Adversarial Neural Cryptography} ~\citep{ankeshanand/neural-cryptography-tensorflow}:\\
-	Ankesh Anand's Implementation of (Learning to Protect Communications with Adversarial Neural Cryptography) using tensorflow and python is a very informative open-source prototype which I studied before I set on implementing my project.
+	Ankesh Anand's Implementation of (Learning to Protect Communications with Adversarial Neural Cryptography) using Tensorflow and Python is a very informative open-source prototype which I studied before I set on implementing my project.
 	\item \textbf{Adversarial Neural Cryptography in Theano} ~\citep{nlml/adversarial-neural-cryptography}:\\
-	Liam Schoneveld made an implementation of (Learning to Protect Communications with Adversarial Neural Cryptography) in Theano and python, his results mirror mine to some extent, and his illustrations and break-down of the process is something to consider going over when delving into Neural Cryptography.
+	Liam Schoneveld made an implementation of (Learning to Protect Communications with Adversarial Neural Cryptography) in Theano and Python, his results mirror mine to some extent, and his illustrations and break-down of the process is something to consider going over when delving into neural cryptography.
 \end{itemize}
 \newpage
 \chapter{Design}\label{sec:design}
-This chapter deals with the inner-mechanics of how convolutional neural nets work, which are the building blocks for the adversarial crypto-system presented.\\\\
-As a way to illustrate how a ConvNet should be constructed for our purposes, a simplified dummy example is presented and dissected to explain how its components work.\\
-\begin{blockfigure}{Sample Dummy Net Graph Diagram}
+This chapter deals with the inner-mechanics of how convolutional neural nets work, which are the building blocks for the adversarial crypto-system built for this thesis.\\
+This chapter serves to provide a theoretical basis for much of the basics and the enhancements researched for the thesis.\\
+As a way to illustrate how a convolutional neural network (ConvNet) should be constructed for the purposes of this thesis, a simplified dummy example is presented and dissected to explain how its components work.\\
+\begin{blockfigure}{Graph Diagram for an Example Dummy ConvNet}
 	\begin{center}
 		\includegraphics[height = 0.45\textheight]{SimpleNetDiagram}
 		\label{fig:SimpleNetDiagram}
@@ -372,7 +409,7 @@ This ConvNet has 6 key components which we will go over as the following:
 \newpage
 \section{\textbf{Weight Initialization}}
 \begin{definition}
-	Initialization is the process in which we give some weight values to some neurons in some layer, the overall process, whether done properly or not means the difference between the network converging on a local/global minima, or never converginf at all.
+	(Weight Initialization): is the process in which we give some weight values to some neurons in some layer, the overall process, whether done properly or not means the difference between the network converging on a local/global minima versus never converging at all.
 \end{definition}
 \subsection{\textbf{Xavier Initialization} ~\citep{DBLP:journals/jmlr/GlorotB10}  }
 \begin{lemma}\label{lemma1}
@@ -382,20 +419,20 @@ Suppose our net uses the hyperbolic tangent activation function for its neurons:
 \end{blockfigure}
 \begin{itemize}
 	\item If the weights start too small, then the signal shrinks as it passes through each layer until it vanishes ~\citep{an-explanation-of-xavier-initialization}, then as it passes deeper in the network with its small values, the layers it enter will become linear, because the output of the hyperbolic tangent is linear with small input values, this means the deeper layers of the net will loose non-linearity.
-	\item If the weights start too large, then the signal grows as it passes through each layer until it becomes too large ~\citep{an-explanation-of-xavier-initialization}, then as it passes deeper in the network with its large values, the layers it enter will become saturated, as the output of the hyperbolic tangent is flat with large input values, and this flatness will cause the gradient to become zero, and we will get the vanishing gradient problem.
+	\item If the weights start too large, then the signal grows as it passes through each layer until it becomes too large ~\citep{an-explanation-of-xavier-initialization}, then as it passes deeper in the network with its large values, the layers it enter will become saturated, as the output of the hyperbolic tangent is large \& flat with large input values, and this flatness will cause the gradient to become zero, and we will get the vanishing gradient problem.
 \end{itemize}
 \end{lemma}
 \begin{lemma}\label{lemma2}
-Having a pre-defined net graph: for each neuron we know the number of inputs and the number of outputs, therefor we can calculate a reasonable weight for the neuron in question based on a normal distribution of a zero mean and a 1/n variance.
+Having a pre-defined net graph: for each neuron "$ n $" we know the number of inputs and the number of outputs, therefor we can calculate a reasonable weight for the neuron in question based on a normal distribution of a zero mean and a 1/n variance.
 \end{lemma}
 \begin{lemma}\label{lemma3}
 To achieve initialization while avoiding the two obstacles in \cref{lemma1}, we want the variance to remain the same with each passing layer.	
 \end{lemma}
 \newpage
-Suppose we have an input X from a previous layer with n components and a linear neuron with random weights W in the current layer that spits out the same output Y to some neurons in the next layer.
+Suppose we have an input X from a previous layer with $ n_{in} $ components and a linear neuron $ n $ with random weights W in the current layer that spits out the same output Y to some neurons in the next layer.
 \begin{blockfigure}{Xavier Initialization on neuron "n"}
 		\[ \includegraphics[width=0.6\textwidth]{xavier_illustration} \]
-\end{blockfigure}
+\end{blockfigure}\\
 The output of the neuron will have the following equation:
 \begin{center}
 	\begin{equation}
@@ -442,18 +479,21 @@ To keep the variance of the input gradient \& the output gradient the same, we c
 \end{center}
 \newpage
 \section{\textbf{1D Convolution}}\label{Conv1D}
-When looking for examples and literature on Convolution, the vast majority of what is available is on 2D Convolution, and what might be found on 1D convolution is usually done on 1D data with 1D filter~\citep{math-behind-1d-convolution-with-advanced-examples-in-tf}.\\
+\begin{definition}
+	(1D Convolution): is the process of using a small window to determine local spatial relations over a 1D data sample, regardless whether the sample is inside an n-D data pocket.\\
+\end{definition}
+\vspace{-0.6cm}
+When looking for examples and literature on convolution, the vast majority of what is available is on 2D convolution, and what might be found on 1D convolution is usually done on 1D data with 1D filter~\citep{math-behind-1d-convolution-with-advanced-examples-in-tf}.
 Therefor, for the purposes of this study, a more complex example will be presented.
 \section{\textbf{1D Convolution on Batch 1D Data with (1,2)-D Filters}}
-1D Convolution is the process of using a small window to determine local spatial relations over a 1D data sample.\\
 At this moment, the best tool available for representing data samples is \textbf{tensors}, and therefor determining local spatial relations amounts to matrix multiplications of the spatial locations inside the data sample tensor by the portion of the filter tensor that fits the location.\\
 In order for the convolution to do these multiplications, it \textbf{slides} over one axis of the 1D data sample, the y-axis, the filter also \textbf{slides} itself to fit the location.\\
-In order to perform 1D convolution with a 2D filter (having an x-axis and a y-axis), we need to add another axis to both the data and the filter; done by injecting a z-axis into the y-axis, effectively expanding the y-axis over the z-axis. In this case, when the filter \textit{slides} itself, it \textit{slides} over its x-axis.\\
+In order to perform 1D convolution with a 2D filter (having an x-axis and a y-axis), we need to add another axis to both the data and the filter; done by injecting a z-axis into the y-axis, effectively expanding the y-axis over the z-axis. In this case, when the filter \textit{slides}~itself, it \textit{slides}~over its x-axis.\\
 In this format, the window processing is done by multiplying the z-axis of the sample by the y-axis of the filter, over the x-axis of the filter.\\
 Every \textit{slide} is done over a fixed length called a stride, and every \textit{slide} represents moving the filter window over to a new spatial location in the sample.\\
 It is also important to note that since the stride determines how many steps to slide upon each time, it is synonymous to dividing the length of the z-axis of the final input over the stride length.\\
-If instead of 1 data sample, we have a batch of data samples, we perform convolution on the samples independently. This means the data batch has an extra axis, an x-axis.\\
-This way, each time a convolution over a sample is done, the filter resets its \textbf{slided} position to its default, and the convolution \textbf{steps} onto the next sample over the x-axis in the batch.\\
+If instead of having one data sample, we have a batch of data samples, we perform convolution on the samples independently. This means the data batch has an extra axis, an x-axis.\\
+This way, each time a convolution over a sample is done, the filter resets its \textbf{slided} position to its default, and the convolution \textbf{steps} onto the next sample over the x-axis of the batch.\\
 Finally, we end up with a 3D tensor for the batch data, and another 3D tensor for the filter.\\
 After the filter is done processing all the samples in the batch, the result tensor will be a 3D tensor with the following dimension lengths:
 \begin{itemize}[nosep]
@@ -461,7 +501,7 @@ After the filter is done processing all the samples in the batch, the result ten
 	\item $ result.yAxis.length = filter.xAxis.length $
 	\item $ result.zAxis.length = filter.zAxis.length $
 \end{itemize}
-Each entry over the x-axis of the result represent a processed sample, and if the z-axis of the result has $ length > 1 $, then each entry over the y-axis represents a feature map of the sample.\\\\
+Each entry over the x-axis of the result represent a processed sample, and if the z-axis of the result has $ length > 1 $, then each entry over the y-axis represents a feature map of the sample, each feature map has different derived information from the spatial location that was processed.\\
 To illustrate how this works, I've chosen a flat representation of the 3D tensors (representing 3D with 2D), mainly because this is how it's done with Numpy, and this is more practical for Computer Scientists.
 \begin{blockfigure}{Flat 2D Representation of 3D Tensors - Numpy Style}
 		\begin{center}
@@ -482,7 +522,7 @@ To illustrate how this works, I've chosen a flat representation of the 3D tensor
 	if $ filter.xAxis.length > batch.yAxis.length $, the filter is offset by an amount of $ filter\_offset =  filter\_x\_axis\_length - batch\_y\_axis\_length $ throughout the convolution process.
 \end{lemma}
 \begin{algorithm}
-	\caption{1D Convolution Pseudo-Code}
+	\caption[]{1D Convolution Pseudo-Code\protect\footnotemark}
 	\begin{algorithmic}
 		\State $ step = 0 $
 		\If{$ filter.xAxis.length >  batch.yAxis.length$}
@@ -513,14 +553,15 @@ To illustrate how this works, I've chosen a flat representation of the 3D tensor
 		\EndWhile
 	\end{algorithmic}
 \end{algorithm}
+\footnotetext{This Pseudo-Code was reconstructed from examples designed to understand 1D Convolution, implemented by the author in Tensorflow and Python. The source code for the Tensorflow conv1d operation was studied briefly, and it seems it is implemented by forcing conv2d to perform convolution over just one axis in the batch.}
 \newpage
 \subsection{\textbf{Simple ConvNet Example with 2 Conv Layers}}
 This example illustrates how stacked convolutions work, by feeding one Conv Layer output to the next one.\\\\
-It also illustrates how 1D convolution works on batch 1D data with 2D (expanded to 3D) filters in each Conv Layer.\\\\
-For the sake of simplicity:
+It also illustrates how 1D Convolution works on batch 1D data with 2D (expanded to 3D) filters in each Conv Layer.\\\\
+For the sake of simplicity, in this example:
 \begin{itemize}
 	\item We will forsake the use of activation functions between layers.
-	\item We will also use weights initialized by hand, chosen arbitrarily.
+	\item We will also use weights that are initialized manually and chosen arbitrarily.
 	\item We will use a stride length of 1.
 \end{itemize}
 \begin{blockfigure}{Simple ConvNet with 2 Conv Layers}
@@ -659,7 +700,7 @@ After the input batch tensor has been provided the filter tensor has been genera
 	\end{center}
 \end{blockfigure}
 \vspace{40pt}
-From the final output we can conclude that the output 3D tensor is of shape (3, 1, 1), and it contains 1 feature maps, there for it is similar in shape to the input tensor, as inferred in the example.
+From the final output we can conclude that the output 3D tensor is of shape (3, 2, 1), and it contains 1 feature maps, therefor it is similar in shape to the input tensor, as inferred previously in the example.
 \vspace{40pt}
 \begin{blockfigure}{squeezing of the z-axis onto the y-axis.}
 	\begin{center}
@@ -669,7 +710,7 @@ From the final output we can conclude that the output 3D tensor is of shape (3, 
 \newpage
 \section{\textbf{Batches}}
 As seen from \cref{Conv1D}, when performing convolutions: we perform each convolution on each data sample separately.\\
-Then the question arises: Why is a batch of samples is needed?
+Then the question arises: Why is a batch of samples needed?
 The short answer is simply because a batch allows for a good experiment to take place from a statistical point of view.\\\\
 When calculating the training error, each net performs mean reduction on each sample error, and a large sample is required for mean reduction (estimation), because the standard error of the mean ($ SEM $) can be expressed as:\\
 \begin{center}
@@ -746,11 +787,11 @@ As for why $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$ produced the de
 \end{definition}
 The desired output for our nets are the following:
 \begin{itemize}[nosep]
-	\item For an Encryptor-Decryptor combination, loss has positive correlation with its own loss, and negative correlation with the Eavesdropper loss:\\
+	\item For an Encryptor-Decryptor combination, loss has positive correlation with the arithmetic mean of the Encryptor-Decryptor losses, and negative correlation with the squared mean of the Eavesdropper losses:\\
 	\tab $ Loss_{positive} = mean(Decryptor_{output} - Encryptor_{input}) $\\
 	\tab $ Loss_{negative} = (1 - mean(Eavesdropper_{output} - Encryptor_{input}))^{2} $\\
 	\tab $ Loss = Loss_{positive} + Loss_{negative} $
-	\item For an Eavesdropper, loss has positive correlation with its own loss, but is intended not to be aware of the loss of the Decryptor:\\
+	\item For an Eavesdropper, loss has positive correlation with the arithmetic mean of the Eavesdropper losses, but is intended not to be aware of the losses of the Decryptor:\\
 	\tab $ Loss = mean(Eavesdropper_{output} - Encryptor_{input}) $
 \end{itemize}
 \section{\textbf{Optimizers}}
@@ -771,18 +812,18 @@ The nets designed in this thesis are divided as the following:
 \end{itemize}
 Each of these nets share the following general sequential structure:
 \begin{itemize}
-	\item Input Preprocessing: either a concatenation of two related batches (key batch + message batch, key batch + cipher batch) on top of each other to produce an input batch, or just a pass through of an input batch (cipher batch passed through to eve and alan in case of symmetric cryptography, key batch passed through to the Key Generators in case of asymmetric cryptography).\\
-	in case of concatenation the final input shape becomes $ (512, 32) $, and in case of pass-through the final input shape becomes $ (512, 16) $
-	\item Input Layer: a series of sequential fully connected layers to teach the net about cryptanalysis, which is 1 layer in case of of: Alice, Bob, Key Generators, but for Eve and Alan it is: 
+	\item \textbf{Input Preprocessing:} either a concatenation of two related batches (key batch + message batch, key batch + cipher batch) on top of each other to produce an input batch, or just a pass through of an input batch (cipher batch passed through to Eve and Alan in case of symmetric cryptography, key batch passed through to the Key Generators in case of asymmetric cryptography).\\
+	In case of concatenation, the final input shape becomes $ (512, 32) $, and in case of pass-through the final input shape becomes $ (512, 16) $.
+	\item \textbf{Input Layer:} a series of sequential fully connected layers to teach the net about cryptanalysis, which is 1 layer in case of of: Alice, Bob, Key Generators, but for Eve and Alan it is: 
 	\begin{center}
 		$ \sum_{i = 0}^{i=n} No._{fcl}[i] $ ~ Where ~
 		$ n \in [Alice, Bob, Key ~ Generators] $
 	\end{center}
 	That is to give both eavesdroppers an edge in cryptanalysis.\\
 	The input layer(s) has a weight shape of $ (16 ~ or ~ 32, 32) $, which makes it normalize the shape of the data passed to the convolutional layer to become $ (512, 32) $.
-	\item Dimensionality Expansion:  the shape of the data passed to the convolutional layer to become $ (512, 32, 1 $).
-	\item Convolutional Layers: 4 layers, the first 3 has exactly one with stride 2 to reduce the shape of the data to $ (512, 16, 1) $ and they have leakyRelu as activation functions, the final layer has tanh as an activation function.
-	\item Output Layer: reduces the dimensionality of the data to $ (512, 16) $ and gives it as an output batch. 
+	\item \textbf{Dimensionality Expansion:}  the shape of the data passed to the convolutional layer to become $ (512, 32, 1 $).
+	\item \textbf{Convolutional Layers:} 4 layers, the first 3 has exactly one with stride 2 to reduce the shape of the data to $ (512, 16, 1) $ and they have leakyRelu as activation functions, the final layer has tanh as an activation function.
+	\item \textbf{Output Layer:} reduces the dimensionality of the data to $ (512, 16) $ and gives it as an output batch. 
 \end{itemize}
 \newpage
 \begin{blockfigure}{ Net Graph Diagram - Alice}
@@ -816,13 +857,13 @@ In the training setting, both Alice and Bob are fed the same key, Alice is fed t
 Both Eve and Alan intercept the Cipher from Alice and try to decrypt it without a key.
 Every training iteration can be divided to three stages:
 \begin{itemize}
-	\item Encryptor-Decryptor Stage: Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice and Bob.
-	\item Encryptor-Eavesdropper(Eve) Stage: Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
-	\item Encryptor-Eavesdropper(Alan) Stage: Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
+	\item \textbf{Encryptor-Decryptor Stage:} Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice and Bob.
+	\item \textbf{Encryptor-Eavesdropper(Eve) Stage:} Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
+	\item \textbf{Encryptor-Eavesdropper(Alan) Stage:} Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
 \end{itemize}
 In the training setting, the Cipher is passed directly from the Encryptor to Bob, Eve and Alan, without being stored in between, because back-propagation does not work past static blocks of data (which is the case for stored Ciphers at the moment of back-propagation).\\
 \paragraph{\textbf{Testing}}\mbox{}\\
-In the testing setting, all neural nets are reconstructed with the same structures and with the same scheme in mind, the only difference is the lack of back-propagation in testing, and the need for a stored Cipher for a more production oriented system, which means the Cipher gets passed through an intermediate Matrix instead of directly, from Alice to Bob, Eve and Alan.
+In the testing setting, all neural nets are reconstructed with the same structures and with the same scheme in mind, the only difference is the lack of back-propagation in testing, and the need for a stored Cipher for a more production oriented system, which means the Cipher gets passed through an intermediate matrix instead of directly, from Alice to Bob, Eve and Alan.
 \newpage
 \begin{blockfigure}{ Symmetric Scheme}
 	\begin{center}
@@ -835,16 +876,16 @@ In the testing setting, all neural nets are reconstructed with the same structur
 In the training setting:
 \begin{itemize}
 	\item The pubKey Generator is fed a key seed and produces a public key (pubKey).
-	\item The privKey Generator is fed the pubKey and produces a private key (privKey) and produces a private key.
+	\item The privKey Generator is fed the pubKey and produces a private key (privKey).
 	\item Alice is fed the pubKey and the message (Plain) and produces a Cipher.
 	\item Bob is fed the privKey and the Cipher and tries to decrypt it.
 	\item Both Eve and Alan intercept the Cipher from Alice and try to decrypt it with the pubKey.
 \end{itemize}
 Every training iteration can be divided to three stages:
 \begin{itemize}
-	\item Encryptor-Decryptor Stage: the pubKey Generator, the privKey Generator, Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only the pubKey Generator, the privKey Generator, Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice and Bob.
-	\item Encryptor-Eavesdropper(Eve) Stage: the pubKey Generator, the privKey Generator, Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
-	\item Encryptor-Eavesdropper(Alan) Stage: the pubKey Generator, the privKey Generator, Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
+	\item \textbf{Encryptor-Decryptor Stage:} the pubKey Generator, the privKey Generator, Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only the pubKey Generator, the privKey Generator, Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice, Bob, the pubKey Generator and the privKey Generator.
+	\item \textbf{Encryptor-Eavesdropper(Eve) Stage:} the pubKey Generator, the privKey Generator, Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
+	\item \textbf{Encryptor-Eavesdropper(Alan) Stage:} the pubKey Generator, the privKey Generator, Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
 \end{itemize}
 In the training setting, the Cipher is passed directly from the Encryptor to Bob, Eve and Alan, without being stored in between, because back-propagation does not work past static blocks of data (which is the case for stored Ciphers at the moment of back-propagation).
 The same goes for the privKey-pubKey pair: 
@@ -852,13 +893,13 @@ The same goes for the privKey-pubKey pair:
 	\item The pubKey is passed directly to the privKey Generator, Alice, Eve and Alan without being stored.
 	\item The privKey is passed directly from the privKey Generator to Bob without being stored.
 \end{itemize}
-Because we need the back-propagation to reach the pubKey Generator and the privKey generator while training.
+Because we need back-propagation to reach the pubKey Generator and the privKey generator while training.
 \paragraph{\textbf{Testing}}\mbox{}\\
 In the testing setting, all neural nets are reconstructed with the same structures and with the same scheme in mind, the only difference is the lack of back-propagation in testing, and the need for a stored Cipher and a stored pubKey-privKey pair, for a more production oriented system. Which means: 
 \begin{itemize}
-	\item The Cipher gets passed through an intermediate Matrix instead of directly, from Alice to Bob, Eve and Alan.
-	\item The pubKey gets passed through an intermediate Matrix instead of directly, to the privKey Generator, Alice, Eve and Alan.
-	\item The privKey gets passed through an intermediate Matrix instead of directly, from the privKey Generator to Bob.
+	\item The Cipher gets passed through an intermediate matrix instead of directly, from Alice to Bob, Eve and Alan.
+	\item The pubKey gets passed through an intermediate matrix instead of directly, to the privKey Generator, Alice, Eve and Alan.
+	\item The privKey gets passed through an intermediate matrix instead of directly, from the privKey Generator to Bob.
 \end{itemize}
 \newpage
 \begin{inlinefigure}{ Asymmetric Scheme}
@@ -868,7 +909,7 @@ In the testing setting, all neural nets are reconstructed with the same structur
 \end{inlinefigure}
 \newpage
 \subsection{\textbf{Hybrid Scheme}}
-The idea behind this scheme is to use one scheme (asymmetric) in training, and another scheme (symmetric) in testing, and the aim is to bring the performance of the symmetric scheme to closely match that of the asymmetric scheme, the method behind such reconstruction from a symmetric-trained graph to an asymmetric-trained graph is called transfer learning.
+The idea behind this scheme is to use one scheme (asymmetric) in training, and another scheme (symmetric) in testing, and the aim is to bring the performance of the symmetric scheme to closely match that of the asymmetric scheme, the method behind such reconstruction from an asymmetric-trained graph to a symmetric-trained graph is called transfer learning.
 \begin{definition}\label{definition:\thedefinition}
 	(Transfer Learning): Given a source domain $ D_{S} $
 	and learning task $ T_{S} $ , a target domain $ D_{T} $ and learning task
@@ -879,17 +920,17 @@ The idea behind this scheme is to use one scheme (asymmetric) in training, and a
 \paragraph{\textbf{Training}}\mbox{}\\
 In the training setting, the graph follows the training setting of the asymmetric scheme.
 \paragraph{\textbf{Transfer Learning}}\mbox{}\\
-From definition \ref{definition:\thedefinition}, we consider ~$ D = \{X , P (X)\} $, the data sets (that is $ X $) (key batch, message (plain) batch) and (key-seed batch, message (plain) batch) are same, in the sense that they have the same sizes and they are both randomly generated, they also both follow the same normalized binary format (-1, 1).\\
-$ P (X) $ is also the same from an intuitive standpoint, since both symmetric and asymmetric schemes produce predictions of the plain message that are of the same batch size, and are floating point values distributed between -1 and 1, which is a point that needs to be further studied.\\
-Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P (Y |X)\} $, the label spaces $ Y_{S} = Y_{T} $ since the source label space (asymmetric) is the same as the target label space (symmetric), in the sense that they both deal with (plain, key) labels as input and (predicted plain) labels as output.\\
+From definition \ref{definition:\thedefinition}, we consider ~$ D = \{X , P (X)\} $, the data sets (that is $ X $) (key batch, message (plain) batch) and (key-seed batch, message (plain) batch) are the same, in the sense that they have the same sizes and they are both randomly generated, they also both follow the same normalized binary format (-1, 1).\\
+$ P (X) $ is also the same for both schemes from an intuitive standpoint, since both symmetric and asymmetric schemes produce predictions of the plain message that are of the same batch size, and are floating point values distributed between -1 and 1, but since we don't yet have statistical data on how they are distributed, this point needs to be further studied.\\
+Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P (Y |X)\} $, the label spaces $ Y_{S} $, $ Y_{T} $ are equal since the source label space (asymmetric) is the same as the target label space (symmetric), in the sense that they both deal with (plain, key) labels as input and (predicted plain) labels as output.\\
 But $ P (Y |X) $ differs between the two schemes from an intuitive standpoint, that is the conditional probability distributions between the schemes are
 different, which is a point that also needs to be further studied.\\
 \begin{conjecture}
 	beside the reason why transfer learning applies to the hybrid system, a reason to why it works well may lie in the asymmetric-training stage's ability to provide trained weights that are derived from training on generated keys that are a floating point distribution, as opposed to training on keys that are of normalized binary form in the classical symmetric scheme training stage.
 \end{conjecture}
 \paragraph{\textbf{Testing}}\mbox{}\\
-In the testing setting, all neural nets are reconstructed with the same internal structure, but they differ of how they handle input and output, to be geared towards symmetric cryptography.\\
-There is also the need for a stored Cipher for a more production oriented system, which means the Cipher gets passed through an intermediate Matrix instead of directly, from Alice to Bob, Eve and Alan.
+In the testing setting, all neural nets are reconstructed with the same internal structure, but they differ in how they handle input and output, to be geared towards symmetric cryptography.\\
+There is also the need for a stored Cipher for a more production oriented system, which means the Cipher gets passed through an intermediate matrix instead of directly, from Alice to Bob, Eve and Alan.
 \newpage
 \begin{blockfigure}{ Hybrid Scheme}
 	\begin{center}
@@ -946,11 +987,11 @@ It is also expected after further development that the hybrid scheme will lose i
 \newpage
 \chapter{Results}\label{sec:results}
 \section{\textbf{Thesis Results}}
-The results from the various experiments conducted once daily over the course of 3-4 months can be described as the following:
+The results from the various experiments implemented in the project and run daily over the course of 3-4 months can be described as the following:
 \begin{itemize}
-	\item \textbf{Symmetric Scheme:} experiments conducted were fluctuant in results at some points in time, but can be considered consistent over the entire period, this form of neural cryptography was not the most stable or promising throughout the experiments, but its results are already on par with results from previous works.
+	\item \textbf{Symmetric Scheme:} experiments conducted were fluctuant in results at few points in time, but can be considered consistent over the entire period, this form of neural cryptography was not the most stable or promising throughout the experiments, but its results are solid and are already on par with results from previous works.
 	\item \textbf{Asymmetric Scheme:} experiments conducted were very consistent, and produced very promising results.
-	\item \textbf{Hybrid Scheme:} experiments conducted were very consistent, and produced very promising results, in fact the results were consistent with those from the Asymmetric scheme, therefor they need to be studied further to determine why.
+	\item \textbf{Hybrid Scheme:} experiments conducted were very consistent, and produced very promising results, in fact the results were very close to those from the Asymmetric Scheme, therefor they need to be studied further to determine why.
 \end{itemize}
 To ensure the soundness of the experiments, class initiation calls were logged, as well as the method resolution order upon scheme composition.
 \subsection{\textbf{Physical Infrastructure \& Consumption}}
@@ -1016,7 +1057,7 @@ To ensure the soundness of the experiments, class initiation calls were logged, 
 \subsection{\textbf{Results from Liam Schoneveld}~\citep{nlml/adversarial-neural-cryptography}}
 Liam did his experiment on symmetric neural cryptography, with his own Theano implementation of \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, his nets trained for 60 epochs, 2000 iterations each.\\
 But for the sake of comparison, I cloned his code and ran it for 10 epochs (2000 iterations each) on my device, and it produced the following result.
-\begin{blockfigure}{Liam Schonevel - Symmetric Training}
+\begin{blockfigure}{Liam Schoneveld - Symmetric Training}
 	\begin{center}
 		\includegraphics[width = 0.63\textwidth]{nlml_results_conv}
 	\end{center}
@@ -1057,7 +1098,7 @@ As for asymmetric neural cryptography, they used a slightly different scheme, ma
 		This dissertation provided an example showcasing that neural nets can learn to minimize loss in integrity of information while maximizing confidentiality. It has also provided an example of how to transfer what they have learned to be applied in different cryptographic settings.\\
 		However, what the experiments didn't consider is the contrast between how neural nets rely on floating point distributions opposite to the randomized binary of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor giving a false positive), or the opposite.\\
 		It also did not consider any statistical properties of the bottlenecks between the different nets beyond the least squared means, and more study into these statistical properties is needed (e.g. KL-Divergence).\\
-		Finally, while the study was done according to software engineering standards, it is still beyond a production ready solution to cryptography, and more real-world designs need to be implemented for these systems to be tested on real life data.\\
+		Finally, while the study was done according to software engineering standards, it is still beyond a production ready solution to neural cryptography, and more real-world designs need to be implemented for these systems to be tested on real life data.\\
 		For this reason it is my hope that in the future I continue pondering such questions and continue designing experiments to provide answers to them.\\
 	\end{minipage}
 \end{center}
