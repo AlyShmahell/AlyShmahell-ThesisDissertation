@@ -1,7 +1,7 @@
 \documentclass[a4paper, 12pt]{report}
 \usepackage[bottom,flushmargin,hang,multiple]{footmisc}
 \listfiles
-
+\usepackage[autostyle]{csquotes}
 %% Title Definition Packages & Commands %%
 \usepackage{titlesec}
 \titleformat
@@ -22,6 +22,8 @@
 \renewcommand{\paragraph}[1]{\paragraph{#1}\mbox{}\\}
 %%%%
 
+
+
 \usepackage{enumitem}
 
 \usepackage{fontawesome}
@@ -35,6 +37,7 @@
 %% \usepackage{preiclr,times}
 \usepackage{iclr2017_conference,times}
 \iclrfinalcopy
+\setlength{\bibsep}{2pt}
 %%%%
 
 %% Bibliography Package %%
@@ -209,7 +212,7 @@
 	\noindent
 		This thesis is comprised of the following parts:
 		\begin{itemize}[nosep]
-			\item A software project (codenamed "neurencoder") engineered to test the models presented herein.
+			\item A software project (codenamed "neurencoder") engineered to test the models presented in the thesis.
 			\item This dissertation which serves as a documentation for the project, a presentation of its results, and a platform to explain the theories behind it.
 		\end{itemize}	
 		\vspace{-0.3cm}
@@ -288,7 +291,7 @@
 			\begin{colortable}{}\faGithub & @AlyShmahell \\\hline
 				\faGitlab & @AlyShmahell \\\hline
 				\faTwitter & @AlyShmahell \\\hline
-				\faLinkedinSquare &  alyshmahell \\\hline
+				\faLinkedinSquare &  www.linkedin.com/in/alyshmahell \\\hline
 				\faInbox &  aly.shmahell@gmail.com \\\hline
 			\end{colortable}
 		\end{nscenter}
@@ -302,10 +305,12 @@
 \begin{center}
 	\begin{minipage}{0.8\textwidth}
 			\justify
-			The question whether neural networks can learn to use secret keys to protect information from other neural networks has been asked, and the answer is yes, to a degree. 
-			The next question is, whether they can do it to a degree that guarantees integrity of information beside confidentiality.
-			In this thesis, the goal is to enhance the methods employed in a neural net based multi-agent system to maximize confidentiality, while keeping loss of information integrity to a minimum. We ask whether such a system (consisting of neural networks named Alice and Bob) can hold against an unknown malicious adversary (a neural network named Alan) while having been training against a known helpful adversary (a neural network named Eve), both adversaries having access to the information channel between Alice and Bob, and thus acting as eavesdroppers.
-			This thesis finally tries to put what the system learned in one setting (asymmetric cryptography) to use in another (symmetric cryptography). This thesis explores the theories behind neural cryptography, and provides research-based empirical evidence for its results.
+			It has been established that neural networks can learn to use encryption keys to protect information from other neural networks.
+			The next question is, whether they can do it to a degree of efficacy that guarantees integrity of information alongside confidentiality.
+			In this thesis, the goal is to enhance the heuristic methods employed in a neural-net-based multi-agent system to maximize confidentiality, while keeping loss of information-integrity to a minimum.
+			We ask whether such a system, consisting of neural networks named Alice and Bob, can hold against an unknown malicious adversary which is a neural network named Alan, while having been training against a known helpful adversary which is a neural network named Eve, with the fact that both adversaries have access to the information channel between Alice and Bob, and thus acting as eavesdroppers.
+			This thesis finally tries to put what the system has learned in one setting (asymmetric cryptography) to use in another (symmetric cryptography), by employing transfer learning.
+			This thesis explores the theoretical basics behind neural cryptography, and provides software-engineered research-based empirical evidence for its results.
 	\end{minipage}
 \end{center}
 \newpage
@@ -324,8 +329,8 @@ The goal of my research is to provide the following:
 \begin{itemize}
 	\item An addition to the variety of the underlying neural-building methods provided in the original paper.
 	\item An improvement in performance of the models being built.
-	\item An in-depth analysis of how the components work, and the inner details of their mechanics.
-	\item A software documentation that provides a blueprint for a more software-engineering oriented neural crypto-system prototype.
+	\item An in-depth analysis of how the components work, the mathematical \&  algorithmic mechanisms behind them.
+	\item A software documentation that provides a blueprint for a more software-engineering oriented prototype of a neural crypto-system.
 \end{itemize}
 With the research specter in this area being dominated by authors coming from a mathematical-background, my thesis aims to provide:
 \begin{itemize}
@@ -362,7 +367,7 @@ Which lead to these thesis-related factors:
 	\item \textbf{Neural Cryptography can be fast:} A result of using convolutions is that the small-sized pattern-finding filter has shared weights (and biases) for all spatial locations which the convolution processes, and this reduces the compute-power required for the whole process compared to other network models.
 	\item \textbf{Neural Cryptography is evolved opposite to being patched:} Adversarial computation has been proven to be effective for years in the form of Genetic Algorithms, and adding adversary as a non-supervised generative model provides a better and easier experiment on how to synthesize a new form of cryptography.
 \end{itemize}
-\footnotetext[1]{Spatial Relations in Cryptography and Cryptanalysis can be found in the Appendix~\cref{appendix:1}.\label{footnote:1}}
+\footnotetext[1]{Spatial Relations in Cryptography and Cryptanalysis can be found in the Appendix on page~\pageref{appendix:1}.\label{footnote:1}}
 \newpage
 \section{\textbf{Previous Work}}
 The work being done so far in neural cryptography can be divided to old (pre 2016), and new (post 2016). For the old section, this thesis will only list the works and attributions without delving into the details.
@@ -480,15 +485,17 @@ To keep the variance of the input gradient \& the output gradient the same, we c
 \newpage
 \section{\textbf{1D Convolution}}\label{Conv1D}
 \begin{definition}
-	(1D Convolution): is the process of using a small window to determine local spatial relations over a 1D data sample, regardless whether the sample is inside an n-D data pocket.\\
+	(1D Convolution): is the process of using a small window to determine local spatial relations over a 1D data sample, regardless of whether the sample is inside an n-D data batch.
 \end{definition}
-\vspace{-0.6cm}
-When looking for examples and literature on convolution, the vast majority of what is available is on 2D convolution, and what might be found on 1D convolution is usually done on 1D data with 1D filter~\citep{math-behind-1d-convolution-with-advanced-examples-in-tf}.
-Therefor, for the purposes of this study, a more complex example will be presented.
+When looking for examples and literature on convolution, the vast majority of what is available is on 2D Convolution, and what might be found on 1D Convolution is usually done on 1D data with 1D filters~\citep{math-behind-1d-convolution-with-advanced-examples-in-tf}.
+Therefor, for the purposes of this study, a more complex example of 1D Convolution will be presented.\\\\
+
+\textbf{Note:} This section on 1D Convolution with its explanations, Pseudo-Code and examples, was reconstructed from practical experiments designed to understand 1D Convolution, implemented by the author in Tensorflow and Python.\\
+The source code for the Tensorflow 1D Convolution operation (conv1d) was studied briefly, and it seems it is implemented by forcing 1D Convolution (conv2d) to perform convolution over just one axis in the batch, but in this thesis the focus will be on reconstructing 1D Convolution on its own.\\
 \section{\textbf{1D Convolution on Batch 1D Data with (1,2)-D Filters}}
 At this moment, the best tool available for representing data samples is \textbf{tensors}, and therefor determining local spatial relations amounts to matrix multiplications of the spatial locations inside the data sample tensor by the portion of the filter tensor that fits the location.\\
 In order for the convolution to do these multiplications, it \textbf{slides} over one axis of the 1D data sample, the y-axis, the filter also \textbf{slides} itself to fit the location.\\
-In order to perform 1D convolution with a 2D filter (having an x-axis and a y-axis), we need to add another axis to both the data and the filter; done by injecting a z-axis into the y-axis, effectively expanding the y-axis over the z-axis. In this case, when the filter \textit{slides}~itself, it \textit{slides}~over its x-axis.\\
+In order to perform 1D Convolution with a 2D filter (having an x-axis and a y-axis), we need to add another axis to both the data and the filter; done by injecting a z-axis into the y-axis, effectively expanding the y-axis over the z-axis. In this case, when the filter \textit{slides}~itself, it \textit{slides}~over its x-axis.\\
 In this format, the window processing is done by multiplying the z-axis of the sample by the y-axis of the filter, over the x-axis of the filter.\\
 Every \textit{slide} is done over a fixed length called a stride, and every \textit{slide} represents moving the filter window over to a new spatial location in the sample.\\
 It is also important to note that since the stride determines how many steps to slide upon each time, it is synonymous to dividing the length of the z-axis of the final input over the stride length.\\
@@ -522,7 +529,7 @@ To illustrate how this works, I've chosen a flat representation of the 3D tensor
 	if $ filter.xAxis.length > batch.yAxis.length $, the filter is offset by an amount of $ filter\_offset =  filter\_x\_axis\_length - batch\_y\_axis\_length $ throughout the convolution process.
 \end{lemma}
 \begin{algorithm}
-	\caption[]{1D Convolution Pseudo-Code\protect\footnotemark}
+	\caption[]{1D Convolution Pseudo-Code}
 	\begin{algorithmic}
 		\State $ step = 0 $
 		\If{$ filter.xAxis.length >  batch.yAxis.length$}
@@ -553,7 +560,6 @@ To illustrate how this works, I've chosen a flat representation of the 3D tensor
 		\EndWhile
 	\end{algorithmic}
 \end{algorithm}
-\footnotetext{This Pseudo-Code was reconstructed from examples designed to understand 1D Convolution, implemented by the author in Tensorflow and Python. The source code for the Tensorflow conv1d operation was studied briefly, and it seems it is implemented by forcing conv2d to perform convolution over just one axis in the batch.}
 \newpage
 \subsection{\textbf{Simple ConvNet Example with 2 Conv Layers}}
 This example illustrates how stacked convolutions work, by feeding one Conv Layer output to the next one.\\\\
@@ -729,7 +735,7 @@ While doing the experiments with the project code, three combinations of activat
 	\item $" Tanh \rightarrow LeakyRealu \rightarrow Tanh "$.
 	\item $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$.
 \end{itemize}
-If we take a look at the "Graph Diagram for an Example Dummy ConvNet" in page.~\pageref{fig:SimpleNetDiagram}, we deduce the following:
+If we take a look at the "Graph Diagram for an Example Dummy ConvNet" on page.~\pageref{fig:SimpleNetDiagram}, we deduce the following:
 \begin{itemize}[nosep]
 	\item The combination of activation functions chosen is: $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$.
 	\item Each function is fed the result of matrix multiplication operations (involving float weight values), therefor each function receives float values as input.
@@ -920,13 +926,18 @@ The idea behind this scheme is to use one scheme (asymmetric) in training, and a
 \paragraph{\textbf{Training}}\mbox{}\\
 In the training setting, the graph follows the training setting of the asymmetric scheme.
 \paragraph{\textbf{Transfer Learning}}\mbox{}\\
-From definition \ref{definition:\thedefinition}, we consider ~$ D = \{X , P (X)\} $, the data sets (that is $ X $) (key batch, message (plain) batch) and (key-seed batch, message (plain) batch) are the same, in the sense that they have the same sizes and they are both randomly generated, they also both follow the same normalized binary format (-1, 1).\\
-$ P (X) $ is also the same for both schemes from an intuitive standpoint, since both symmetric and asymmetric schemes produce predictions of the plain message that are of the same batch size, and are floating point values distributed between -1 and 1, but since we don't yet have statistical data on how they are distributed, this point needs to be further studied.\\
-Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P (Y |X)\} $, the label spaces $ Y_{S} $, $ Y_{T} $ are equal since the source label space (asymmetric) is the same as the target label space (symmetric), in the sense that they both deal with (plain, key) labels as input and (predicted plain) labels as output.\\
-But $ P (Y |X) $ differs between the two schemes from an intuitive standpoint, that is the conditional probability distributions between the schemes are
-different, which is a point that also needs to be further studied.\\
+From definition \ref{definition:\thedefinition}, we consider ~$ D = \{X , P (X)\} $, with $ X $ representing the data sets, and $ P(X) $ representing the predictions:
+\begin{itemize}[nosep]
+	\item $ \textbf{X} $\textbf{:} the data sets (key batch, plain-message batch) and (key-seed batch, plain-message batch) are the same, in the sense that they have the same sizes and they are both randomly generated, they also both follow the same normalized binary format (-1, 1).
+	\item $ \textbf{P(X)} $\textbf{:} is also the same for both schemes from an intuitive standpoint, since both symmetric and asymmetric schemes produce predictions of the plain message that are of the same batch size, and are floating point values distributed between -1 and 1, but since we don't yet have statistical data on how they are distributed, this point needs to be further studied.
+\end{itemize}
+Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P(Y|X)\} $, with $ Y_{S} $, $ Y_{T} $ representing the label spaces, and $ P(Y|X) $ representing the conditional probability distributions:
+\begin{itemize}[nosep]
+	\item $ \boldsymbol{Y_{S}} $\textbf{,} $ \boldsymbol{Y_{T}} $\textbf{:} are equal since the source label space (asymmetric) is the same as the target label space (symmetric), in the sense that they both deal with (plain, key) labels as input and (predicted-plain) labels as output.
+	\item $ \boldsymbol{P(Y|X)} $\textbf{:} differs between the two schemes from an intuitive standpoint, that is the conditional probability distributions between the schemes are different, which is a point that also needs to be further studied.
+\end{itemize}
 \begin{conjecture}
-	beside the reason why transfer learning applies to the hybrid system, a reason to why it works well may lie in the asymmetric-training stage's ability to provide trained weights that are derived from training on generated keys that are a floating point distribution, as opposed to training on keys that are of normalized binary form in the classical symmetric scheme training stage.
+	beside the reason why transfer learning applies to the hybrid system, a reason to why it works well may lie in the asymmetric-training stage's ability to provide trained weights that are derived from training on generated keys that come from a floating point distribution, as opposed to training on keys that are of normalized binary form in the symmetric-scheme training stage.
 \end{conjecture}
 \paragraph{\textbf{Testing}}\mbox{}\\
 In the testing setting, all neural nets are reconstructed with the same internal structure, but they differ in how they handle input and output, to be geared towards symmetric cryptography.\\
@@ -1055,8 +1066,8 @@ To ensure the soundness of the experiments, class initiation calls were logged, 
 \newpage
 \section{\textbf{Results from Previous Works}}
 \subsection{\textbf{Results from Liam Schoneveld}~\citep{nlml/adversarial-neural-cryptography}}
-Liam did his experiment on symmetric neural cryptography, with his own Theano implementation of \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, his nets trained for 60 epochs, 2000 iterations each.\\
-But for the sake of comparison, I cloned his code and ran it for 10 epochs (2000 iterations each) on my device, and it produced the following result.
+Liam did his experiment on symmetric neural cryptography, with his own Theano implementation of \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, his nets trained for 60 epochs, 2000 iterations each.
+But for the sake of comparison with my results, I cloned his code and ran it for 10 epochs (2000 iterations each) on my device, and it produced the following result.
 \begin{blockfigure}{Liam Schoneveld - Symmetric Training}
 	\begin{center}
 		\includegraphics[width = 0.63\textwidth]{nlml_results_conv}
@@ -1064,15 +1075,15 @@ But for the sake of comparison, I cloned his code and ran it for 10 epochs (2000
 \end{blockfigure}
 \subsection{\textbf{Results from Ankesh Anand}~\citep{ankeshanand/neural-cryptography-tensorflow}}
 Ankesh designed his experiment for symmetric neural cryptography, with his own Tensorflow implementation of \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, his system was designed to run for 60 epochs, 2000 iterations each.
-But since he does not have result figures readily available, and for the sake of comparison, I cloned his code and ran it for 10 epochs (2000 iterations each) on my device, and it produced the following result.
+But since he does not have result figures readily available, and for the sake of comparison with my results, I cloned his code and ran it for 10 epochs (2000 iterations each) on my device, and it produced the following result.
 \begin{blockfigure}{Ankesh Anand - Symmetric Training}
 	\begin{center}
-		\includegraphics[width = 0.63\textwidth]{ankesh_results_conv}
+		\includegraphics[width = 0.62\textwidth]{ankesh_results_conv}
 	\end{center}
 \end{blockfigure}
 \newpage
 \subsection{\textbf{Results from Google Brain} ~\citep{DBLP:journals/corr/AbadiA16}}
-The experiments conducted by the authors of the paper \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, were done on both symmetric and asymmetric neural cryptography, they used a larger batch size of 4096, and ran their experiments for longer steps.\\
+The experiments conducted by the authors of the paper \textit{Learning to Protect Communications with Adversarial Neural Cryptography} ~\citep{DBLP:journals/corr/AbadiA16}, were done on both symmetric and asymmetric neural cryptography, they used a larger batch size of 4096, and ran their experiments for longer periods.\\
 For symmetric neural cryptography, they used the same scheme presented in this thesis.
 \begin{blockfigure}{Google Brain - Symmetric Training}
 	\begin{center}
@@ -1096,25 +1107,27 @@ As for asymmetric neural cryptography, they used a slightly different scheme, ma
 	\begin{minipage}{0.8\textwidth}
 		\justify
 		This dissertation provided an example showcasing that neural nets can learn to minimize loss in integrity of information while maximizing confidentiality. It has also provided an example of how to transfer what they have learned to be applied in different cryptographic settings.
-		However, what the experiments didn't consider is the contrast between how neural nets rely on floating point distributions opposite to the randomized binary of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor giving a false positive), or the opposite.
-		It also did not consider any statistical properties of the bottlenecks between the different nets beyond the least squared means, and more study into these statistical properties is needed (e.g. KL-Divergence), similar to the research seen in the paper "Context-Aware Generative Adversarial Privacy
-		"~\citep{e19120656}.
-		It did not consider modern modes of cryptographic operations as well, which is considered an important corner stone in modern cryptography, further research into teaching neural nets how to synthesize rigorous modes of operation need to be done, as a starting point, we can consider the CTR Mode of block-ciphers.~\citep{BlockCipherModes}
-		Finally, while the study was done according to software engineering standards, it is still beyond a production ready solution to neural cryptography, and more real-world designs need to be implemented for these systems to be tested on real life data.\\
-		For these reasons, it is my hope that in the future I continue pondering such questions and continue designing experiments to provide answers to them.
 	\end{minipage}
 \end{center}
-Some of my postulates which I hope to explore are:
-\begin{itemize}
-	\item Reducing each plain message sample size to one character in order to make the system more production ready, while keeping the key sample size size large to preserve confidentiality and maintain convolution ability.
-	\item Adding a Bernouli Distribution at the end of the decoder's output layer to force the decoder to optimize for binary output. This will force the encoder in turn to provide better floating point distributed ciphers to account for the limited binary range of the decoder's output.
-	\item Considering the entire batch as a block, and infusing each plain message batch with a key batch containing the same key in each sample, to make the system more secure against frequency analysis, and to preserve relation locality in data.
+\section*{\textbf{Points of Future Research}}
+\begin{itemize}[nosep]
+	\item The contrast between how neural nets rely on floating point distributions opposite to the randomized binary of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor giving a false positive), or the opposite.
+	\item The statistical properties of the bottlenecks between the different nets beyond the least squared means, as more study into these statistical properties is needed (e.g. KL-Divergence), similar to the research seen in the paper "Context-Aware Generative Adversarial Privacy
+	"~\citep{e19120656}.
+	\item Modern modes of cryptographic operations, which is considered an important corner stone in modern cryptography, further research into teaching neural nets how to synthesize rigorous modes of operation need to be done, as a starting point, we can consider the CTR Mode of block-ciphers.~\citep{BlockCipherModes}
+	\item A production ready solution to neural cryptography, as more real-world designs need to be implemented for these systems to be tested on real life data.
 \end{itemize}
-Some of the methods that might achieve the desired results might be:
+\section*{\textbf{Proposed General Considerations}}
+	\begin{itemize}
+		\item \textbf{Constructing a production ready crypto-system:} by reducing each plain message sample size to one character, while keeping the key sample size large to preserve confidentiality and maintain convolution ability.
+		\item \textbf{Countering cryptanalysis in the new system:} by considering the entire batch as a block, and infusing each plain message batch with a key batch containing the same key in each sample, which should preserve relation locality in data.
+		\item \textbf{Testing for the effects of floating point distributions:} by infusing the decoder's output layer with a Bernouli Distribution~\citep{http://mathworld.wolfram.com/BernoulliDistribution.html} layer, to force the decoder to optimize for binary output, this will force the encoder in turn to provide better ciphers to account for the limited binary range of the decoder's output.
+	\end{itemize}
+\section*{\textbf{Proposed Model-Structure Considerations}}
 \begin{itemize}
-	\item An RNN infused 1D Convolution.\footnote{RNN: recurrent neural network}
-	\item A VAE infused scheme.\footnote{VAE: variational auto encoder}
-	\item A scheme with neuroevolution as its optimization process.\footnote{Neuroevolution is the process of using a genetic algorithm to evolve (optimize) a neural network.~\citep{Floreano2008}~\citep{DBLP:journals/corr/abs-1803-00657}}
+	\item An RNN infused 1D Convolution.\footnote{RNN: recurrent neural network\citep{Hochreiter1997}}
+	\item A VAE infused scheme.\footnote{VAE: variational auto encoder\citep{2013arXiv1312.6114K}}
+	\item A scheme with neuroevolution as its optimization process.\footnote{Neuroevolution is the process of using a genetic algorithm to evolve (optimize) a neural network.~\citep{Floreano2008}~\citep{DBLP:journals/corr/abs-1803-00657}\citep{GeneticLander}}
 \end{itemize}
 \newpage
 \begin{blockfigure}{RNN Infused 1D Convolution}
@@ -1135,15 +1148,25 @@ Some of the methods that might achieve the desired results might be:
 \newpage
 \chapter*{Appendix}
 \section*{\textbf{Spatial Relations in Cryptography and Cryptanalysis}}\label{appendix:1}
-\begin{conjecture}
-	 cryptographic patterns are local spatial relations in plaintext, and cryptanalysis finds patterns by analyzing global spatial locations in ciphertext
-\end{conjecture}
-As we are trying to make neural nets learn cryptography that can parallel modern cryptographic algorithms, we need to teach neural nets to understand patterns in data which resemble patterns found in cryptography and cryptanalysis.\\
-These patterns, as I see them, can be described like the following:
+As we try to make neural nets learn cryptography that can parallel modern cryptographic algorithms, we need to teach neural nets to understand patterns in data which resemble patterns found in cryptography and cryptanalysis.\\
+These patterns, as I see them, can be titled like the following:
 \begin{itemize}
-	\item As for cryptography, if we take block ciphers as an example, they encrypt a group of plaintext symbols as one block, and they repeat this process for each block until the whole plaintext is encrypted, each block resembles a local spatial location and therefor has local spatial relations between its symbols, this means cryptography works on local spatial relations in plaintext.
-	\item As for cryptanalysis, if we take frequency analysis as an example, the frequency of symbols is analysed throughout the entire ciphertext, the entirety of the ciphertext resembles one global spatial location and therefor shares global spatial relations between its symbols, this means cryptanalysis works on global spatial relations in ciphertext.
+	\item Cryptographic Patterns.
+	\item Cryptanalytic Patterns.
 \end{itemize}
+\subsection*{\textbf{Cryptographic Patterns}}
+\blockquote{Assume the existence of a matching operator $ \rhd $ for matching a value
+$ v $ against a pattern $ p $, written $ v \rhd p $. Such a construct should be used upon input or decryption in a process calculus, and the general idea is then that a process $ v \rhd p $ in $ P $ first verifies that $ v $ matches $ p $; if this is the case the continuation process is updated with any newly mapped variables, and executed, otherwise the execution will be blocked.
+The matching $ T(n, m) \rhd T(y, m) \lhd [y] $ in $ P $ should succeed because the tuple $ T(n, m) $ matches $ T(y, m) $. This results in the mapping of the variable $ y $ to the name $ n $ in the continuation process $ P $. The matching $ T(n, m) \rhd T(y, y) \lhd [y] $ in $ P $ on the other hand would not succeed as both n and m cannot match the pattern y, and thus further execution is garbled.~\citep{Nielsen2007CryptographicPM}}
+The cryptographic patterns described here are mathematically constructed with a mapping function using an operator $ \rhd $, and from this abstract construction of cryptography we can deduce the necessity for a great level of mapping of local spacial locations from plaintext to ciphertext.
+\subsection*{\textbf{Cryptanalytic Patterns}}
+Cryptanalysis relies heavily on statistical analysis to find patterns in ciphertext to use them later on in breaking the encryption, and therefor when building a crypto-system it's essential to build it with statistical hypothesis testing in mind.\citep{7031850}\\
+Crypto Statistical Analysis of the ciphertext can be run on both global spatial locations and local spacial locations, but by taking a lesson from frequency analysis, it is safe to assume the priority of running the analysis on global spatial locations first in order to deduce where the local spatial locations occur, and thus the emphasis in cryptanalysis is on finding global spatial relations in ciphertext.\\
+\begin{hypothesis}\end{hypothesis}
+	\begin{itemize}[nosep]
+		\item Cryptographic Patterns are constructed by mapping local spatial relations from the plaintext to the ciphertext.
+		\item Cryptanalysis Patterns are global spatial relations in ciphertext that facilitate finding and analyzing local spatial relations from ciphertext to plaintext. 
+	\end{itemize}
 \newpage
 \chapter*{Acknowledgments}
 I would like to thank the following entities for their help and support:
@@ -1152,7 +1175,7 @@ I would like to thank the following entities for their help and support:
 	\item \textbf{The International Office at UnivAQ}: for their financial support which made completing this thesis possible.
 	\item \textbf{Ankesh Anand}, PhD student in the machine learning laboratory at the University of Montreal: for his correspondence to my emails regarding questions about his previous work in this area\citep{ankeshanand/neural-cryptography-tensorflow}.
 	\item \textbf{Justin Johnson}, PhD student in the Stanford Vision Lab: for his correspondence to my emails regarding his work on the lecture notes of the course titled \textit{"CS231n Convolutional Neural Networks for Visual Recognition"}\citep{cs231n}.
-	\item \textbf{PROF. DR.-ING. Christof Paar}, Chair for Embedded Security at Ruhr Universitat Bochum: for his correspondence to my emails regarding my inquiries about abstract differences between cryptography and cryptanalysis, and his insight about the importance of cryptographic modes of operation.
+	\item \textbf{Prof. Dr.-Ing. Christof Paar}, Chair for Embedded Security at Ruhr Universitat Bochum: for his correspondence to my emails regarding my inquiries about abstract differences between cryptography and cryptanalysis, and his insight about the importance of cryptographic modes of operation.
 \end{itemize}
 \newpage
 \medskip
