@@ -10,6 +10,3 @@
 | <ul><li>- [x] </li></ul>  | Implementation| 23-06-2018 |
 | <ul><li>- [x] </li></ul>  | Conclusion    | 30-06-2018 |
 | <ul><li>- [x] </li></ul>  | Appendix & Abstract | 07-06-2018 |
-
-=======
-My BCompSc Thesis, this repository contains the dissertation part.
