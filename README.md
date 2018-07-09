@@ -1,4 +1,5 @@
 # Hyper Heuristic Cryptography with Mixed Adversarial Nets
+<<<<<<< HEAD
 ## Bachelor Thesis 
 ### Thesis title: Hyper Heuristic Cryptography with Mixed Adversarial Nets
 ### Thesis project codename: neurencoder
@@ -16,3 +17,6 @@
 | <ul><li>- [ ] </li></ul>  | Conclusion    | 30-06-2018 |
 | <ul><li>- [ ] </li></ul>  | Appendix & Abstract | 07-06-2018 |
 
+=======
+My BCompSc Thesis, this repository contains the dissertation part.   
+>>>>>>> 3d67d3b12913c96350aff75db3bb349f27560772
