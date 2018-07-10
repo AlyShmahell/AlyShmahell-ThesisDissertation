@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+	Experiments to reconstruct 1D Convolution on n-D data with n-D filters where: 1 =< n =< 3.
+	Inspired by: http://www.riptutorial.com/tensorflow/example/30750/math-behind-1d-convolution-with-advanced-examples-in-tf
+"""
+__author__ = "Aly Shmahell"
+__copyright__ = "Copyright © 2018, Aly Shmahell"
+__license__ = "All Rights Reserved"
+__version__ = "TDPR1"
+__maintainer__ = "Aly Shmahell"
+__email__ = "aly.shmahell@gmail.com"
+__status__ = "Thesis Defense PreRelease"
+
 '''
 import tensorflow as tf
 

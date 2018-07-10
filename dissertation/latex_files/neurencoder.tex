@@ -420,7 +420,7 @@ This ConvNet has 6 key components which we will go over as the following:
 \begin{lemma}\label{lemma1}
 Suppose our net uses the hyperbolic tangent activation function for its neurons:\\
 \begin{blockfigure}{Example Plot of the Hyperbolic Tangent}
-	\[ \includegraphics[width=0.6\textwidth]{tanh} \]
+	\[ \includegraphics[width=0.7\textwidth]{tanh} \]
 \end{blockfigure}
 \begin{itemize}
 	\item If the weights start too small, then the signal shrinks as it passes through each layer until it vanishes ~\citep{an-explanation-of-xavier-initialization}, then as it passes deeper in the network with its small values, the layers it enter will become linear, because the output of the hyperbolic tangent is linear with small input values, this means the deeper layers of the net will loose non-linearity.
@@ -923,8 +923,6 @@ The idea behind this scheme is to use one scheme (asymmetric) in training, and a
 	target predictive function $ f_{T}(\cdot) $ in $ D_{T} $ using the knowledge in
 	$ D_{S} $ and $ T_{S} $ , where $ D_{S} \neq D_{T} $ , or $ T_{S} \neq T_{T} $.~\citep{5288526}
 \end{definition}
-\paragraph{\textbf{Training}}\mbox{}\\
-In the training setting, the graph follows the training setting of the asymmetric scheme.
 \paragraph{\textbf{Transfer Learning}}\mbox{}\\
 From definition \ref{definition:\thedefinition}, we consider ~$ D = \{X , P (X)\} $, with $ X $ representing the data sets, and $ P(X) $ representing the predictions:
 \begin{itemize}[nosep]
@@ -939,9 +937,36 @@ Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P(
 \begin{conjecture}
 	beside the reason why transfer learning applies to the hybrid system, a reason to why it works well may lie in the asymmetric-training stage's ability to provide trained weights that are derived from training on generated keys that come from a floating point distribution, as opposed to training on keys that are of normalized binary form in the symmetric-scheme training stage.
 \end{conjecture}
+\newpage
+\paragraph{\textbf{Training}}\mbox{}\\
+In the training setting:
+\begin{itemize}
+	\item The pubKey Generator is fed a key seed and produces a public key (pubKey).
+	\item The privKey Generator is fed the pubKey and produces a private key (privKey).
+	\item Alice is fed the pubKey and the message (Plain) and produces a Cipher.
+	\item Bob is fed the privKey and the Cipher and tries to decrypt it.
+	\item Both Eve and Alan intercept the Cipher from Alice and try to decrypt it without the pubKey.
+\end{itemize}
+Every training iteration can be divided to three stages:
+\begin{itemize}
+	\item \textbf{Encryptor-Decryptor Stage:} the pubKey Generator, the privKey Generator, Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only the pubKey Generator, the privKey Generator, Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice, Bob, the pubKey Generator and the privKey Generator.
+	\item \textbf{Encryptor-Eavesdropper(Eve) Stage:} the pubKey Generator, the privKey Generator, Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
+	\item \textbf{Encryptor-Eavesdropper(Alan) Stage:} the pubKey Generator, the privKey Generator, Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
+\end{itemize}
+In the training setting, the Cipher is passed directly from the Encryptor to Bob, Eve and Alan, without being stored in between, because back-propagation does not work past static blocks of data (which is the case for stored Ciphers at the moment of back-propagation).
+The same goes for the privKey-pubKey pair: 
+\begin{itemize}
+	\item The pubKey is passed directly to the privKey Generator \& Alice without being stored.
+	\item The privKey is passed directly from the privKey Generator to Bob without being stored.
+\end{itemize}
+Because we need back-propagation to reach the pubKey Generator and the privKey generator while training.
 \paragraph{\textbf{Testing}}\mbox{}\\
-In the testing setting, all neural nets are reconstructed with the same internal structure, but they differ in how they handle input and output, to be geared towards symmetric cryptography.\\
-There is also the need for a stored Cipher for a more production oriented system, which means the Cipher gets passed through an intermediate matrix instead of directly, from Alice to Bob, Eve and Alan.
+In the testing setting, all neural nets are reconstructed with the same structures and with the same scheme in mind, the only difference is the lack of back-propagation in testing, and the need for a stored Cipher and a stored pubKey-privKey pair, for a more production oriented system. Which means: 
+\begin{itemize}
+	\item The Cipher gets passed through an intermediate matrix instead of directly, from Alice to Bob, Eve and Alan.
+	\item The pubKey gets passed through an intermediate matrix instead of directly, to the privKey Generator \& Alice.
+	\item The privKey gets passed through an intermediate matrix instead of directly, from the privKey Generator to Bob.
+\end{itemize}
 \newpage
 \begin{blockfigure}{ Hybrid Scheme}
 	\begin{center}
