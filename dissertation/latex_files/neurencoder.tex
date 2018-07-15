@@ -37,7 +37,7 @@
 %% \usepackage{preiclr,times}
 \usepackage{iclr2017_conference,times}
 \iclrfinalcopy
-\setlength{\bibsep}{2pt}
+\setlength{\bibsep}{1.7pt}
 %%%%
 
 %% Bibliography Package %%
@@ -273,7 +273,7 @@
 	\noindent
 	\vspace{-0.6cm}
 		\begin{itemize}[nosep]
-		\item A copy of this dissertation will be published on the author's Github account, on the day of discussion: 21-07-2018.
+		\item A copy of this dissertation will be initially published on the author's Github account.
 		\item The project's code resides on a private repository on the author's Gitlab account, to be available for review by academic researchers and industry professionals upon request.
 		\end{itemize}	
 		\vspace{-0.3cm}
@@ -291,7 +291,7 @@
 			\begin{colortable}{}\faGithub & @AlyShmahell \\\hline
 				\faGitlab & @AlyShmahell \\\hline
 				\faTwitter & @AlyShmahell \\\hline
-				\faLinkedinSquare &  www.linkedin.com/in/alyshmahell \\\hline
+				\faLinkedinSquare &  \url{www.linkedin.com/in/alyshmahell} \\\hline
 				\faInbox &  aly.shmahell@gmail.com \\\hline
 			\end{colortable}
 		\end{nscenter}
@@ -307,10 +307,11 @@
 			\justify
 			It has been established that neural networks can learn to use encryption keys to protect information from other neural networks.
 			The next question is, whether they can do it to a degree of efficacy that guarantees integrity of information alongside confidentiality.
-			In this thesis, the goal is to enhance the heuristic methods employed in a neural-net-based multi-agent system to maximize confidentiality, while keeping loss of information-integrity to a minimum.
-			We ask whether such a system, consisting of neural networks named Alice and Bob, can hold against an unknown malicious adversary which is a neural network named Alan, while having been training against a known helpful adversary which is a neural network named Eve, with the fact that both adversaries have access to the information channel between Alice and Bob, and thus acting as eavesdroppers.
-			This thesis finally tries to put what the system has learned in one setting (asymmetric cryptography) to use in another (symmetric cryptography), by employing transfer learning.
-			This thesis explores the theoretical basics behind neural cryptography, and provides software-engineered research-based empirical evidence for its results.
+			In this thesis, the goal is to enhance some of the heuristic methods employed in neural cryptography to maximize confidentiality, while keeping loss of information-integrity to a minimum.
+			We construct a neural-based multi-agent system, consisting of: neural networks named Alice and Bob who act as sender and receiver respectively, an unknown malicious adversary which is a neural network named Alan, a known helpful adversary which is a neural network named Eve, with the fact that both adversaries have access to the information channel between Alice and Bob, and thus acting as eavesdroppers. 
+			We ask whether Alice and Bob, having been training against Eve, can hold low error rates in information integrity between both ends of the channel, but still keep that information confidential from Alan.
+			We finally try to put what the system has learned in one setting (asymmetric cryptography) to use in another (symmetric cryptography), by employing transfer learning.
+			This thesis also explores the theoretical basics behind neural cryptography, and provides software-engineered research-based empirical evidence for its results.
 	\end{minipage}
 \end{center}
 \newpage
@@ -367,7 +368,7 @@ Which lead to these thesis-related factors:
 	\item \textbf{Neural Cryptography can be fast:} A result of using convolutions is that the small-sized pattern-finding filter has shared weights (and biases) for all spatial locations which the convolution processes, and this reduces the compute-power required for the whole process compared to other network models.
 	\item \textbf{Neural Cryptography is evolved opposite to being patched:} Adversarial computation has been proven to be effective for years in the form of Genetic Algorithms, and adding adversary as a non-supervised generative model provides a better and easier experiment on how to synthesize a new form of cryptography.
 \end{itemize}
-\footnotetext[1]{Spatial Relations in Cryptography and Cryptanalysis can be found in the Appendix on page~\pageref{appendix:1}.\label{footnote:1}}
+\footnotetext[1]{\scriptsize{Spatial Relations in Cryptography and Cryptanalysis can be found in the Appendix on page~\pageref{appendix:1}.\label{footnote:1}}}
 \newpage
 \section{\textbf{Previous Work}}
 The work being done so far in neural cryptography can be divided to old (pre 2016), and new (post 2016). For the old section, this thesis will only list the works and attributions without delving into the details.
@@ -793,11 +794,11 @@ As for why $" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$ produced the de
 \end{definition}
 The desired output for our nets are the following:
 \begin{itemize}[nosep]
-	\item For an Encryptor-Decryptor combination, loss has positive correlation with the arithmetic mean of the Encryptor-Decryptor losses, and negative correlation with the squared mean of the Eavesdropper losses:\\
+	\item For an Encryptor-Decryptor combination, loss has positive correlation with the arithmetic mean of the Encryptor-Decryptor errors, and negative correlation with the squared mean of the Eavesdropper errors:\\
 	\tab $ Loss_{positive} = mean(Decryptor_{output} - Encryptor_{input}) $\\
 	\tab $ Loss_{negative} = (1 - mean(Eavesdropper_{output} - Encryptor_{input}))^{2} $\\
 	\tab $ Loss = Loss_{positive} + Loss_{negative} $
-	\item For an Eavesdropper, loss has positive correlation with the arithmetic mean of the Eavesdropper losses, but is intended not to be aware of the losses of the Decryptor:\\
+	\item For an Eavesdropper, loss has positive correlation with the arithmetic mean of the Eavesdropper errors, but is intended not to be aware of the errors of the Decryptor:\\
 	\tab $ Loss = mean(Eavesdropper_{output} - Encryptor_{input}) $
 \end{itemize}
 \section{\textbf{Optimizers}}
@@ -937,36 +938,11 @@ Also from definition \ref{definition:\thedefinition}, we consider ~$ T = \{Y, P(
 \begin{conjecture}
 	beside the reason why transfer learning applies to the hybrid system, a reason to why it works well may lie in the asymmetric-training stage's ability to provide trained weights that are derived from training on generated keys that come from a floating point distribution, as opposed to training on keys that are of normalized binary form in the symmetric-scheme training stage.
 \end{conjecture}
-\newpage
 \paragraph{\textbf{Training}}\mbox{}\\
-In the training setting:
-\begin{itemize}
-	\item The pubKey Generator is fed a key seed and produces a public key (pubKey).
-	\item The privKey Generator is fed the pubKey and produces a private key (privKey).
-	\item Alice is fed the pubKey and the message (Plain) and produces a Cipher.
-	\item Bob is fed the privKey and the Cipher and tries to decrypt it.
-	\item Both Eve and Alan intercept the Cipher from Alice and try to decrypt it without the pubKey.
-\end{itemize}
-Every training iteration can be divided to three stages:
-\begin{itemize}
-	\item \textbf{Encryptor-Decryptor Stage:} the pubKey Generator, the privKey Generator, Alice, Bob and Eve are activated.\\ both Bob and Eve try to decrypt the Cipher, then both their results get fed to the Encryptor-Decryptor (Alice-Bob) optimization process, only the pubKey Generator, the privKey Generator, Alice and Bob get optimized at this stage, Eve plays a helpful adversary role, synonymous to a sparring partner for Alice, Bob, the pubKey Generator and the privKey Generator.
-	\item \textbf{Encryptor-Eavesdropper(Eve) Stage:} the pubKey Generator, the privKey Generator, Alice and Eve are activated.\\ Alice encrypts, Eve intercepts and tries to decrypt, Eve's results get fed to the Eavesdropper (Eve) optimization process, only Eve gets optimized at this stage, in order to have a better adversary (a better sparring partner).
-	\item \textbf{Encryptor-Eavesdropper(Alan) Stage:} the pubKey Generator, the privKey Generator, Alice and Alan are activated.\\ Alice encrypts, Alan intercepts and tries to decrypt, Alan's results get fed to the Eavesdropper (Alan) optimization process, only Alan gets optimized at this stage, in order to have a malicious adversary, whom we don't know about, and who is a metric of how well the adversarial system performs in reality.
-\end{itemize}
-In the training setting, the Cipher is passed directly from the Encryptor to Bob, Eve and Alan, without being stored in between, because back-propagation does not work past static blocks of data (which is the case for stored Ciphers at the moment of back-propagation).
-The same goes for the privKey-pubKey pair: 
-\begin{itemize}
-	\item The pubKey is passed directly to the privKey Generator \& Alice without being stored.
-	\item The privKey is passed directly from the privKey Generator to Bob without being stored.
-\end{itemize}
-Because we need back-propagation to reach the pubKey Generator and the privKey generator while training.
+In the training setting, the hybrid scheme follows the training diagram of the asymmetric scheme, with a minor modification; that is the pubKey is only fed to Alice and the privKey Generator, which means Eve and Alan try to decrypt the Cipher without any key.
 \paragraph{\textbf{Testing}}\mbox{}\\
-In the testing setting, all neural nets are reconstructed with the same structures and with the same scheme in mind, the only difference is the lack of back-propagation in testing, and the need for a stored Cipher and a stored pubKey-privKey pair, for a more production oriented system. Which means: 
-\begin{itemize}
-	\item The Cipher gets passed through an intermediate matrix instead of directly, from Alice to Bob, Eve and Alan.
-	\item The pubKey gets passed through an intermediate matrix instead of directly, to the privKey Generator \& Alice.
-	\item The privKey gets passed through an intermediate matrix instead of directly, from the privKey Generator to Bob.
-\end{itemize}
+In the testing setting, all neural nets are reconstructed by making their structures follow the symmetric scheme, this would allow transfer learning to take place, and the weights which were learned for asymmetric cryptography can now be applied to symmetric cryptography.\\
+Also since there is no need for back-propagation in testing, then the connections between the nets are made as intermediate matrices for values to pass through, in order to provide a more production oriented system.
 \newpage
 \begin{blockfigure}{ Hybrid Scheme}
 	\begin{center}
@@ -1023,13 +999,16 @@ It is also expected after further development that the hybrid scheme will lose i
 \newpage
 \chapter{Results}\label{sec:results}
 \section{\textbf{Thesis Results}}
-The results from the various experiments implemented in the project and run daily over the course of 3-4 months can be described as the following:
-\begin{itemize}
-	\item \textbf{Symmetric Scheme:} experiments conducted were fluctuant in results at few points in time, but can be considered consistent over the entire period, this form of neural cryptography was not the most stable or promising throughout the experiments, but its results are solid and are already on par with results from previous works.
-	\item \textbf{Asymmetric Scheme:} experiments conducted were very consistent, and produced very promising results.
-	\item \textbf{Hybrid Scheme:} experiments conducted were very consistent, and produced very promising results, in fact the results were very close to those from the Asymmetric Scheme, therefor they need to be studied further to determine why.
-\end{itemize}
-To ensure the soundness of the experiments, class initiation calls were logged, as well as the method resolution order upon scheme composition.
+The experiments implemented in the project were run over the course of 3 months.\\
+To ensure the soundness of the experiments: class initiation calls were logged, as well as the method resolution order upon scheme composition.\\
+The results can be described as the following:
+\begin{colortable}{Experiment Results Report}
+	\textbf{Scheme} & \textbf{Steps to Best Convergence} & \textbf{Steps to Worst Convergence} & \textbf{Best Overall Absolute Error} & \textbf{Worst Overall Absolute Error} \\\hline
+	Symmetric & 1000 & 10,000 & 0.2 & 0.35\\\hline
+	Asymmetric & 1000 & 5000 & 0.0 & 0.1\\\hline
+	Hybrid & 1000 & 5000 & 0.0 & 0.1\\\hline
+\end{colortable}
+Keep in mind that these results were eyeballed on the result plot after each experiment, and as development progresses it is expected to have a method that logs them in a database and runs statistical analysis on them after each future experiment.
 \subsection{\textbf{Physical Infrastructure \& Consumption}}
 \begin{colortable}{Underlying Hardware Infrastructure}
 	\textbf{Type} & Graphics Card \\\hline
@@ -1134,25 +1113,24 @@ As for asymmetric neural cryptography, they used a slightly different scheme, ma
 		This dissertation provided an example showcasing that neural nets can learn to minimize loss in integrity of information while maximizing confidentiality. It has also provided an example of how to transfer what they have learned to be applied in different cryptographic settings.
 	\end{minipage}
 \end{center}
-\section*{\textbf{Points of Future Research}}
+\subsection*{\textbf{Points of Future Research}}
 \begin{itemize}[nosep]
-	\item The contrast between how neural nets rely on floating point distributions opposite to the randomized binary of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor giving a false positive), or the opposite.
-	\item The statistical properties of the bottlenecks between the different nets beyond the least squared means, as more study into these statistical properties is needed (e.g. KL-Divergence), similar to the research seen in the paper "Context-Aware Generative Adversarial Privacy
-	"~\citep{e19120656}.
-	\item Modern modes of cryptographic operations, which is considered an important corner stone in modern cryptography, further research into teaching neural nets how to synthesize rigorous modes of operation need to be done, as a starting point, we can consider the CTR Mode of block-ciphers.~\citep{BlockCipherModes}
+	\item The contrast between how neural nets rely on floating point distributions as opposed to the randomized binary format of the plain text they try to reproduce, which warrants an exploration of whether such contrast is relevant to the positive results (and therefor gives a false positive), or the opposite.
+	\item A statistical analysis of the bottlenecks between the different nets, beyond the least squared means, as more study into their statistical properties is needed (e.g. KL-Divergence), similar to the research seen in the paper "Context-Aware Generative Adversarial Privacy"~\citep{e19120656}, because this kind of analysis determines where to focus next in terms of loss functions and activation functions, and determines the structural soundness of the cryptographic model that is being synthesized~\citep{7031850}.
+	\item The role of modern modes of cryptographic operations, which are considered an important corner stone in modern cryptography, further research into teaching neural nets how to synthesize rigorous modes of operation need to be done, as a starting point, we can consider studying the CTR Mode of block-ciphers.~\citep{BlockCipherModes}
 	\item A production ready solution to neural cryptography, as more real-world designs need to be implemented for these systems to be tested on real life data.
 \end{itemize}
-\section*{\textbf{Proposed General Considerations}}
-	\begin{itemize}
+\subsection*{\textbf{Proposed General Considerations}}
+	\begin{itemize}[nosep]
 		\item \textbf{Constructing a production ready crypto-system:} by reducing each plain message sample size to one character, while keeping the key sample size large to preserve confidentiality and maintain convolution ability.
 		\item \textbf{Countering cryptanalysis in the new system:} by considering the entire batch as a block, and infusing each plain message batch with a key batch containing the same key in each sample, which should preserve relation locality in data.
-		\item \textbf{Testing for the effects of floating point distributions:} by infusing the decoder's output layer with a Bernouli Distribution~\citep{http://mathworld.wolfram.com/BernoulliDistribution.html} layer, to force the decoder to optimize for binary output, this will force the encoder in turn to provide better ciphers to account for the limited binary range of the decoder's output.
+		\item \textbf{Testing the effects of floating point distributions on the output:} by infusing the decoder's output layer with a Bernouli Distribution~\citep{http://mathworld.wolfram.com/BernoulliDistribution.html} layer, to force the decoder to optimize for binary output, the result will tell us if the contrast between the binary format of the output and the floating point distributions in the nets has an effect on cryptographic performance.
 	\end{itemize}
-\section*{\textbf{Proposed Model-Structure Considerations}}
-\begin{itemize}
-	\item An RNN infused 1D Convolution.\footnote{RNN: recurrent neural network\citep{Hochreiter1997}}
-	\item A VAE infused scheme.\footnote{VAE: variational auto encoder\citep{2013arXiv1312.6114K}}
-	\item A scheme with neuroevolution as its optimization process.\footnote{Neuroevolution is the process of using a genetic algorithm to evolve (optimize) a neural network.~\citep{Floreano2008}~\citep{DBLP:journals/corr/abs-1803-00657}\citep{GeneticLander}}
+\subsection*{\textbf{Proposed Model-Structure Considerations}}
+\begin{itemize}[nosep]
+	\item An RNN infused 1D Convolution.\footnote{\scriptsize{RNN: recurrent neural network\citep{Hochreiter1997}}}
+	\item A VAE infused scheme.\footnote{\scriptsize{VAE: variational auto encoder\citep{2013arXiv1312.6114K}}}
+	\item A scheme with neuroevolution as its optimization process.\footnote{\scriptsize{Neuroevolution is the process of using a genetic algorithm to evolve (optimize) a neural network.~\citep{Floreano2008}~\citep{DBLP:journals/corr/abs-1803-00657}\citep{GeneticLander}}}
 \end{itemize}
 \newpage
 \begin{blockfigure}{RNN Infused 1D Convolution}
@@ -1183,20 +1161,21 @@ These patterns, as I see them, can be titled like the following:
 \blockquote{Assume the existence of a matching operator $ \rhd $ for matching a value
 $ v $ against a pattern $ p $, written $ v \rhd p $. Such a construct should be used upon input or decryption in a process calculus, and the general idea is then that a process $ v \rhd p $ in $ P $ first verifies that $ v $ matches $ p $; if this is the case the continuation process is updated with any newly mapped variables, and executed, otherwise the execution will be blocked.
 The matching $ T(n, m) \rhd T(y, m) \lhd [y] $ in $ P $ should succeed because the tuple $ T(n, m) $ matches $ T(y, m) $. This results in the mapping of the variable $ y $ to the name $ n $ in the continuation process $ P $. The matching $ T(n, m) \rhd T(y, y) \lhd [y] $ in $ P $ on the other hand would not succeed as both n and m cannot match the pattern y, and thus further execution is garbled.~\citep{Nielsen2007CryptographicPM}}
-The cryptographic patterns described here are mathematically constructed with a mapping function using an operator $ \rhd $, and from this abstract construction of cryptography we can deduce the necessity for a great level of mapping of local spacial locations from plaintext to ciphertext.
+The cryptographic patterns described here are mathematically constructed with a mapping function using an operator $ \rhd $, between a symbol $ v $ which is local in the plaintext relative to the next, to a pattern $ p $, which is localized throughout the ciphertext according to the process calculus.\\
+From this abstract construction of cryptography we can deduce the central necessity for some level of mapping of local spacial locations from plaintext to ciphertext.
 \subsection*{\textbf{Cryptanalytic Patterns}}
 Cryptanalysis relies heavily on statistical analysis to find patterns in ciphertext to use them later on in breaking the encryption, and therefor when building a crypto-system it's essential to build it with statistical hypothesis testing in mind.\citep{7031850}\\
 Crypto Statistical Analysis of the ciphertext can be run on both global spatial locations and local spacial locations, but by taking a lesson from frequency analysis, it is safe to assume the priority of running the analysis on global spatial locations first in order to deduce where the local spatial locations occur, and thus the emphasis in cryptanalysis is on finding global spatial relations in ciphertext.\\
 \begin{hypothesis}\end{hypothesis}
 	\begin{itemize}[nosep]
 		\item Cryptographic Patterns are constructed by mapping local spatial relations from the plaintext to the ciphertext.
-		\item Cryptanalysis Patterns are global spatial relations in ciphertext that facilitate finding and analyzing local spatial relations from ciphertext to plaintext. 
+		\item Cryptanalytic Patterns are global spatial relations in ciphertext that facilitate finding and analyzing local spatial relations from ciphertext to plaintext. 
 	\end{itemize}
 \newpage
 \chapter*{Acknowledgments}
 I would like to thank the following entities for their help and support:
 \begin{itemize}
-	\item \textbf{Prof. Giovanni De Gasperis}, Associate Professor at UnivAQ: for his guidance, patience and supervision of this thesis.
+	\item \textbf{Prof. Giovanni De Gasperis}, Senior Researcher \& Assistant Professor in the Department of Information Engineering, Computer Science and Mathematics at University of L'Aquila: for his guidance, patience and supervision of this thesis.
 	\item \textbf{The International Office at UnivAQ}: for their financial support which made completing this thesis possible.
 	\item \textbf{Ankesh Anand}, PhD student in the machine learning laboratory at the University of Montreal: for his correspondence to my emails regarding questions about his previous work in this area\citep{ankeshanand/neural-cryptography-tensorflow}.
 	\item \textbf{Justin Johnson}, PhD student in the Stanford Vision Lab: for his correspondence to my emails regarding his work on the lecture notes of the course titled \textit{"CS231n Convolutional Neural Networks for Visual Recognition"}\citep{cs231n}.
