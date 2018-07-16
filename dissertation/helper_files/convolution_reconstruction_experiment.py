@@ -38,7 +38,7 @@ import tensorflow as tf
 
 d = tf.constant([[0, 1],[2,3],[4,5]], dtype=tf.float32, name='d')
 
-k1 = tf.constant([[1]], dtype=tf.float32, name='k1')
+k1 = tf.constant([[1, 2, 3],[1,2,3],[1,2,3],[1,2,3]], dtype=tf.float32, name='k1')
 
 data   = tf.expand_dims(d, 2, name = "data")
 kernel1 = tf.reshape(k1, [int(k1.shape[0]), 1, int(k1.shape[1])], name='kernel1')
