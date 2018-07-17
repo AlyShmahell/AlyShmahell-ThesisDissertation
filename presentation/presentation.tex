@@ -23,25 +23,27 @@
 	\section{Introduction}
 		\begin{frame}{What This Thesis Is About}
 			\vfill
-			\textbf{Neural Cryptography:} \\
-			{\centering
+			\textbf{Neural Cryptography:} \\\vfill
+			\hfill\begin{minipage}{0.93\textwidth}
 				applying stochastic methods to get neural nets to achieve cryptographic functionality.
-				\par}
+				\end{minipage}
 			\vfill
-			\textbf{Basis For This Thesis:}\\
-			{\centering
+			\textbf{Basis For This Thesis:}\\\vfill
+			\hfill\begin{minipage}{0.93\textwidth}
 				a recent paper released in 2016 from Google Brain~\citep{DBLP:journals/corr/AbadiA16}.
-				\par}
+			\end{minipage}
 			\vfill
-			\textbf{How The Thesis Extends Its Basis:}\\
-			{\centering
+			\textbf{How The Thesis Extends Its Basis:}\\\vfill
+			\hfill\begin{minipage}{0.93\textwidth}
 				by focusing on increasing confidentiality of communication, while minimizing loss of information integrity.
-			\par}
+			\end{minipage}
 		\end{frame}
 		\begin{frame}{Basic Cryptology Scheme}
+			\vfill
 			\begin{center}
 				\includegraphics[height=0.8\textheight]{Alice-Bob-Eve-Alan}
 			\end{center}
+			\vfill
 		\end{frame}
 		\begin{frame}{Symmetric Results From Google Brain - For Comparison}
 			\begin{center}
@@ -55,47 +57,47 @@
 		\end{frame}
 		\begin{frame}{Justification For Neural Cryptography}
 			 \vfill
-			 \textbf{Neural Cryptography Is Viable:}\\
-			 {\centering
+			 \textbf{Neural Cryptography Is Viable:}\\\vfill
+			 \hfill\begin{minipage}{0.93\textwidth}
 			 	convolutional nets can construct local spatial relations in data.
-			 	\par}
+			 \end{minipage}
 			 \vfill
-			 \textbf{Neural Cryptanalysis Is Viable:}\\
-			 {\centering
+			 \textbf{Neural Cryptanalysis Is Viable:}\\\vfill
+			 \hfill\begin{minipage}{0.93\textwidth}
 			 	fully connected layers can detect global spatial relations in data.
-			 	\par}
+			 \end{minipage}
 			 \vfill
-			 \textbf{Neural Cryptography Can Be Fast:}\\
-			 {\centering
+			 \textbf{Neural Cryptography Can Be Fast:}\\\vfill
+			 \hfill\begin{minipage}{0.93\textwidth}
 			 	convolutional nets share weights using their filters.
-			 	\par}
+			 \end{minipage}
 			 \vfill
-			 \textbf{Neural Cryptography Is Evolved, Not Patched:}\\
-			 {\centering
+			 \textbf{Neural Cryptography Is Evolved, Not Patched:}\\\vfill
+			 \hfill\begin{minipage}{0.93\textwidth}
 			 	using adversary in training evolves weights which serves to tweak the cryptographic functionality.
-			 	\par}
+			 \end{minipage}
 		\end{frame}
 		\begin{frame}{What This Thesis Adds To The Research Pool}
 			\vfill
-			\textbf{A Prototype Blueprint:}\\
-			{\centering
+			\textbf{A Prototype Blueprint:}\\\vspace{0.1cm}
+			\hfill\begin{minipage}{0.93\textwidth}
 				for a software-engineered neural crypto-system.
-				\par}
+			\end{minipage}
 			\vfill
-			\textbf{An Analysis Of How Neural Components Work:}\\
-			{\centering
+			\textbf{An Analysis Of How Neural Components Work:}\\\vfill
+			\hfill\begin{minipage}{0.93\textwidth}
 				when the objective is to achieve cryptographic functionality.
-				\par}
+			\end{minipage}
 			\vfill
-			\textbf{An Enhancement In The Neural Structures:}\\
-			{\centering
+			\textbf{An Enhancement In The Neural Structures:}\\\vfill
+			\hfill\begin{minipage}{0.93\textwidth}
 				which yields a boost in cryptographic robustness.
-			\par}
+			\end{minipage}
 			\vfill
-			\textbf{Transfer Learning:}\\
-			{\centering
+			\textbf{Transfer Learning:}\\\vfill
+			\hfill\begin{minipage}{0.93\textwidth}
 				to get symmetric neural cryptography on par with asymmetric neural cryptography.
-			\par}
+			\end{minipage}
 		\end{frame}
 		\section{Experiments \& Results}
 		\begin{frame}{Symmetric Scheme}
@@ -129,7 +131,10 @@
 			\end{center}
 		\end{frame}
 		\begin{frame}{Transfer Learning}
-			\textbf{Transfer Learning:}\\
+			\textbf{Transfer Learning:}\\\vfill
+			\hfill\begin{minipage}{0.93\textwidth}
+				
+			\end{minipage}
 			{\centering
 				Given a source domain $ D_{S} $ and learning task $ T_{S} $ , a target domain $ D_{T} $ and learning task
 				$ T_{T} $ , transfer learning aims to help improve the learning of the
@@ -177,19 +182,19 @@
 		\begin{frame}{Activation Function Combinations - Numerical Analysis}
 			$" Tanh \rightarrow LeakyRealu \rightarrow Tanh "$
 			\begin{center}
-				\includegraphics[height=0.9\textheight]{tanh_leakyRelu_tanh}
+				\includegraphics[height=0.88\textheight]{tanh_leakyRelu_tanh}
 			\end{center}
 		\end{frame}
 		\begin{frame}{Activation Function Combinations - Numerical Analysis}
 			$" Sigmoid \rightarrow LeakyRealu \rightarrow Sigmoid "$.
 			\begin{center}
-				\includegraphics[height=0.9\textheight]{sigmoid_leakyRelu_sigmoid}
+				\includegraphics[height=0.88\textheight]{sigmoid_leakyRelu_sigmoid}
 			\end{center}
 		\end{frame}
 		\begin{frame}{Activation Function Combinations - Numerical Analysis}
 			$" Sigmoid \rightarrow LeakyRealu \rightarrow Tanh "$.
 			\begin{center}
-				\includegraphics[height=0.9\textheight]{sigmoid_leakyRelu_tanh}
+				\includegraphics[height=0.88\textheight]{sigmoid_leakyRelu_tanh}
 			\end{center}
 		\end{frame}
 		\begin{frame}
